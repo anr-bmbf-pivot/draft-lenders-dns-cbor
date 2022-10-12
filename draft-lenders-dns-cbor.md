@@ -9,19 +9,19 @@ number:
 date:
 consensus: true
 v: 3
-area: AREA
-workgroup: WG Working Group
+area: "Applications"
+workgroup: "Domain Name System"
 keyword:
  - next generation
  - unicorn
  - sparkling distributed ledger
 venue:
-  group: WG
-  type: Working Group
-  mail: WG@example.com
-  arch: https://example.com/WG
-  github: USER/REPO
-  latest: https://example.com/LATEST
+  group: "Domain Name System"
+  type: "Working Group"
+  mail: "namedroppers@nic.ddn.mil"
+  arch: "nicfs.nic.ddn.mil:~/namedroppers/*.Z"
+  github: "anr-bmbf-pivot/draft-lenders-dns-cbor"
+  latest: "https://anr-bmbf-pivot.github.io/draft-lenders-dns-cbor/draft-lenders-dns-cbor.html"
 
 author:
  -
