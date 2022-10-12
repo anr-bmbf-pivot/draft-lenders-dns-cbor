@@ -1,33 +1,40 @@
 ---
-title: "TODO - Your title"
+title: "CBOR Representation of DNS Messages"
 abbrev: "TODO - Abbreviation"
-category: info
+category: std
 
 docname: draft-lenders-dns-cbor-latest
-submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
 number:
 date:
 consensus: true
 v: 3
+submissiontype: IETF
 area: "Applications"
-workgroup: "Domain Name System"
+workgroup: TBD
 keyword:
- - next generation
- - unicorn
- - sparkling distributed ledger
+ - Internet-Draft
+ - CBOR
+ - DNS
 venue:
-  group: "Domain Name System"
-  type: "Working Group"
-  mail: "namedroppers@nic.ddn.mil"
+  group: TBD
+  type: Working Group
+  mail: TBD@example.com
   arch: "nicfs.nic.ddn.mil:~/namedroppers/*.Z"
   github: "anr-bmbf-pivot/draft-lenders-dns-cbor"
   latest: "https://anr-bmbf-pivot.github.io/draft-lenders-dns-cbor/draft-lenders-dns-cbor.html"
 
 author:
- -
-    fullname: Your Name Here
-    organization: Your Organization Here
-    email: "m.lenders@fu-berlin.de"
+ -  fullname: Martine Sophie Lenders
+    organization: Freie Universität Berlin
+    abbrev: FU Berlin
+    email: m.lenders@fu-berlin.de
+ -  fullname: Thomas C. Schmidt
+    organization: HAW Hamburg
+    email: t.schmidt@haw-hamburg.de
+ -  fullname: Matthias Wählisch
+    organization: Freie Universität Berlin
+    abbrev: FU Berlin
+    email: m.waehlisch@fu-berlin.de
 
 normative:
 
