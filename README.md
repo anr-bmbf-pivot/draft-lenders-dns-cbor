@@ -1,6 +1,7 @@
-# TODO - Your title
+# A Compressed CBOR Representation Format for DNS Messages
 
-This is the working area for the individual Internet-Draft, "TODO - Your title".
+This is the working area for the individual Internet-Draft, "A Compressed CBOR Representation Format
+for DNS Messages".
 
 * [Editor's Copy](https://anr-bmbf-pivot.github.io/draft-lenders-dns-cbor/#go.draft-lenders-dns-cbor.html)
 * [Datatracker Page](https://datatracker.ietf.org/doc/draft-lenders-dns-cbor)
