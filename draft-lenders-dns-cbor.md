@@ -295,47 +295,51 @@ Reference: \[TBD-this-spec\]
 
 ## DNS Queries {#sec:query-examples}
 
-A DNS query for the `AAAA`/`IN` record of name "example.org" is represented as the following in CBOR
-extended diagnostic notation (EDN) as defined in Section 8 of {{-cbor}} and Appendix G of {{-cddl}}:
+A DNS query of the record `AAAA` in class `IN` for name "example.org" is
+represented in CBOR extended diagnostic notation (EDN) (see Section 8 in
+{{-cbor}} and Appendix G in {{-cddl}}) as follows:
 
     ["example.org"]
 
 
-Likewise, the `A` record for the same name is represented as
+The `A` record for the same name is represented as
 
     ["example.org", 1]
 
-A query for ANY record for that name is represented as
+A query of `ANY` record for that name is represented as
 
     ["example.org", 255, 255]
 
 ## DNS Responses {#sec:response-examples}
 
-The responses to the examples provided in {{sec:query-examples}} in EDN as defined in Section 8 of
-{{-cbor}} and Appendix G of {{-cddl}} can be seen below.
+The responses to the examples provided in {{sec:query-examples}} are shown
+below. We use the CBOR extended diagnostic notation (EDN) (see Section 8 in
+{{-cbor}} and Appendix G in {{-cddl}}).
 
 To represent an `AAAA` record with TTL 300 seconds for the IPv6 address 2001:db8::1, a minimal
 response to `["example.org"]` could be
 
     [[[300, h'20010db8000000000000000000000001']]]
 
-The name is implied from the query in that case.
+In this case, the name is derived from the query.
 
-However, the following responses would also be a legal response, if e.g. the name or the context is
-required
+If the name or the context is required, the following response would also
+be valid:
 
     [[["example.org", 300, h'20010db8000000000000000000000001']]]
 
-or the query can not be mapped to the response for some reason
+If the query can not be mapped to the response for some reason, a repsonse
+would look like:
 
     [["example.org"], [[300, h'20010db8000000000000000000000001']]]
 
-To represent a minimal response for an `A` record with TTL 3600 seconds for the IPv4 address
+To represent a minimal response of an `A` record with TTL 3600 seconds for the IPv4 address
 192.0.2.1, a minimal response to `["example.org", 1]` could be
 
     [[300, h'c0000201']]
 
-Mind that here also the 1 for record type `IN` can be elided, as it is specified in the question.
+Note that here also the 1 of record type `IN` can be elided, as this record
+is specified in the question section.
 
 Lastly, a response to `["example.org", 255, 255]` could be
 
