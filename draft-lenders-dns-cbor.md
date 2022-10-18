@@ -1,6 +1,6 @@
 ---
 title: "A Concise Binary Object Representation (CBOR) of DNS Messages"
-abbrev: "TODO - Abbreviation"
+abbrev: "dns+cbor"
 category: std
 
 docname: draft-lenders-dns-cbor-latest
