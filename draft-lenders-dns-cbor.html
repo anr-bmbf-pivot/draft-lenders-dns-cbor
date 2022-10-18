@@ -1165,22 +1165,12 @@ The primary purpose is to keep DNS messages small in constrained networks.<a hre
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
                 <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-dns-queries" class="internal xref">DNS Queries</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.1">
-                    <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="auto internal xref">3.2.1</a>.  <a href="#name-examples" class="internal xref">Examples</a></p>
-</li>
-                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
                 <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-standard-dns-resource-recor" class="internal xref">Standard DNS Resource Records (RRs)</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
                 <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-dns-responses" class="internal xref">DNS Responses</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4.2.1">
-                    <p id="section-toc.1-1.3.2.4.2.1.1"><a href="#section-3.4.1" class="auto internal xref">3.4.1</a>.  <a href="#name-examples-2" class="internal xref">Examples</a></p>
-</li>
-                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5">
                 <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="auto internal xref">3.5</a>.  <a href="#name-edns0" class="internal xref">EDNS(0)</a></p>
@@ -1213,10 +1203,21 @@ The primary purpose is to keep DNS messages small in constrained networks.<a hre
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-examples" class="internal xref">Examples</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
+                <p id="section-toc.1-1.8.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-dns-queries-2" class="internal xref">DNS Queries</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
+                <p id="section-toc.1-1.8.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-dns-responses-2" class="internal xref">DNS Responses</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1295,9 +1296,9 @@ domain-name = tstr .regexp "([^\.]+\.)*[^\.]+"
         <h3 id="name-dns-queries">
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-dns-queries" class="section-name selfRef">DNS Queries</a>
         </h3>
-<p id="section-3.2-1">DNS queries are encoded as CBOR arrays containing up to 3 entries.
-Each query includes the name (as text string, see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>), an optional
-record type (as unsigned integer), and an optional record class (as unsigned integer).<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-1">DNS queries are encoded as CBOR arrays containing up to 3 entries in the following order:  The
+name (as text string, see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>), an optional record type (as unsigned integer),
+and an optional record class (as unsigned integer).<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 <p id="section-3.2-2">If the record type is elided, record type <code>AAAA</code> as specified in <span>[<a href="#RFC3596" class="cite xref">RFC3596</a>]</span> is assumed.
 If the record class is elided, record class <code>IN</code> as specified in <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span> is assumed.
 If a record class is required, the record type <span class="bcp14">MUST</span> also be provided.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
@@ -1321,32 +1322,6 @@ dns-query = [dns-question]
 <a href="#name-dns-query-definition" class="selfRef">DNS Query Definition</a>
           </figcaption></figure>
 </div>
-<div id="sec_query-examples">
-<section id="section-3.2.1">
-          <h4 id="name-examples">
-<a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-examples" class="section-name selfRef">Examples</a>
-          </h4>
-<p id="section-3.2.1-1">A DNS query for the <code>AAAA</code>/<code>IN</code> record of name "example.org" is represented as the following in CBOR
-extended diagnostic notation (EDN) as defined in Section 8 of <span>[<a href="#RFC7049" class="cite xref">RFC7049</a>]</span> and Appendix G of <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>:<a href="#section-3.2.1-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3.2.1-2">
-<pre>
-["example.org"]
-</pre><a href="#section-3.2.1-2" class="pilcrow">¶</a>
-</div>
-<p id="section-3.2.1-3">Likewise, the <code>A</code> record for the same name is represented as<a href="#section-3.2.1-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3.2.1-4">
-<pre>
-["example.org", 1]
-</pre><a href="#section-3.2.1-4" class="pilcrow">¶</a>
-</div>
-<p id="section-3.2.1-5">A query for ANY record for that name is represented as<a href="#section-3.2.1-5" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3.2.1-6">
-<pre>
-["example.org", 255, 255]
-</pre><a href="#section-3.2.1-6" class="pilcrow">¶</a>
-</div>
-</section>
-</div>
 </section>
 </div>
 <div id="sec_rr">
@@ -1354,28 +1329,25 @@ extended diagnostic notation (EDN) as defined in Section 8 of <span>[<a href="#R
         <h3 id="name-standard-dns-resource-recor">
 <a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-standard-dns-resource-recor" class="section-name selfRef">Standard DNS Resource Records (RRs)</a>
         </h3>
-<p id="section-3.3-1">DNS records are, like DNS queries, encoded as CBOR arrays with up to 5 entries, but of length 2 at
-minimum.
-They contain in the following order an optional name (as text string, see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>), a
-TTL (as unsigned integer), an optional record type (as unsigned integer), an optional record class
-(as unsigned integer), and lastly a record data entry (as byte string or text string).<a href="#section-3.3-1" class="pilcrow">¶</a></p>
-<p id="section-3.3-2">The presence of the optional name can be determined by the first element of the resource record
-being a string.
-If the name is elided, the name from the query, either from transport context or the provided
-question section, see <a href="#sec_responses" class="auto internal xref">Section 3.4</a> below, is implied.
-If the record type is elided, record type from the question is implied. If
-record class is elided, record class from the question is implied. If a record class
-is required to be provided, the record type <span class="bcp14">MUST</span> also be provided.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
-<p id="section-3.3-3">The byte format of the record data follows the wire format as specified <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span>, Section 3.3 (or
-other specifications of the respective record type).
-Mind that this specifically does not include the RDLENGTH field from <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span> as this value is
-encoded in the length field of the CBOR byte string.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
-<p id="section-3.3-4">If and only if the record data represents a domain name (e.g., for CNAME or PTR records), the record
-data <span class="bcp14">MAY</span> be represented as a text string as specified in <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>.
-This can actually save us 2 bytes of data, as the byte representation of DNS names requires both an
-additional byte to define the length of the first name component, as well as a 0 byte at the end of
-the name.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
-<p id="section-3.3-5">The definition for DNS resource records can be seen in <a href="#fig_dns-rr" class="auto internal xref">Figure 3</a>.<a href="#section-3.3-5" class="pilcrow">¶</a></p>
+<p id="section-3.3-1">DNS resource records are encoded as CBOR arrays containing 2 to 5 entries in the following
+order: An optional name (as text string, see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>), a TTL (as unsigned
+integer), an optional record type (as unsigned integer), an optional record class (as unsigned
+integer), and lastly a record data entry (as byte string or text string).<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3-2">If the first element of the resource record is a string, the first element is a name.  If the
+name is elided, the name from the query, either derived from transport context or the provided
+question section, see <a href="#sec_responses" class="auto internal xref">Section 3.4</a>, is assumed.  If the record type is elided, the record
+type from the question is assumed. If record class is elided, the record class from the
+question is assumed. If a record class is required, the record type <span class="bcp14">MUST</span> also be provided.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
+<p id="section-3.3-3">The byte format of the record data follows the wire format as specified in Section 3.3 <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span>
+(or other specifications of the respective record type).  Note that this format does not
+include the RDLENGTH field from <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span> as this value is encoded in the length field of the
+CBOR byte string.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
+<p id="section-3.3-4">If and only if the record data represents a domain name (e.g., for CNAME or PTR records), the
+record data <span class="bcp14">MAY</span> be represented as a text string as specified in <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>.  This can
+save 2 bytes of data, because the byte representation of DNS names requires both an additional
+byte to define the length of the first name component as well as a 0 byte at the end of the
+name.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
+<p id="section-3.3-5">The representation of a DNS resource records is defined in <a href="#fig_dns-rr" class="auto internal xref">Figure 3</a>.<a href="#section-3.3-5" class="pilcrow">¶</a></p>
 <span id="name-dns-resource-record-definit"></span><div id="fig_dns-rr">
 <figure id="figure-3">
           <div class="alignCenter art-CDDL art-text artwork" id="section-3.3-6.1">
@@ -1434,80 +1406,6 @@ dns-response = [sections]
 <figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
 <a href="#name-dns-response-definition" class="selfRef">DNS Response Definition</a>
           </figcaption></figure>
-</div>
-<div id="examples">
-<section id="section-3.4.1">
-          <h4 id="name-examples-2">
-<a href="#section-3.4.1" class="section-number selfRef">3.4.1. </a><a href="#name-examples-2" class="section-name selfRef">Examples</a>
-          </h4>
-<p id="section-3.4.1-1">The responses to the examples provided in <a href="#sec_query-examples" class="auto internal xref">Section 3.2.1</a> in EDN as defined in Section 8 of
-<span>[<a href="#RFC7049" class="cite xref">RFC7049</a>]</span> and Appendix G of <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> can be seen below.<a href="#section-3.4.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.4.1-2">To represent an <code>AAAA</code> record with TTL 300 seconds for the IPv6 address 2001:db8::1, a minimal
-response to <code>["example.org"]</code> could be<a href="#section-3.4.1-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3.4.1-3">
-<pre>
-[[[300, h'20010db8000000000000000000000001']]]
-</pre><a href="#section-3.4.1-3" class="pilcrow">¶</a>
-</div>
-<p id="section-3.4.1-4">The name is implied from the query in that case.<a href="#section-3.4.1-4" class="pilcrow">¶</a></p>
-<p id="section-3.4.1-5">However, the following responses would also be a legal response, if e.g. the name or the context is
-required<a href="#section-3.4.1-5" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3.4.1-6">
-<pre>
-[[["example.org", 300, h'20010db8000000000000000000000001']]]
-</pre><a href="#section-3.4.1-6" class="pilcrow">¶</a>
-</div>
-<p id="section-3.4.1-7">or the query can not be mapped to the response for some reason<a href="#section-3.4.1-7" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3.4.1-8">
-<pre>
-[["example.org"], [[300, h'20010db8000000000000000000000001']]]
-</pre><a href="#section-3.4.1-8" class="pilcrow">¶</a>
-</div>
-<p id="section-3.4.1-9">To represent a minimal response for an <code>A</code> record with TTL 3600 seconds for the IPv4 address
-192.0.2.1, a minimal response to <code>["example.org", 1]</code> could be<a href="#section-3.4.1-9" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3.4.1-10">
-<pre>
-[[300, h'c0000201']]
-</pre><a href="#section-3.4.1-10" class="pilcrow">¶</a>
-</div>
-<p id="section-3.4.1-11">Mind that here also the 1 for record type <code>IN</code> can be elided, as it is specified in the question.<a href="#section-3.4.1-11" class="pilcrow">¶</a></p>
-<p id="section-3.4.1-12">Lastly, a response to <code>["example.org", 255, 255]</code> could be<a href="#section-3.4.1-12" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3.4.1-13">
-<pre>
-[
-  ["example.org", 255, 255],
-  [[3600, 12, "coap._udp.local"]],
-  [
-    [3600, 2, "ns1.example.org"],
-    [3600, 2, "ns2.example.org"],
-  ],
-  [
-    [
-      "_coap._udp.local", 3600, 28,
-      h'20010db8000000000000000000000001'
-    ],
-    [
-      "_coap._udp.local", 3600, 28,
-      h'20010db8000000000000000000000002'
-    ],
-    [
-      "ns1.example.org", 3600, 28,
-      h'20010db8000000000000000000000035'
-    ],
-    [
-      "ns2.example.org", 3600, 28,
-      h'20010db8000000000000000000003535'
-    ]
-  ]
-]
-</pre><a href="#section-3.4.1-13" class="pilcrow">¶</a>
-</div>
-<p id="section-3.4.1-14">This one advertises two local CoAP servers (identified by service name <code>_coap._udp.local</code>) at
-2001:db8::1 and 2001:db8::2 and two nameservers for the example.org domain, ns1.example.org at
-2001:db8::35 and ns2.example.org at 2001.db8::3535. Each of the transmitted records has a TTL of
-3600 seconds.<a href="#section-3.4.1-14" class="pilcrow">¶</a></p>
-<p id="section-3.4.1-15">(TBD: I think the encoding for PTR and NS record data is wrong...)<a href="#section-3.4.1-15" class="pilcrow">¶</a></p>
-</section>
 </div>
 </section>
 </div>
@@ -1668,13 +1566,120 @@ registry <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, corres
 <div id="acknowledgments">
 <section id="appendix-A">
       <h2 id="name-acknowledgments">
-<a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
 <p id="appendix-A-1">TODO acknowledge.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="authors-addresses">
+<div id="examples">
 <section id="appendix-B">
+      <h2 id="name-examples">
+<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-examples" class="section-name selfRef">Examples</a>
+      </h2>
+<div id="sec_query-examples">
+<section id="appendix-B.1">
+        <h3 id="name-dns-queries-2">
+<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-dns-queries-2" class="section-name selfRef">DNS Queries</a>
+        </h3>
+<p id="appendix-B.1-1">A DNS query for the <code>AAAA</code>/<code>IN</code> record of name "example.org" is represented as the following in CBOR
+extended diagnostic notation (EDN) as defined in Section 8 of <span>[<a href="#RFC7049" class="cite xref">RFC7049</a>]</span> and Appendix G of <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>:<a href="#appendix-B.1-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-B.1-2">
+<pre>
+["example.org"]
+</pre><a href="#appendix-B.1-2" class="pilcrow">¶</a>
+</div>
+<p id="appendix-B.1-3">Likewise, the <code>A</code> record for the same name is represented as<a href="#appendix-B.1-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-B.1-4">
+<pre>
+["example.org", 1]
+</pre><a href="#appendix-B.1-4" class="pilcrow">¶</a>
+</div>
+<p id="appendix-B.1-5">A query for ANY record for that name is represented as<a href="#appendix-B.1-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-B.1-6">
+<pre>
+["example.org", 255, 255]
+</pre><a href="#appendix-B.1-6" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="sec_response-examples">
+<section id="appendix-B.2">
+        <h3 id="name-dns-responses-2">
+<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-dns-responses-2" class="section-name selfRef">DNS Responses</a>
+        </h3>
+<p id="appendix-B.2-1">The responses to the examples provided in <a href="#sec_query-examples" class="auto internal xref">Appendix B.1</a> in EDN as defined in Section 8 of
+<span>[<a href="#RFC7049" class="cite xref">RFC7049</a>]</span> and Appendix G of <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> can be seen below.<a href="#appendix-B.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-B.2-2">To represent an <code>AAAA</code> record with TTL 300 seconds for the IPv6 address 2001:db8::1, a minimal
+response to <code>["example.org"]</code> could be<a href="#appendix-B.2-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-B.2-3">
+<pre>
+[[[300, h'20010db8000000000000000000000001']]]
+</pre><a href="#appendix-B.2-3" class="pilcrow">¶</a>
+</div>
+<p id="appendix-B.2-4">The name is implied from the query in that case.<a href="#appendix-B.2-4" class="pilcrow">¶</a></p>
+<p id="appendix-B.2-5">However, the following responses would also be a legal response, if e.g. the name or the context is
+required<a href="#appendix-B.2-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-B.2-6">
+<pre>
+[[["example.org", 300, h'20010db8000000000000000000000001']]]
+</pre><a href="#appendix-B.2-6" class="pilcrow">¶</a>
+</div>
+<p id="appendix-B.2-7">or the query can not be mapped to the response for some reason<a href="#appendix-B.2-7" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-B.2-8">
+<pre>
+[["example.org"], [[300, h'20010db8000000000000000000000001']]]
+</pre><a href="#appendix-B.2-8" class="pilcrow">¶</a>
+</div>
+<p id="appendix-B.2-9">To represent a minimal response for an <code>A</code> record with TTL 3600 seconds for the IPv4 address
+192.0.2.1, a minimal response to <code>["example.org", 1]</code> could be<a href="#appendix-B.2-9" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-B.2-10">
+<pre>
+[[300, h'c0000201']]
+</pre><a href="#appendix-B.2-10" class="pilcrow">¶</a>
+</div>
+<p id="appendix-B.2-11">Mind that here also the 1 for record type <code>IN</code> can be elided, as it is specified in the question.<a href="#appendix-B.2-11" class="pilcrow">¶</a></p>
+<p id="appendix-B.2-12">Lastly, a response to <code>["example.org", 255, 255]</code> could be<a href="#appendix-B.2-12" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-B.2-13">
+<pre>
+[
+  ["example.org", 255, 255],
+  [[3600, 12, "coap._udp.local"]],
+  [
+    [3600, 2, "ns1.example.org"],
+    [3600, 2, "ns2.example.org"],
+  ],
+  [
+    [
+      "_coap._udp.local", 3600, 28,
+      h'20010db8000000000000000000000001'
+    ],
+    [
+      "_coap._udp.local", 3600, 28,
+      h'20010db8000000000000000000000002'
+    ],
+    [
+      "ns1.example.org", 3600, 28,
+      h'20010db8000000000000000000000035'
+    ],
+    [
+      "ns2.example.org", 3600, 28,
+      h'20010db8000000000000000000003535'
+    ]
+  ]
+]
+</pre><a href="#appendix-B.2-13" class="pilcrow">¶</a>
+</div>
+<p id="appendix-B.2-14">This one advertises two local CoAP servers (identified by service name <code>_coap._udp.local</code>) at
+2001:db8::1 and 2001:db8::2 and two nameservers for the example.org domain, ns1.example.org at
+2001:db8::35 and ns2.example.org at 2001.db8::3535. Each of the transmitted records has a TTL of
+3600 seconds.<a href="#appendix-B.2-14" class="pilcrow">¶</a></p>
+<p id="appendix-B.2-15">(TBD: I think the encoding for PTR and NS record data is wrong...)<a href="#appendix-B.2-15" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-C">
       <h2 id="name-authors-addresses">
 <a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
