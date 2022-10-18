@@ -142,12 +142,12 @@ Table of Contents
 3.1.  Domain Name Representation
 
    Domain names are represented in their commonly known string format
-   (e.g. "example.org", see section 2.3.1 of [RFC1035]) in IDNA encoding
-   [RFC5890] as a text string.  For the purposes of this document,
-   domain names remain case-insensitive as specified in [RFC1035].
+   (e.g., "example.org", see Section 2.3.1 in [RFC1035]) and in IDNA
+   encoding [RFC5890] as a text string.  For the purpose of this
+   document, domain names remain case-insensitive as specified in
+   [RFC1035].
 
-   The definition for the domain name representation can be seen in
-   Figure 1.
+   The representation of a domain name is defined in Figure 1.
 
               domain-name = tstr .regexp "([^\.]+\.)*[^\.]+"
 
