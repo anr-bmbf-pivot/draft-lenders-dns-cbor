@@ -156,16 +156,16 @@ Table of Contents
 3.2.  DNS Queries
 
    DNS queries are encoded as CBOR arrays containing up to 3 entries.
-   They contain in the following order the name (as text string, see
-   Section 3.1), an optional record type (as unsigned integer), and an
-   optional record class (as unsigned integer).  If the record type is
-   elided, record type AAAA as specified in [RFC3596] is implied.  If
-   record class is elided, record class IN as specified in [RFC1035] is
-   implied.  If a record class is required to be provided, the record
-   type MUST also be provided.
+   Each query includes the name (as text string, see Section 3.1), an
+   optional record type (as unsigned integer), and an optional record
+   class (as unsigned integer).
 
-   The definition for the DNS query representation can be seen in
-   Figure 2
+   If the record type is elided, record type AAAA as specified in
+   [RFC3596] is assumed.  If the record class is elided, record class IN
+   as specified in [RFC1035] is assumed.  If a record class is required,
+   the record type MUST also be provided.
+
+   The representation of a DNS query is defined in Figure 2.
 
                         type-spec = (
                           record-type: uint,

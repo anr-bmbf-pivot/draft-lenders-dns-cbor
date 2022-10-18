@@ -1296,15 +1296,15 @@ domain-name = tstr .regexp "([^\.]+\.)*[^\.]+"
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-dns-queries" class="section-name selfRef">DNS Queries</a>
         </h3>
 <p id="section-3.2-1">DNS queries are encoded as CBOR arrays containing up to 3 entries.
-They contain in the following order the name (as text string, see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>), an optional
-record type (as unsigned integer), and an optional record class (as unsigned integer).
-If the record type is elided, record type <code>AAAA</code> as specified in <span>[<a href="#RFC3596" class="cite xref">RFC3596</a>]</span> is implied.
-If record class is elided, record class <code>IN</code> as specified in <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span> is implied.
-If a record class is required to be provided, the record type <span class="bcp14">MUST</span> also be provided.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.2-2">The definition for the DNS query representation can be seen in <a href="#fig_dns-query" class="auto internal xref">Figure 2</a><a href="#section-3.2-2" class="pilcrow">¶</a></p>
+Each query includes the name (as text string, see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>), an optional
+record type (as unsigned integer), and an optional record class (as unsigned integer).<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">If the record type is elided, record type <code>AAAA</code> as specified in <span>[<a href="#RFC3596" class="cite xref">RFC3596</a>]</span> is assumed.
+If the record class is elided, record class <code>IN</code> as specified in <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span> is assumed.
+If a record class is required, the record type <span class="bcp14">MUST</span> also be provided.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.2-3">The representation of a DNS query is defined in <a href="#fig_dns-query" class="auto internal xref">Figure 2</a>.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
 <span id="name-dns-query-definition"></span><div id="fig_dns-query">
 <figure id="figure-2">
-          <div class="alignCenter art-CDDLx art-text artwork" id="section-3.2-3.1">
+          <div class="alignCenter art-CDDLx art-text artwork" id="section-3.2-4.1">
 <pre>
 type-spec = (
   record-type: uint,
