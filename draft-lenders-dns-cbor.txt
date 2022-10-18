@@ -2,7 +2,7 @@
 
 
 
-TBD                                                        M. S. Lenders
+CBOR                                                       M. S. Lenders
 Internet-Draft                                                 FU Berlin
 Intended status: Standards Track                           T. C. Schmidt
 Expires: 21 April 2023                                       HAW Hamburg
@@ -30,9 +30,10 @@ About This Document
    Status information for this document may be found at
    https://datatracker.ietf.org/doc/draft-lenders-dns-cbor/.
 
-   Discussion of this document takes place on the TBD Working Group
-   mailing list (mailto:TBD@example.com), which is archived at
-   nicfs.nic.ddn.mil:~/namedroppers/*.Z.
+   Discussion of this document takes place on the CBOR Working Group
+   mailing list (mailto:cbor@ietf.org), which is archived at
+   https://mailarchive.ietf.org/arch/browse/cbor/.  Subscribe at
+   https://www.ietf.org/mailman/listinfo/cbor/.
 
    Source for this draft and an issue tracker can be found at
    https://github.com/anr-bmbf-pivot/draft-lenders-dns-cbor.
@@ -249,15 +250,17 @@ Table of Contents
    section, the second an answer section, the third an authority
    section, and the fourth an additional section (TBD: back by empirical
    data).  They follow the specification of 3 arrays in the answer.  The
-   additional authority section is also represented as an array of one
-   or more DNS Resource Records (see Section 3.3).
+   authority section is also represented as an array of one or more DNS
+   Resource Records (see Section 3.3).
 
                         extra-sections = (
                           ? authority: [1* dns-rr],
                           additional: [1* dns-rr],
                         )
                         sections = (
-                          ? question: dns-query,
+                          answer: [1* dns-rr],
+                        ) // (
+                          question: dns-query,
                           answer: [1* dns-rr],
                           ? extra: extra-sections,
                         )

@@ -1053,7 +1053,7 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
 <div id="internal-metadata" class="document-information">
 <dl id="identifiers">
 <dt class="label-workgroup">Workgroup:</dt>
-<dd class="workgroup">TBD</dd>
+<dd class="workgroup">CBOR</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
 <dd class="internet-draft">draft-lenders-dns-cbor-latest</dd>
 <dt class="label-published">Published:</dt>
@@ -1098,8 +1098,9 @@ The primary purpose is to keep DNS messages small in constrained networks.<a hre
         Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-lenders-dns-cbor/">https://datatracker.ietf.org/doc/draft-lenders-dns-cbor/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
 <p id="section-note.1-3">
         Discussion of this document takes place on the
-        TBD Working Group mailing list (<span><a href="mailto:TBD@example.com">mailto:TBD@example.com</a></span>),
-        which is archived at <span><a href="nicfs.nic.ddn.mil:~/namedroppers/*.Z">nicfs.nic.ddn.mil:~/namedroppers/*.Z</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+        CBOR Working Group mailing list (<span><a href="mailto:cbor@ietf.org">mailto:cbor@ietf.org</a></span>),
+        which is archived at <span><a href="https://mailarchive.ietf.org/arch/browse/cbor/">https://mailarchive.ietf.org/arch/browse/cbor/</a></span>.
+        Subscribe at <span><a href="https://www.ietf.org/mailman/listinfo/cbor/">https://www.ietf.org/mailman/listinfo/cbor/</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
 <p id="section-note.1-4">Source for this draft and an issue tracker can be found at
         <span><a href="https://github.com/anr-bmbf-pivot/draft-lenders-dns-cbor">https://github.com/anr-bmbf-pivot/draft-lenders-dns-cbor</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
 </section>
@@ -1386,9 +1387,8 @@ empirical data). Again, the question section is encoded like a DNS query as spec
 or more DNS Resource Records (see <a href="#sec_rr" class="auto internal xref">Section 3.3</a>).<a href="#section-3.4-4" class="pilcrow">¶</a></p>
 <p id="section-3.4-5">If 4 arrays are included, then the first section is a question section, the second an answer
 section, the third an authority section, and the fourth an additional section (TBD: back by
-empirical data). They follow the specification of 3 arrays in the answer. The additional
-authority section is also represented as an array of one or more DNS Resource Records (see
-<a href="#sec_rr" class="auto internal xref">Section 3.3</a>).<a href="#section-3.4-5" class="pilcrow">¶</a></p>
+empirical data). They follow the specification of 3 arrays in the answer. The authority section is
+also represented as an array of one or more DNS Resource Records (see <a href="#sec_rr" class="auto internal xref">Section 3.3</a>).<a href="#section-3.4-5" class="pilcrow">¶</a></p>
 <span id="name-dns-response-definition"></span><div id="fig_dns-response">
 <figure id="figure-4">
           <div class="alignCenter art-CDDL art-text artwork" id="section-3.4-6.1">
@@ -1398,7 +1398,9 @@ extra-sections = (
   additional: [1* dns-rr],
 )
 sections = (
-  ? question: dns-query,
+  answer: [1* dns-rr],
+) // (
+  question: dns-query,
   answer: [1* dns-rr],
   ? extra: extra-sections,
 )
