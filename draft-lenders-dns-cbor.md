@@ -205,7 +205,9 @@ extra-sections = (
   additional: [1* dns-rr],
 )
 sections = (
-  ? question: dns-query,
+  answer: [1* dns-rr],
+) // (
+  question: dns-query,
   answer: [1* dns-rr],
   ? extra: extra-sections,
 )
