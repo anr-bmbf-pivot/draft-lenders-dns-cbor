@@ -196,9 +196,8 @@ or more DNS Resource Records (see {{sec:rr}}).
 
 If 4 arrays are included, then the first section is a question section, the second an answer
 section, the third an authority section, and the fourth an additional section (TBD: back by
-empirical data). They follow the specification of 3 arrays in the answer. The additional
-authority section is also represented as an array of one or more DNS Resource Records (see
-{{sec:rr}}).
+empirical data). They follow the specification of 3 arrays in the answer. The authority section is
+also represented as an array of one or more DNS Resource Records (see {{sec:rr}}).
 
 ~~~ CDDL
 extra-sections = (
