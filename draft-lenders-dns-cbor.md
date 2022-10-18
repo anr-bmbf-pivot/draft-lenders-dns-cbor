@@ -116,9 +116,9 @@ domain-name = tstr .regexp "([^\.]+\.)*[^\.]+"
 
 ## DNS Queries {#sec:queries}
 
-DNS queries are encoded as CBOR arrays containing up to 3 entries.
-Each query includes the name (as text string, see {{sec:domain-names}}), an optional
-record type (as unsigned integer), and an optional record class (as unsigned integer).
+DNS queries are encoded as CBOR arrays containing up to 3 entries in the following order:  The
+name (as text string, see {{sec:domain-names}}), an optional record type (as unsigned integer),
+and an optional record class (as unsigned integer).
 
 If the record type is elided, record type `AAAA` as specified in {{-aaaa}} is assumed.
 If the record class is elided, record class `IN` as specified in {{-dns}} is assumed.
@@ -141,32 +141,29 @@ dns-query = [dns-question]
 
 ## Standard DNS Resource Records (RRs) {#sec:rr}
 
-DNS records are, like DNS queries, encoded as CBOR arrays with up to 5 entries, but of length 2 at
-minimum.
-They contain in the following order an optional name (as text string, see {{sec:domain-names}}), a
-TTL (as unsigned integer), an optional record type (as unsigned integer), an optional record class
-(as unsigned integer), and lastly a record data entry (as byte string or text string).
+DNS resource records are encoded as CBOR arrays containing 2 to 5 entries in the following
+order: An optional name (as text string, see {{sec:domain-names}}), a TTL (as unsigned
+integer), an optional record type (as unsigned integer), an optional record class (as unsigned
+integer), and lastly a record data entry (as byte string or text string).
 
-The presence of the optional name can be determined by the first element of the resource record
-being a string.
-If the name is elided, the name from the query, either from transport context or the provided
-question section, see {{sec:responses}} below, is implied.
-If the record type is elided, record type from the question is implied. If
-record class is elided, record class from the question is implied. If a record class
-is required to be provided, the record type MUST also be provided.
+If the first element of the resource record is a string, the first element is a name.  If the
+name is elided, the name from the query, either derived from transport context or the provided
+question section, see {{sec:responses}}, is assumed.  If the record type is elided, the record
+type from the question is assumed. If record class is elided, the record class from the
+question is assumed. If a record class is required, the record type MUST also be provided.
 
-The byte format of the record data follows the wire format as specified {{-dns}}, Section 3.3 (or
-other specifications of the respective record type).
-Mind that this specifically does not include the RDLENGTH field from {{-dns}} as this value is
-encoded in the length field of the CBOR byte string.
+The byte format of the record data follows the wire format as specified in Section 3.3 {{-dns}}
+(or other specifications of the respective record type).  Note that this format does not
+include the RDLENGTH field from {{-dns}} as this value is encoded in the length field of the
+CBOR byte string.
 
-If and only if the record data represents a domain name (e.g., for CNAME or PTR records), the record
-data MAY be represented as a text string as specified in {{sec:domain-names}}.
-This can actually save us 2 bytes of data, as the byte representation of DNS names requires both an
-additional byte to define the length of the first name component, as well as a 0 byte at the end of
-the name.
+If and only if the record data represents a domain name (e.g., for CNAME or PTR records), the
+record data MAY be represented as a text string as specified in {{sec:domain-names}}.  This can
+save 2 bytes of data, because the byte representation of DNS names requires both an additional
+byte to define the length of the first name component as well as a 0 byte at the end of the
+name.
 
-The definition for DNS resource records can be seen in {{fig:dns-rr}}.
+The representation of a DNS resource records is defined in {{fig:dns-rr}}.
 
 ~~~ CDDL
 rr = (
