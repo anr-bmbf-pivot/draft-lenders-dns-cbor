@@ -9,7 +9,11 @@
 <meta content="Thomas C. Schmidt" name="author">
 <meta content="Matthias Wählisch" name="author">
 <meta content="
-       TODO Abstract 
+       With DNS transports such as DNS over HTTPS   and DNS over CoAP  , format type for a
+DNS message can be changed using the Media Type header and Content-Format option, respectively.
+This allows for alternative format types for DNS messages.
+This document specifies a compressed transport format for DNS messages in Concise Binary Object
+Representation with the primary purpose of keeping DNS messages small in constrained networks. 
     " name="description">
 <meta content="xml2rfc 3.15.1" name="generator">
 <meta content="Internet-Draft" name="keyword">
@@ -1082,7 +1086,11 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
 <h1 id="title">A Compressed CBOR Representation Format for DNS Messages</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">TODO Abstract<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">With DNS transports such as DNS over HTTPS <span>[<a href="#RFC8484" class="cite xref">RFC8484</a>]</span> and DNS over CoAP <span>[<a href="#I-D.ietf-core-dns-over-coap" class="cite xref">I-D.ietf-core-dns-over-coap</a>]</span>, format type for a
+DNS message can be changed using the Media Type header and Content-Format option, respectively.
+This allows for alternative format types for DNS messages.
+This document specifies a compressed transport format for DNS messages in Concise Binary Object
+Representation with the primary purpose of keeping DNS messages small in constrained networks.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1151,7 +1159,7 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
             <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-terminology" class="internal xref">Terminology</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-cbor-representation-applica" class="internal xref">CBOR Representation (application/dns+cbor)</a></p>
@@ -1198,7 +1206,15 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
             <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
@@ -1215,18 +1231,35 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">TODO Introduction<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">Within constrained networks <span>[<a href="#RFC7228" class="cite xref">RFC7228</a>]</span>, the payload sizes on the link layer may be restricted
+to only a few hundreds of bytes.
+With encrypted transports, such as DNS over HTTPS (DoH) <span>[<a href="#RFC8484" class="cite xref">RFC8484</a>]</span> or DNS over CoAP (DoC) <span>[<a href="#I-D.ietf-core-dns-over-coap" class="cite xref">I-D.ietf-core-dns-over-coap</a>]</span>,
+even simple DNS message exchanges may exceed this limit even when accounting for header compression
+used such as 6LoWPAN IPHC <span>[<a href="#RFC6282" class="cite xref">RFC6282</a>]</span> or SCHC <span>[<a href="#RFC8724" class="cite xref">RFC8724</a>]</span>, <span>[<a href="#RFC8824" class="cite xref">RFC8824</a>]</span>.
+While adoption layers such as 6LoWPAN <span>[<a href="#RFC4944" class="cite xref">RFC4944</a>]</span> or SCHC <span>[<a href="#RFC8724" class="cite xref">RFC8724</a>]</span> offer fragmentation to overcome
+such restrictions, already high packet loss in constrained networks only multiply with
+fragmentation.
+As such, a compression format for DNS messages themselves is needed.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">Luckily, with both DoH and DoC a format can be selected using the Media Type header and
+Content-Format option, respectively.
+This document specifies a compressed transport format for DNS messages for such a use case.
+DNS messages are encoded in Concise Binary Object Representation (CBOR) {-cbor} and allows for the
+elision of unnecessary or redundant information.<a href="#section-1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="conventions-and-definitions">
+<div id="terminology">
 <section id="section-2">
-      <h2 id="name-conventions-and-definitions">
-<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-conventions-and-definitions" class="section-name selfRef">Conventions and Definitions</a>
+      <h2 id="name-terminology">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-terminology" class="section-name selfRef">Terminology</a>
       </h2>
-<p id="section-2-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
+<p id="section-2-1">CBOR types (unsigned integer, byte string, text string, arrays, etc.) are used as defined in
+{-cbor}.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-2">A DNS query is a message that queries DNS information from an upstream DNS resolver.<a href="#section-2-2" class="pilcrow">¶</a></p>
+<p id="section-2-3">The term "constrained networks" is used as defined in <span>[<a href="#RFC7228" class="cite xref">RFC7228</a>]</span>.<a href="#section-2-3" class="pilcrow">¶</a></p>
+<p id="section-2-4">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
 "<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
 described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
-appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
+appear in all capitals, as shown here.<a href="#section-2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="cbor-representation-applicationdnscbor">
@@ -1247,8 +1280,9 @@ specified in <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>.<a 
         <h3 id="name-domain-name-representation">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-domain-name-representation" class="section-name selfRef">Domain Name Representation</a>
         </h3>
-<p id="section-3.1-1">Domain names are represented in their commonly known string format (e.g. "example.org") [TBD.ref] in
-IDNA encoding <span>[<a href="#RFC5890" class="cite xref">RFC5890</a>]</span> as a text string.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">Domain names are represented in their commonly known string format (e.g. "example.org", see section
+2.3.1 of <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span>) in IDNA encoding <span>[<a href="#RFC5890" class="cite xref">RFC5890</a>]</span> as a text string. For the purposes of this
+document, domain names remain case-insensitive as specified in <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span>.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2">The definition for the domain name representation can be seen in <a href="#fig_domain-name" class="auto internal xref">Figure 1</a>.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <span id="name-domain-name-definition"></span><div id="fig_domain-name">
 <figure id="figure-1">
@@ -1556,47 +1590,87 @@ registry <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, corres
 </section>
 </div>
 <section id="section-6">
-      <h2 id="name-normative-references">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+      <h2 id="name-references">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
+<section id="section-6.1">
+        <h3 id="name-normative-references">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
 <dl class="references">
 <dt id="RFC1035">[RFC1035]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Mockapetris, P.</span>, <span class="refTitle">"Domain names - implementation and specification"</span>, <span class="seriesInfo">STD 13</span>, <span class="seriesInfo">RFC 1035</span>, <span class="seriesInfo">DOI 10.17487/RFC1035</span>, <time datetime="1987-11" class="refDate">November 1987</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc1035">https://www.rfc-editor.org/rfc/rfc1035</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC3596">[RFC3596]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Thomson, S.</span>, <span class="refAuthor">Huitema, C.</span>, <span class="refAuthor">Ksinant, V.</span>, and <span class="refAuthor">M. Souissi</span>, <span class="refTitle">"DNS Extensions to Support IP Version 6"</span>, <span class="seriesInfo">STD 88</span>, <span class="seriesInfo">RFC 3596</span>, <span class="seriesInfo">DOI 10.17487/RFC3596</span>, <time datetime="2003-10" class="refDate">October 2003</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc3596">https://www.rfc-editor.org/rfc/rfc3596</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC5890">[RFC5890]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Klensin, J.</span>, <span class="refTitle">"Internationalized Domain Names for Applications (IDNA): Definitions and Document Framework"</span>, <span class="seriesInfo">RFC 5890</span>, <span class="seriesInfo">DOI 10.17487/RFC5890</span>, <time datetime="2010-08" class="refDate">August 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5890">https://www.rfc-editor.org/rfc/rfc5890</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC6838">[RFC6838]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Freed, N.</span>, <span class="refAuthor">Klensin, J.</span>, and <span class="refAuthor">T. Hansen</span>, <span class="refTitle">"Media Type Specifications and Registration Procedures"</span>, <span class="seriesInfo">BCP 13</span>, <span class="seriesInfo">RFC 6838</span>, <span class="seriesInfo">DOI 10.17487/RFC6838</span>, <time datetime="2013-01" class="refDate">January 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6838">https://www.rfc-editor.org/rfc/rfc6838</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC7049">[RFC7049]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">P. Hoffman</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR)"</span>, <span class="seriesInfo">RFC 7049</span>, <span class="seriesInfo">DOI 10.17487/RFC7049</span>, <time datetime="2013-10" class="refDate">October 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7049">https://www.rfc-editor.org/rfc/rfc7049</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC7252">[RFC7252]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Shelby, Z.</span>, <span class="refAuthor">Hartke, K.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"The Constrained Application Protocol (CoAP)"</span>, <span class="seriesInfo">RFC 7252</span>, <span class="seriesInfo">DOI 10.17487/RFC7252</span>, <time datetime="2014-06" class="refDate">June 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7252">https://www.rfc-editor.org/rfc/rfc7252</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8610">[RFC8610]</dt>
-    <dd>
+      <dd>
 <span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Vigano, C.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures"</span>, <span class="seriesInfo">RFC 8610</span>, <span class="seriesInfo">DOI 10.17487/RFC8610</span>, <time datetime="2019-06" class="refDate">June 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8610">https://www.rfc-editor.org/rfc/rfc8610</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
+</section>
+<section id="section-6.2">
+        <h3 id="name-informative-references">
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="I-D.ietf-core-dns-over-coap">[I-D.ietf-core-dns-over-coap]</dt>
+        <dd>
+<span class="refAuthor">Lenders, M. S.</span>, <span class="refAuthor">Amsüss, C.</span>, <span class="refAuthor">Gündoğan, C.</span>, <span class="refAuthor">Schmidt, T. C.</span>, and <span class="refAuthor">M. Wählisch</span>, <span class="refTitle">"DNS over CoAP (DoC)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-dns-over-coap-00</span>, <time datetime="2022-09-05" class="refDate">5 September 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-dns-over-coap-00">https://datatracker.ietf.org/doc/html/draft-ietf-core-dns-over-coap-00</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4944">[RFC4944]</dt>
+        <dd>
+<span class="refAuthor">Montenegro, G.</span>, <span class="refAuthor">Kushalnagar, N.</span>, <span class="refAuthor">Hui, J.</span>, and <span class="refAuthor">D. Culler</span>, <span class="refTitle">"Transmission of IPv6 Packets over IEEE 802.15.4 Networks"</span>, <span class="seriesInfo">RFC 4944</span>, <span class="seriesInfo">DOI 10.17487/RFC4944</span>, <time datetime="2007-09" class="refDate">September 2007</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4944">https://www.rfc-editor.org/rfc/rfc4944</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6282">[RFC6282]</dt>
+        <dd>
+<span class="refAuthor">Hui, J., Ed.</span> and <span class="refAuthor">P. Thubert</span>, <span class="refTitle">"Compression Format for IPv6 Datagrams over IEEE 802.15.4-Based Networks"</span>, <span class="seriesInfo">RFC 6282</span>, <span class="seriesInfo">DOI 10.17487/RFC6282</span>, <time datetime="2011-09" class="refDate">September 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6282">https://www.rfc-editor.org/rfc/rfc6282</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7228">[RFC7228]</dt>
+        <dd>
+<span class="refAuthor">Bormann, C.</span>, <span class="refAuthor">Ersue, M.</span>, and <span class="refAuthor">A. Keranen</span>, <span class="refTitle">"Terminology for Constrained-Node Networks"</span>, <span class="seriesInfo">RFC 7228</span>, <span class="seriesInfo">DOI 10.17487/RFC7228</span>, <time datetime="2014-05" class="refDate">May 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7228">https://www.rfc-editor.org/rfc/rfc7228</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8484">[RFC8484]</dt>
+        <dd>
+<span class="refAuthor">Hoffman, P.</span> and <span class="refAuthor">P. McManus</span>, <span class="refTitle">"DNS Queries over HTTPS (DoH)"</span>, <span class="seriesInfo">RFC 8484</span>, <span class="seriesInfo">DOI 10.17487/RFC8484</span>, <time datetime="2018-10" class="refDate">October 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8484">https://www.rfc-editor.org/rfc/rfc8484</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8724">[RFC8724]</dt>
+        <dd>
+<span class="refAuthor">Minaburo, A.</span>, <span class="refAuthor">Toutain, L.</span>, <span class="refAuthor">Gomez, C.</span>, <span class="refAuthor">Barthel, D.</span>, and <span class="refAuthor">JC. Zuniga</span>, <span class="refTitle">"SCHC: Generic Framework for Static Context Header Compression and Fragmentation"</span>, <span class="seriesInfo">RFC 8724</span>, <span class="seriesInfo">DOI 10.17487/RFC8724</span>, <time datetime="2020-04" class="refDate">April 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8724">https://www.rfc-editor.org/rfc/rfc8724</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8824">[RFC8824]</dt>
+      <dd>
+<span class="refAuthor">Minaburo, A.</span>, <span class="refAuthor">Toutain, L.</span>, and <span class="refAuthor">R. Andreasen</span>, <span class="refTitle">"Static Context Header Compression (SCHC) for the Constrained Application Protocol (CoAP)"</span>, <span class="seriesInfo">RFC 8824</span>, <span class="seriesInfo">DOI 10.17487/RFC8824</span>, <time datetime="2021-06" class="refDate">June 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8824">https://www.rfc-editor.org/rfc/rfc8824</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
 </section>
 <div id="acknowledgments">
 <section id="appendix-A">
