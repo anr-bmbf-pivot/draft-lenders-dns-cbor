@@ -101,11 +101,11 @@ objects we use the Concise Data Definition Language (CDDL) {{-cddl}}.
 
 ## Domain Name Representation {#sec:domain-names}
 
-Domain names are represented in their commonly known string format (e.g. "example.org", see section
-2.3.1 of {{-dns}}) in IDNA encoding {{!RFC5890}} as a text string. For the purposes of this
+Domain names are represented in their commonly known string format (e.g., "example.org", see Section
+2.3.1 in {{-dns}}) and in IDNA encoding {{!RFC5890}} as a text string. For the purpose of this
 document, domain names remain case-insensitive as specified in {{-dns}}.
 
-The definition for the domain name representation can be seen in {{fig:domain-name}}.
+The representation of a domain name is defined in {{fig:domain-name}}.
 
 {:cddl: artwork-align="center"}
 
