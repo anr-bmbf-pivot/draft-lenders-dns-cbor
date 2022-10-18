@@ -289,11 +289,11 @@ Reference: \[TBD-this-spec\]
 --- back
 
 # Acknowledgments
-{:numbered="false"}
 
 TODO acknowledge.
 
 # Examples
+
 ## DNS Queries {#sec:query-examples}
 
 A DNS query for the `AAAA`/`IN` record of name "example.org" is represented as the following in CBOR
@@ -311,6 +311,7 @@ A query for ANY record for that name is represented as
     ["example.org", 255, 255]
 
 ## DNS Responses {#sec:response-examples}
+
 The responses to the examples provided in {{sec:query-examples}} in EDN as defined in Section 8 of
 {{-cbor}} and Appendix G of {{-cddl}} can be seen below.
 
