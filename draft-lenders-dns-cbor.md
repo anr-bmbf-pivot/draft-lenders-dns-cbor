@@ -178,25 +178,27 @@ dns-rr = [rr]
 
 ## DNS Responses {#sec:responses}
 
-DNS responses are encoded of CBOR arrays of up to 4 CBOR arrays.
+DNS responses are encoded as array of CBOR arrays containing up to 4 entries.
 
-If only 1 array is contained then this is the answer section represented as an array of one or
-more DNS Resource Record (see {{sec:rr}}).
+If only 1 array is included, then this is the DNS answer section represented as an array of one
+or more DNS Resource Records (see {{sec:rr}}).
 
-2 arrays are a question section and an answer section: The question section is encoded like a DNS
-query as specified in {{sec:queries}}, the answer section are represented as an array of one or more
-DNS Resource Records (see {{sec:rr}})
-
-3 arrays are a question section, an answer section, and an additional section (TBD: back choice to
-favor additional section by empirical data). Again, the question section is encoded like a DNS query
-as specified in {{sec:queries}} and both answer and additional section are represented each as an
-array of one or more DNS Resource Records (see {{sec:rr}}).
-
-Lastly, 4 arrays are a question section, an answer section, an authority section, and an additional
-section (TBD: back by empirical data). They follow the specification for 3 arrays in the answer:
-the question section is encoded like a DNS query as specified in {{sec:queries}} and answer,
-authority, and additional section are represented each as an array of one or more DNS Resource
+If 2 arrays are included, then the first entry is a question section and the second entry is
+an answer section. The question section is encoded like a DNS query as specified in
+{{sec:queries}}, the answer section is represented as an array of one or more DNS Resource
 Records (see {{sec:rr}}).
+
+If 3 arrays are included, then the first section is a question section, the second an answer
+section, and the third an additional section (TBD: back choice to favor additional section by
+empirical data). Again, the question section is encoded like a DNS query as specified in
+{{sec:queries}} and both answer and additional sections are represented each as an array of one
+or more DNS Resource Records (see {{sec:rr}}).
+
+If 4 arrays are included, then the first section is a question section, the second an answer
+section, the third an authority section, and the fourth an additional section (TBD: back by
+empirical data). They follow the specification of 3 arrays in the answer. The additional
+authority section is also represented as an array of one or more DNS Resource Records (see
+{{sec:rr}}).
 
 ~~~ CDDL
 extra-sections = (
