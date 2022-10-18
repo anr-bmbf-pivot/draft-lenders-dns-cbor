@@ -43,21 +43,52 @@ normative:
   RFC8610: cddl
 
 informative:
+  RFC4944: 6lowpan
+  RFC6282: iphc
+  RFC7228: constr-terms
+  RFC8484: doh
+  RFC8724: schc
+  RFC8824: coap-schc
+  I-D.ietf-core-dns-over-coap: doc
 
 
 --- abstract
 
-TODO Abstract
+With DNS transports such as DNS over HTTPS {{-doh}} and DNS over CoAP {{-doc}}, format type for a
+DNS message can be changed using the Media Type header and Content-Format option, respectively.
+This allows for alternative format types for DNS messages.
+This document specifies a compressed transport format for DNS messages in Concise Binary Object
+Representation with the primary purpose of keeping DNS messages small in constrained networks.
 
 
 --- middle
 
 # Introduction
 
-TODO Introduction
+Within constrained networks {{-constr-terms}}, the payload sizes on the link layer may be restricted
+to only a few hundreds of bytes.
+With encrypted transports, such as DNS over HTTPS (DoH) {{-doh}} or DNS over CoAP (DoC) {{-doc}},
+even simple DNS message exchanges may exceed this limit even when accounting for header compression
+used such as 6LoWPAN IPHC {{-iphc}} or SCHC {{-schc}}, {{-coap-schc}}.
+While adoption layers such as 6LoWPAN {{-6lowpan}} or SCHC {{-schc}} offer fragmentation to overcome
+such restrictions, already high packet loss in constrained networks only multiply with
+fragmentation.
+As such, a compression format for DNS messages themselves is needed.
 
+Luckily, with both DoH and DoC a format can be selected using the Media Type header and
+Content-Format option, respectively.
+This document specifies a compressed transport format for DNS messages for such a use case.
+DNS messages are encoded in Concise Binary Object Representation (CBOR) {-cbor} and allows for the
+elision of unnecessary or redundant information.
 
-# Conventions and Definitions
+# Terminology
+
+CBOR types (unsigned integer, byte string, text string, arrays, etc.) are used as defined in
+{-cbor}.
+
+A DNS query is a message that queries DNS information from an upstream DNS resolver.
+
+The term "constrained networks" is used as defined in {{-constr-terms}}.
 
 {::boilerplate bcp14-tagged}
 
@@ -74,8 +105,9 @@ specified in {{-cddl}}.
 
 ## Domain Name Representation {#sec:domain-names}
 
-Domain names are represented in their commonly known string format (e.g. "example.org") [TBD.ref] in
-IDNA encoding {{!RFC5890}} as a text string.
+Domain names are represented in their commonly known string format (e.g. "example.org", see section
+2.3.1 of {{-dns}}) in IDNA encoding {{!RFC5890}} as a text string. For the purposes of this
+document, domain names remain case-insensitive as specified in {{-dns}}.
 
 The definition for the domain name representation can be seen in {{fig:domain-name}}.
 
