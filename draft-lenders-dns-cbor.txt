@@ -85,10 +85,10 @@ Table of Contents
    6.  References
      6.1.  Normative References
      6.2.  Informative References
-   Appendix A.  Acknowledgments
-   Appendix B.  Examples
-     B.1.  DNS Queries
-     B.2.  DNS Responses
+   Appendix A.  Examples
+     A.1.  DNS Queries
+     A.2.  DNS Responses
+   Acknowledgments
    Authors' Addresses
 
 1.  Introduction
@@ -427,13 +427,9 @@ Table of Contents
               DOI 10.17487/RFC8824, June 2021,
               <https://www.rfc-editor.org/rfc/rfc8824>.
 
-Appendix A.  Acknowledgments
+Appendix A.  Examples
 
-   TODO acknowledge.
-
-Appendix B.  Examples
-
-B.1.  DNS Queries
+A.1.  DNS Queries
 
    A DNS query for the AAAA/IN record of name "example.org" is
    represented as the following in CBOR extended diagnostic notation
@@ -450,9 +446,9 @@ B.1.  DNS Queries
 
    ["example.org", 255, 255]
 
-B.2.  DNS Responses
+A.2.  DNS Responses
 
-   The responses to the examples provided in Appendix B.1 in EDN as
+   The responses to the examples provided in Appendix A.1 in EDN as
    defined in Section 8 of [RFC7049] and Appendix G of [RFC8610] can be
    seen below.
 
@@ -516,7 +512,11 @@ B.2.  DNS Responses
    2001:db8::35 and ns2.example.org at 2001.db8::3535.  Each of the
    transmitted records has a TTL of 3600 seconds.
 
-   (TBD: I think the encoding for PTR and NS record data is wrong...)
+   (TBD: The encoding of PTR and NS record data might be wrong...)
+
+Acknowledgments
+
+   TODO acknowledge.
 
 Authors' Addresses
 
