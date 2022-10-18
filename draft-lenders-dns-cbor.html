@@ -1345,9 +1345,10 @@ include the RDLENGTH field from <span>[<a href="#RFC1035" class="cite xref">RFC1
 CBOR byte string.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
 <p id="section-3.3-4">If and only if the record data represents a domain name (e.g., for CNAME or PTR records), the
 record data <span class="bcp14">MAY</span> be represented as a text string as specified in <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>.  This can
-save 2 bytes of data, because the byte representation of DNS names requires both an additional
+save 1 bytes of data, because the byte representation of DNS names requires both an additional
 byte to define the length of the first name component as well as a 0 byte at the end of the
-name.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
+name. With CBOR on the other hand only 1 byte is required to define type and length of the text
+string.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
 <p id="section-3.3-5">The representation of a DNS resource records is defined in <a href="#fig_dns-rr" class="auto internal xref">Figure 3</a>.<a href="#section-3.3-5" class="pilcrow">¶</a></p>
 <span id="name-dns-resource-record-definit"></span><div id="fig_dns-rr">
 <figure id="figure-3">
