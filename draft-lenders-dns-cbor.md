@@ -82,7 +82,7 @@ this document also specifies a Media Type header for DoH and a Content-Format op
 # Terminology
 
 CBOR types (unsigned integer, byte string, text string, arrays, etc.) are used as defined in
-{-cbor}.
+{{-cbor}}.
 
 A DNS query is a message that queries DNS information from an upstream DNS resolver.
 
