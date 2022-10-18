@@ -5,10 +5,10 @@
 TBD                                                        M. S. Lenders
 Internet-Draft                                                 FU Berlin
 Intended status: Standards Track                           T. C. Schmidt
-Expires: 20 April 2023                                       HAW Hamburg
+Expires: 21 April 2023                                       HAW Hamburg
                                                              M. Wählisch
                                                                FU Berlin
-                                                         17 October 2022
+                                                         18 October 2022
 
 
         A Compressed CBOR Representation Format for DNS Messages
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 April 2023.
+   This Internet-Draft will expire on 21 April 2023.
 
 Copyright Notice
 
@@ -101,26 +101,24 @@ Table of Contents
 3.  CBOR Representation (application/dns+cbor)
 
    To keep overhead minimal, a DNS message is to be represented as CBOR
-   arrays of a definite length (major type 4).  CBOR arrays that do not
-   follow the length definitions below or in follow-up specifications,
-   MUST be silently ignored.  It is assumed, that query and response are
-   distinguished message types for the transport protocol and that the
-   query can be mapped to the response by the transport protocol of
-   choice.
+   arrays.  All CBOR items used in this specification are of definite
+   length.  CBOR arrays that do not follow the length definitions below
+   or in follow-up specifications, MUST be silently ignored.  It is
+   assumed, that query and response are distinguished message types for
+   the transport protocol and that the query can be mapped to the
+   response by the transport protocol of choice.
 
 3.1.  Domain Name Representation
 
    Domain names are represented in their commonly known string format
-   (e.g. "example.org") as a text string of a definite length (major
-   type 3).
+   (e.g. "example.org") as a text string.
 
 3.2.  DNS Queries
 
    DNS queries are encoded as CBOR arrays containing up to 3 entries.
-   They contain in the following order the name (as text string of a
-   definite length, major type 3, see Section 3.1), an optional record
-   type (as unsigned integer, major type 1), and an optional record
-   class (as unsigned integer, major type 1).  If the record type is
+   They contain in the following order the name (as text string, see
+   Section 3.1), an optional record type (as unsigned integer), and an
+   optional record class (as unsigned integer).  If the record type is
    elided, record type AAAA as specified in [RFC3596] is implied.  If
    record class is elided, record class IN as specified in [RFC1035] is
    implied.  If a record class is required to be provided, the record
@@ -144,15 +142,12 @@ Table of Contents
 
 3.3.  Standard DNS Resource Records (RRs)
 
-   DNS records are, like DNS queries, encoded as CBOR arrays of a
-   definite length (major type 4) with up to 5 entries, but of length 2
-   at minimum.  They contain in the following order an optional name (as
-   text string of a definite length, major type 3, see Section 3.1), a
-   TTL (as unsigned integer, major type 1), an optional record type (as
-   unsigned integer, major type 1), an optional record class (as
-   unsigned integer, major type 1), and lastly a record data entry (as
-   byte string of a definite length, major type 2, or text string of a
-   definite length, major type 3).
+   DNS records are, like DNS queries, encoded as CBOR arrays with up to
+   5 entries, but of length 2 at minimum.  They contain in the following
+   order an optional name (as text string, see Section 3.1), a TTL (as
+   unsigned integer), an optional record type (as unsigned integer), an
+   optional record class (as unsigned integer), and lastly a record data
+   entry (as byte string or text string).
 
    The presence of the optional name can be determined by the first
    element of the resource record being a string.  If the name is
