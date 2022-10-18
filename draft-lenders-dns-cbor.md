@@ -121,7 +121,7 @@ Mind that this specifically does not include the RDLENGTH field from {{-dns}} as
 encoded in the length field of the CBOR byte string.
 
 If and only if the record data represents a domain name (e.g., for CNAME or PTR records), the record
-data MAY be represented as a text string as specified in {sec:domain-names}.
+data MAY be represented as a text string as specified in {{sec:domain-names}}.
 This can actually save us 2 bytes of data, as the byte representation of DNS names requires both an
 additional byte to define the length of the first name component, as well as a 0 byte at the end of
 the name.
