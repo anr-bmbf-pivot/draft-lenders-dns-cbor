@@ -54,11 +54,9 @@ informative:
 
 --- abstract
 
-With DNS transports such as DNS over HTTPS {{-doh}} and DNS over CoAP {{-doc}}, format type for a
-DNS message can be changed using the Media Type header and Content-Format option, respectively.
-This allows for alternative format types for DNS messages.
-This document specifies a compressed transport format for DNS messages in Concise Binary Object
-Representation with the primary purpose of keeping DNS messages small in constrained networks.
+This document specifies a compressed data format of DNS messages using
+the Concise Binary Object Representation {{-cbor}}.
+The primary purpose is to keep DNS messages small in constrained networks.
 
 
 --- middle
