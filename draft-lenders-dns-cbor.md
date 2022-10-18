@@ -303,7 +303,7 @@ represented in CBOR extended diagnostic notation (EDN) (see Section 8 in
     ["example.org"]
 
 
-The `A` record for the same name is represented as
+A query of an `A` record for the same name is represented as
 
     ["example.org", 1]
 
@@ -329,7 +329,7 @@ be valid:
 
     [[["example.org", 300, h'20010db8000000000000000000000001']]]
 
-If the query can not be mapped to the response for some reason, a repsonse
+If the query can not be mapped to the response for some reason, a response
 would look like:
 
     [["example.org"], [[300, h'20010db8000000000000000000000001']]]
@@ -339,8 +339,8 @@ To represent a minimal response of an `A` record with TTL 3600 seconds for the I
 
     [[300, h'c0000201']]
 
-Note that here also the 1 of record type `IN` can be elided, as this record
-is specified in the question section.
+Note that here also the 1 of record type `A` can be elided, as this record
+type is specified in the question section.
 
 Lastly, a response to `["example.org", 255, 255]` could be
 
@@ -375,8 +375,6 @@ This one advertises two local CoAP servers (identified by service name `_coap._u
 2001:db8::1 and 2001:db8::2 and two nameservers for the example.org domain, ns1.example.org at
 2001:db8::35 and ns2.example.org at 2001.db8::3535. Each of the transmitted records has a TTL of
 3600 seconds.
-
-(TBD: The encoding of PTR and NS record data might be wrong...)
 
 # Acknowledgments
 {:numbered="false"}
