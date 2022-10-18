@@ -110,7 +110,7 @@ The representation of a domain name is defined in {{fig:domain-name}}.
 {:cddl: artwork-align="center"}
 
 ~~~ CDDL
-domain-name = tstr .regexp "([^\.]+\.)*[^\.]+"
+domain-name = tstr .regexp "([^.]+\.)*[^.]+"
 ~~~
 {:cddl #fig:domain-name title="Domain Name Definition"}
 
@@ -126,14 +126,14 @@ If a record class is required, the record type MUST also be provided.
 
 The representation of a DNS query is defined in {{fig:dns-query}}.
 
-~~~ CDDLx
+~~~ CDDL
 type-spec = (
   record-type: uint,
   ? record-class: uint,
 )
 dns-question = (
   name: domain-name,
-  ? type: type-spec,
+  ? type-spec,
 )
 dns-query = [dns-question]
 ~~~
@@ -170,7 +170,7 @@ The representation of a DNS resource records is defined in {{fig:dns-rr}}.
 rr = (
   ? name: domain-name,
   ttl: uint,
-  ? type: record-type,
+  ? type-spec,
   rdata: bstr / domain-name,
 )
 dns-rr = [rr]
@@ -202,16 +202,16 @@ also represented as an array of one or more DNS Resource Records (see {{sec:rr}}
 
 ~~~ CDDL
 extra-sections = (
-  ? authority: [1* dns-rr],
-  additional: [1* dns-rr],
+  ? authority: [+ dns-rr],
+  additional: [+ dns-rr],
 )
-sections = (
-  answer: [1* dns-rr],
+sections = ((
+  answer: [+ dns-rr],
 ) // (
   question: dns-query,
-  answer: [1* dns-rr],
-  ? extra: extra-sections,
-)
+  answer: [+ dns-rr],
+  ? extra-sections,
+))
 dns-response = [sections]
 ~~~
 {:cddl #fig:dns-response title="DNS Response Definition"}
