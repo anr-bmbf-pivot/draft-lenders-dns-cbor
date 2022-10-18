@@ -92,14 +92,12 @@ The term "constrained networks" is used as defined in {{-constr-terms}}.
 
 # CBOR Representation (application/dns+cbor)
 
-To keep overhead minimal, a DNS message is to be represented as CBOR arrays.
-All CBOR items used in this specification are of definite length.
-CBOR arrays that do not follow the length definitions below or in follow-up specifications, MUST be
-silently ignored.
-It is assumed, that query and response are distinguished message types for the transport protocol
-and that the query can be mapped to the response by the transport protocol of choice.
-For the definition of the representation we use the Concise Data Definition Language (CDDL), as
-specified in {{-cddl}}.
+To keep overhead minimal, a DNS message is represented as CBOR arrays.  All CBOR items used in
+this specification are of definite length.  CBOR arrays that do not follow the length
+definitions of this or follow-up specifications, MUST be silently ignored.  It is assumed that
+DNS query and DNS response are distinguished message types and that the query can be mapped to
+the response by the transport protocol of choice.  To define the representation of binary
+objects we use the Concise Data Definition Language (CDDL) {{-cddl}}.
 
 ## Domain Name Representation {#sec:domain-names}
 
