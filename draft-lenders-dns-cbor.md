@@ -288,8 +288,6 @@ Reference: \[TBD-this-spec\]
 
 --- back
 
-TODO acknowledge.
-
 # Examples
 
 ## DNS Queries {#sec:query-examples}
@@ -374,5 +372,7 @@ This one advertises two local CoAP servers (identified by service name `_coap._u
 
 # Acknowledgments
 {:numbered="false"}
+
+TODO acknowledge.
 
 
