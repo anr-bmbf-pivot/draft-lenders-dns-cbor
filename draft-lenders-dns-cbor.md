@@ -112,7 +112,7 @@ dns-query = [dns-question]
 
 ### Examples {#sec:query-examples}
 A DNS query for the `AAAA`/`IN` record of name "example.org" is represented as the following in CBOR
-extended diagnostic notation (EDN) as defined in Section 8 of {{-cbor}}:
+extended diagnostic notation (EDN) as defined in Section 8 of {{-cbor}} and Appendix G of {{-cddl}}:
 
     ["example.org"]
 
@@ -203,8 +203,8 @@ dns-response = [sections]
 {:cddl #fig:dns-response title="DNS Response Definition"}
 
 ### Examples
-The responses to the examples provided in {{sec:query-examples}} in CBOR diagnostic notation (see
-Section 8 of {{-cbor}}) can be seen below.
+The responses to the examples provided in {{sec:query-examples}} in EDN as defined in Section 8 of
+{{-cbor}} and Appendix G of {{-cddl}} can be seen below.
 
 To represent an `AAAA` record with TTL 300 seconds for the IPv6 address 2001:db8::1, a minimal
 response to `["example.org"]` could be
