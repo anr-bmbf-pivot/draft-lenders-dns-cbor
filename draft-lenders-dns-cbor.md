@@ -40,6 +40,7 @@ normative:
   RFC1035: dns
   RFC3596: aaaa
   RFC7049: cbor
+  RFC8610: cddl
 
 informative:
 
@@ -68,11 +69,22 @@ CBOR arrays that do not follow the length definitions below or in follow-up spec
 silently ignored.
 It is assumed, that query and response are distinguished message types for the transport protocol
 and that the query can be mapped to the response by the transport protocol of choice.
+For the definition of the representation we use the Concise Data Definition Language (CDDL), as
+specified in {{-cddl}}.
 
 ## Domain Name Representation {#sec:domain-names}
 
-Domain names are represented in their commonly known string format (e.g. "example.org") as a text
-string.
+Domain names are represented in their commonly known string format (e.g. "example.org") [TBD.ref] in
+IDNA encoding {{!RFC5890}} as a text string.
+
+The definition for the domain name representation can be seen in {{fig:domain-name}}.
+
+{:cddl: artwork-align="center"}
+
+~~~ CDDL
+domain-name = tstr .regexp "([^\.]+\.)*[^\.]+"
+~~~
+{:cddl #fig:domain-name title="Domain Name Definition"}
 
 ## DNS Queries {#sec:queries}
 
@@ -82,6 +94,21 @@ record type (as unsigned integer), and an optional record class (as unsigned int
 If the record type is elided, record type `AAAA` as specified in {{-aaaa}} is implied.
 If record class is elided, record class `IN` as specified in {{-dns}} is implied.
 If a record class is required to be provided, the record type MUST also be provided.
+
+The definition for the DNS query representation can be seen in {{fig:dns-query}}
+
+~~~ CDDLx
+type-spec = (
+  record-type: uint,
+  ? record-class: uint,
+)
+dns-question = (
+  name: domain-name,
+  ? type: type-spec,
+)
+dns-query = [dns-question]
+~~~
+{:cddl #fig:dns-query title="DNS Query Definition"}
 
 ### Examples {#sec:query-examples}
 A DNS query for the `AAAA`/`IN` record of name "example.org" is represented as the following in CBOR
@@ -126,6 +153,19 @@ This can actually save us 2 bytes of data, as the byte representation of DNS nam
 additional byte to define the length of the first name component, as well as a 0 byte at the end of
 the name.
 
+The definition for DNS resource records can be seen in {{fig:dns-rr}}.
+
+~~~ CDDL
+rr = (
+  ? name: domain-name,
+  ttl: uint,
+  ? type: record-type,
+  rdata: bstr / domain-name,
+)
+dns-rr = [rr]
+~~~
+{:cddl #fig:dns-rr title="DNS Resource Record Definition"}
+
 ## DNS Responses {#sec:responses}
 
 DNS responses are encoded of CBOR arrays of up to 4 CBOR arrays.
@@ -147,6 +187,20 @@ section (TBD: back by empirical data). They follow the specification for 3 array
 the question section is encoded like a DNS query as specified in {{sec:queries}} and answer,
 authority, and additional section are represented each as an array of one or more DNS Resource
 Records (see {{sec:rr}}).
+
+~~~ CDDL
+extra-sections = (
+  ? authority: [1* dns-rr],
+  additional: [1* dns-rr],
+)
+sections = (
+  ? question: dns-query,
+  answer: [1* dns-rr],
+  ? extra: extra-sections,
+)
+dns-response = [sections]
+~~~
+{:cddl #fig:dns-response title="DNS Response Definition"}
 
 ### Examples
 The responses to the examples provided in {{sec:query-examples}} in CBOR diagnostic notation (see
@@ -214,10 +268,6 @@ This one advertises two local CoAP servers (identified by service name `_coap._u
 ## EDNS(0)
 
 TBD, do we need special formatting here?
-
-## ABNF
-
-TBD? But there is no ABNF definition for CBOR...
 
 # Security Considerations
 
