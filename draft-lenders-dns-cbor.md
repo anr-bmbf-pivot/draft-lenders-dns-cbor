@@ -139,22 +139,6 @@ dns-query = [dns-question]
 ~~~
 {:cddl #fig:dns-query title="DNS Query Definition"}
 
-### Examples {#sec:query-examples}
-A DNS query for the `AAAA`/`IN` record of name "example.org" is represented as the following in CBOR
-extended diagnostic notation (EDN) as defined in Section 8 of {{-cbor}} and Appendix G of {{-cddl}}:
-
-    ["example.org"]
-
-
-Likewise, the `A` record for the same name is represented as
-
-    ["example.org", 1]
-
-A query for ANY record for that name is represented as
-
-    ["example.org", 255, 255]
-
-
 ## Standard DNS Resource Records (RRs) {#sec:rr}
 
 DNS records are, like DNS queries, encoded as CBOR arrays with up to 5 entries, but of length 2 at
@@ -230,69 +214,6 @@ sections = (
 dns-response = [sections]
 ~~~
 {:cddl #fig:dns-response title="DNS Response Definition"}
-
-### Examples
-The responses to the examples provided in {{sec:query-examples}} in EDN as defined in Section 8 of
-{{-cbor}} and Appendix G of {{-cddl}} can be seen below.
-
-To represent an `AAAA` record with TTL 300 seconds for the IPv6 address 2001:db8::1, a minimal
-response to `["example.org"]` could be
-
-    [[[300, h'20010db8000000000000000000000001']]]
-
-The name is implied from the query in that case.
-
-However, the following responses would also be a legal response, if e.g. the name or the context is
-required
-
-    [[["example.org", 300, h'20010db8000000000000000000000001']]]
-
-or the query can not be mapped to the response for some reason
-
-    [["example.org"], [[300, h'20010db8000000000000000000000001']]]
-
-To represent a minimal response for an `A` record with TTL 3600 seconds for the IPv4 address
-192.0.2.1, a minimal response to `["example.org", 1]` could be
-
-    [[300, h'c0000201']]
-
-Mind that here also the 1 for record type `IN` can be elided, as it is specified in the question.
-
-Lastly, a response to `["example.org", 255, 255]` could be
-
-    [
-      ["example.org", 255, 255],
-      [[3600, 12, "coap._udp.local"]],
-      [
-        [3600, 2, "ns1.example.org"],
-        [3600, 2, "ns2.example.org"],
-      ],
-      [
-        [
-          "_coap._udp.local", 3600, 28,
-          h'20010db8000000000000000000000001'
-        ],
-        [
-          "_coap._udp.local", 3600, 28,
-          h'20010db8000000000000000000000002'
-        ],
-        [
-          "ns1.example.org", 3600, 28,
-          h'20010db8000000000000000000000035'
-        ],
-        [
-          "ns2.example.org", 3600, 28,
-          h'20010db8000000000000000000003535'
-        ]
-      ]
-    ]
-
-This one advertises two local CoAP servers (identified by service name `_coap._udp.local`) at
-2001:db8::1 and 2001:db8::2 and two nameservers for the example.org domain, ns1.example.org at
-2001:db8::35 and ns2.example.org at 2001.db8::3535. Each of the transmitted records has a TTL of
-3600 seconds.
-
-(TBD: I think the encoding for PTR and NS record data is wrong...)
 
 ## EDNS(0)
 
@@ -374,3 +295,85 @@ Reference: \[TBD-this-spec\]
 {:numbered="false"}
 
 TODO acknowledge.
+
+# Examples
+## DNS Queries {#sec:query-examples}
+
+A DNS query for the `AAAA`/`IN` record of name "example.org" is represented as the following in CBOR
+extended diagnostic notation (EDN) as defined in Section 8 of {{-cbor}} and Appendix G of {{-cddl}}:
+
+    ["example.org"]
+
+
+Likewise, the `A` record for the same name is represented as
+
+    ["example.org", 1]
+
+A query for ANY record for that name is represented as
+
+    ["example.org", 255, 255]
+
+## DNS Responses {#sec:response-examples}
+The responses to the examples provided in {{sec:query-examples}} in EDN as defined in Section 8 of
+{{-cbor}} and Appendix G of {{-cddl}} can be seen below.
+
+To represent an `AAAA` record with TTL 300 seconds for the IPv6 address 2001:db8::1, a minimal
+response to `["example.org"]` could be
+
+    [[[300, h'20010db8000000000000000000000001']]]
+
+The name is implied from the query in that case.
+
+However, the following responses would also be a legal response, if e.g. the name or the context is
+required
+
+    [[["example.org", 300, h'20010db8000000000000000000000001']]]
+
+or the query can not be mapped to the response for some reason
+
+    [["example.org"], [[300, h'20010db8000000000000000000000001']]]
+
+To represent a minimal response for an `A` record with TTL 3600 seconds for the IPv4 address
+192.0.2.1, a minimal response to `["example.org", 1]` could be
+
+    [[300, h'c0000201']]
+
+Mind that here also the 1 for record type `IN` can be elided, as it is specified in the question.
+
+Lastly, a response to `["example.org", 255, 255]` could be
+
+    [
+      ["example.org", 255, 255],
+      [[3600, 12, "coap._udp.local"]],
+      [
+        [3600, 2, "ns1.example.org"],
+        [3600, 2, "ns2.example.org"],
+      ],
+      [
+        [
+          "_coap._udp.local", 3600, 28,
+          h'20010db8000000000000000000000001'
+        ],
+        [
+          "_coap._udp.local", 3600, 28,
+          h'20010db8000000000000000000000002'
+        ],
+        [
+          "ns1.example.org", 3600, 28,
+          h'20010db8000000000000000000000035'
+        ],
+        [
+          "ns2.example.org", 3600, 28,
+          h'20010db8000000000000000000003535'
+        ]
+      ]
+    ]
+
+This one advertises two local CoAP servers (identified by service name `_coap._udp.local`) at
+2001:db8::1 and 2001:db8::2 and two nameservers for the example.org domain, ns1.example.org at
+2001:db8::35 and ns2.example.org at 2001.db8::3535. Each of the transmitted records has a TTL of
+3600 seconds.
+
+(TBD: I think the encoding for PTR and NS record data is wrong...)
+
+
