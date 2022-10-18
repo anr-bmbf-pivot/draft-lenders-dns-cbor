@@ -12,7 +12,7 @@ for DNS Messages".
 ## Contributing
 
 See the
-[guidelines for contributions](https://github.com/anr-bmbf-pivot/draft-lenders-dns-cbor/blob//CONTRIBUTING.md).
+[guidelines for contributions](https://github.com/anr-bmbf-pivot/draft-lenders-dns-cbor/blob/main/CONTRIBUTING.md).
 
 Contributions can be made by creating pull requests.
 The GitHub interface supports creating pull requests using the Edit (✏) button.
