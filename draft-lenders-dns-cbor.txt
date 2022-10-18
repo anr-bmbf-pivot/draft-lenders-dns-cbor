@@ -115,7 +115,7 @@ Table of Contents
 2.  Terminology
 
    CBOR types (unsigned integer, byte string, text string, arrays, etc.)
-   are used as defined in {-cbor}.
+   are used as defined in [RFC7049].
 
    A DNS query is a message that queries DNS information from an
    upstream DNS resolver.
