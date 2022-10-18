@@ -9,11 +9,9 @@
 <meta content="Thomas C. Schmidt" name="author">
 <meta content="Matthias Wählisch" name="author">
 <meta content="
-       With DNS transports such as DNS over HTTPS   and DNS over CoAP  , format type for a
-DNS message can be changed using the Media Type header and Content-Format option, respectively.
-This allows for alternative format types for DNS messages.
-This document specifies a compressed transport format for DNS messages in Concise Binary Object
-Representation with the primary purpose of keeping DNS messages small in constrained networks. 
+       This document specifies a compressed data format of DNS messages using
+the Concise Binary Object Representation  .
+The primary purpose is to keep DNS messages small in constrained networks. 
     " name="description">
 <meta content="xml2rfc 3.15.1" name="generator">
 <meta content="Internet-Draft" name="keyword">
@@ -1086,11 +1084,9 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
 <h1 id="title">A Compressed CBOR Representation Format for DNS Messages</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">With DNS transports such as DNS over HTTPS <span>[<a href="#RFC8484" class="cite xref">RFC8484</a>]</span> and DNS over CoAP <span>[<a href="#I-D.ietf-core-dns-over-coap" class="cite xref">I-D.ietf-core-dns-over-coap</a>]</span>, format type for a
-DNS message can be changed using the Media Type header and Content-Format option, respectively.
-This allows for alternative format types for DNS messages.
-This document specifies a compressed transport format for DNS messages in Concise Binary Object
-Representation with the primary purpose of keeping DNS messages small in constrained networks.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document specifies a compressed data format of DNS messages using
+the Concise Binary Object Representation <span>[<a href="#RFC7049" class="cite xref">RFC7049</a>]</span>.
+The primary purpose is to keep DNS messages small in constrained networks.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
