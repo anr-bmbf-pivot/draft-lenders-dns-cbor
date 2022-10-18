@@ -59,8 +59,8 @@ TODO Introduction
 
 # CBOR Representation (application/dns+cbor)
 
-To keep overhead minimal, a DNS message is to be represented as CBOR arrays of a definite length
-(major type 4).
+To keep overhead minimal, a DNS message is to be represented as CBOR arrays.
+All CBOR items used in this specification are of definite length.
 CBOR arrays that do not follow the length definitions below or in follow-up specifications, MUST be
 silently ignored.
 It is assumed, that query and response are distinguished message types for the transport protocol
@@ -69,14 +69,13 @@ and that the query can be mapped to the response by the transport protocol of ch
 ## Domain Name Representation {#sec:domain-names}
 
 Domain names are represented in their commonly known string format (e.g. "example.org") as a text
-string of a definite length (major type 3).
+string.
 
 ## DNS Queries {#sec:queries}
 
-DNS queries are encoded as CBOR arrays containing up to 3 entries. They contain in the following
-order the name (as text string of a definite length, major type 3, see {{sec:domain-names}}), an
-optional record type (as unsigned integer, major type 1), and an optional record class (as unsigned
-integer, major type 1).
+DNS queries are encoded as CBOR arrays containing up to 3 entries.
+They contain in the following order the name (as text string, see {{sec:domain-names}}), an optional
+record type (as unsigned integer), and an optional record class (as unsigned integer).
 If the record type is elided, record type `AAAA` as specified in {{!RFC3596}} is implied.
 If record class is elided, record class `IN` as specified in {{!RFC1035}} is implied.
 If a record class is required to be provided, the record type MUST also be provided.
@@ -99,13 +98,11 @@ A query for ANY record for that name is represented as
 
 ## Standard DNS Resource Records (RRs) {#sec:rr}
 
-DNS records are, like DNS queries, encoded as CBOR arrays of a definite length (major type 4) with
-up to 5 entries, but of length 2 at minimum.
-They contain in the following order an optional name (as text string of a definite length, major
-type 3, see {{sec:domain-names}}), a TTL (as unsigned integer, major type 1), an optional record
-type (as unsigned integer, major type 1), an optional record class (as unsigned integer, major type
-1), and lastly a record data entry (as byte string of a definite length, major type 2, or text
-string of a definite length, major type 3).
+DNS records are, like DNS queries, encoded as CBOR arrays with up to 5 entries, but of length 2 at
+minimum.
+They contain in the following order an optional name (as text string, see {{sec:domain-names}}), a
+TTL (as unsigned integer), an optional record type (as unsigned integer), an optional record class
+(as unsigned integer), and lastly a record data entry (as byte string or text string).
 
 The presence of the optional name can be determined by the first element of the resource record
 being a string.
