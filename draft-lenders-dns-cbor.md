@@ -90,7 +90,7 @@ The term "constrained networks" is used as defined in {{-constr-terms}}.
 
 {::boilerplate bcp14-tagged}
 
-# CBOR Representation (application/dns+cbor)
+# CBOR Representations (application/dns+cbor)
 
 To keep overhead minimal, a DNS message is represented as CBOR arrays.  All CBOR items used in
 this specification are of definite length.  CBOR arrays that do not follow the length
