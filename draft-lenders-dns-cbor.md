@@ -117,13 +117,14 @@ domain-name = tstr .regexp "([^\.]+\.)*[^\.]+"
 ## DNS Queries {#sec:queries}
 
 DNS queries are encoded as CBOR arrays containing up to 3 entries.
-They contain in the following order the name (as text string, see {{sec:domain-names}}), an optional
+Each query includes the name (as text string, see {{sec:domain-names}}), an optional
 record type (as unsigned integer), and an optional record class (as unsigned integer).
-If the record type is elided, record type `AAAA` as specified in {{-aaaa}} is implied.
-If record class is elided, record class `IN` as specified in {{-dns}} is implied.
-If a record class is required to be provided, the record type MUST also be provided.
 
-The definition for the DNS query representation can be seen in {{fig:dns-query}}
+If the record type is elided, record type `AAAA` as specified in {{-aaaa}} is assumed.
+If the record class is elided, record class `IN` as specified in {{-dns}} is assumed.
+If a record class is required, the record type MUST also be provided.
+
+The representation of a DNS query is defined in {{fig:dns-query}}.
 
 ~~~ CDDLx
 type-spec = (
