@@ -288,8 +288,6 @@ Reference: \[TBD-this-spec\]
 
 --- back
 
-# Acknowledgments
-
 TODO acknowledge.
 
 # Examples
@@ -372,6 +370,9 @@ This one advertises two local CoAP servers (identified by service name `_coap._u
 2001:db8::35 and ns2.example.org at 2001.db8::3535. Each of the transmitted records has a TTL of
 3600 seconds.
 
-(TBD: I think the encoding for PTR and NS record data is wrong...)
+(TBD: The encoding of PTR and NS record data might be wrong...)
+
+# Acknowledgments
+{:numbered="false"}
 
 
