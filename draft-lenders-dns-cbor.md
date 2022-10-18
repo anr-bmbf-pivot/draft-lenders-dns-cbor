@@ -37,6 +37,9 @@ author:
     email: m.waehlisch@fu-berlin.de
 
 normative:
+  RFC1035: dns
+  RFC3596: aaaa
+  RFC7049: cbor
 
 informative:
 
@@ -76,13 +79,13 @@ string.
 DNS queries are encoded as CBOR arrays containing up to 3 entries.
 They contain in the following order the name (as text string, see {{sec:domain-names}}), an optional
 record type (as unsigned integer), and an optional record class (as unsigned integer).
-If the record type is elided, record type `AAAA` as specified in {{!RFC3596}} is implied.
-If record class is elided, record class `IN` as specified in {{!RFC1035}} is implied.
+If the record type is elided, record type `AAAA` as specified in {{-aaaa}} is implied.
+If record class is elided, record class `IN` as specified in {{-dns}} is implied.
 If a record class is required to be provided, the record type MUST also be provided.
 
 ### Examples {#sec:query-examples}
-A DNS query for the `AAAA`/`IN` record of name "example.org" is represented as the following
-in CBOR diagnostic notation (see {{!RFC7049}}, section 6):
+A DNS query for the `AAAA`/`IN` record of name "example.org" is represented as the following in CBOR
+extended diagnostic notation (EDN) as defined in Section 8 of {{-cbor}}:
 
     ["example.org"]
 
@@ -112,10 +115,10 @@ If the record type is elided, record type from the question is implied. If
 record class is elided, record class from the question is implied. If a record class
 is required to be provided, the record type MUST also be provided.
 
-The byte format of the record data follows the wire format as specified {{!RFC1035}}, section 3.3
-(or other specifications of the respective record type). Mind that this specifically does not
-include the RDLENGTH field from {{!RFC1035}} as this value is encoded in the length field of the
-CBOR byte string.
+The byte format of the record data follows the wire format as specified {{-dns}}, Section 3.3 (or
+other specifications of the respective record type).
+Mind that this specifically does not include the RDLENGTH field from {{-dns}} as this value is
+encoded in the length field of the CBOR byte string.
 
 If and only if the record data represents a domain name (e.g., for CNAME or PTR records), the record
 data MAY be represented as a text string as specified in {sec:domain-names}.
@@ -147,7 +150,7 @@ Records (see {{sec:rr}}).
 
 ### Examples
 The responses to the examples provided in {{sec:query-examples}} in CBOR diagnostic notation (see
-{{!RFC7049}}, section 6) can be seen below.
+Section 8 of {{-cbor}}) can be seen below.
 
 To represent an `AAAA` record with TTL 300 seconds for the IPv6 address 2001:db8::1, a minimal
 response to `["example.org"]` could be
@@ -236,7 +239,7 @@ Required parameters: None
 
 Optional parameters: None
 
-Encoding considerations: Must be encoded as using {{!RFC7049}}. See \[TBD-this-spec\] for details.
+Encoding considerations: Must be encoded as using {{-cbor}}. See \[TBD-this-spec\] for details.
 
 Security considerations: See {{security-considerations}} of this draft
 
