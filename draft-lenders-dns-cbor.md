@@ -1,5 +1,5 @@
 ---
-title: "A Compressed CBOR Representation Format for DNS Messages"
+title: "A Concise Binary Object Representation (CBOR) of DNS Messages"
 abbrev: "TODO - Abbreviation"
 category: std
 
