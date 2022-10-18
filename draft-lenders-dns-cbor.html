@@ -1227,20 +1227,19 @@ The primary purpose is to keep DNS messages small in constrained networks.<a hre
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">Within constrained networks <span>[<a href="#RFC7228" class="cite xref">RFC7228</a>]</span>, the payload sizes on the link layer may be restricted
-to only a few hundreds of bytes.
-With encrypted transports, such as DNS over HTTPS (DoH) <span>[<a href="#RFC8484" class="cite xref">RFC8484</a>]</span> or DNS over CoAP (DoC) <span>[<a href="#I-D.ietf-core-dns-over-coap" class="cite xref">I-D.ietf-core-dns-over-coap</a>]</span>,
-even simple DNS message exchanges may exceed this limit even when accounting for header compression
-used such as 6LoWPAN IPHC <span>[<a href="#RFC6282" class="cite xref">RFC6282</a>]</span> or SCHC <span>[<a href="#RFC8724" class="cite xref">RFC8724</a>]</span>, <span>[<a href="#RFC8824" class="cite xref">RFC8824</a>]</span>.
-While adoption layers such as 6LoWPAN <span>[<a href="#RFC4944" class="cite xref">RFC4944</a>]</span> or SCHC <span>[<a href="#RFC8724" class="cite xref">RFC8724</a>]</span> offer fragmentation to overcome
-such restrictions, already high packet loss in constrained networks only multiply with
-fragmentation.
-As such, a compression format for DNS messages themselves is needed.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">Luckily, with both DoH and DoC a format can be selected using the Media Type header and
-Content-Format option, respectively.
-This document specifies a compressed transport format for DNS messages for such a use case.
-DNS messages are encoded in Concise Binary Object Representation (CBOR) {-cbor} and allows for the
-elision of unnecessary or redundant information.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-1">In constrained networks <span>[<a href="#RFC7228" class="cite xref">RFC7228</a>]</span>, the link layer may restrict the payload sizes to
+only a few hundreds bytes.  Encrypted DNS resolution, such as DNS over HTTPS (DoH) <span>[<a href="#RFC8484" class="cite xref">RFC8484</a>]</span> or
+DNS over CoAP (DoC) <span>[<a href="#I-D.ietf-core-dns-over-coap" class="cite xref">I-D.ietf-core-dns-over-coap</a>]</span>, may lead to DNS message sizes that exceed this limit, even when
+implementing header compression such as 6LoWPAN IPHC <span>[<a href="#RFC6282" class="cite xref">RFC6282</a>]</span> or SCHC <span>[<a href="#RFC8724" class="cite xref">RFC8724</a>]</span>,
+<span>[<a href="#RFC8824" class="cite xref">RFC8824</a>]</span>.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">Although adoption layers such as 6LoWPAN <span>[<a href="#RFC4944" class="cite xref">RFC4944</a>]</span> or SCHC <span>[<a href="#RFC8724" class="cite xref">RFC8724</a>]</span> offer fragmentation to
+comply with small MTUs, fragmentation should be avoided in constrained networks, because
+fragmentation combined with high packet loss multiplies the loss.  As such, a compression
+format for DNS messages is needed.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">This document specifies a compressed data format for DNS messages.  DNS messages are encoded in
+Concise Binary Object Representation (CBOR) <span>[<a href="#RFC7049" class="cite xref">RFC7049</a>]</span> and, additionally, unnecessary or
+redundant information is removed.  To use the outcome of this specification in DoH and DoC,
+this document also specifies a Media Type header for DoH and a Content-Format option for DoC.<a href="#section-1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="terminology">

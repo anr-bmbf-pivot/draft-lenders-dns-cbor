@@ -92,24 +92,25 @@ Table of Contents
 
 1.  Introduction
 
-   Within constrained networks [RFC7228], the payload sizes on the link
-   layer may be restricted to only a few hundreds of bytes.  With
-   encrypted transports, such as DNS over HTTPS (DoH) [RFC8484] or DNS
-   over CoAP (DoC) [I-D.ietf-core-dns-over-coap], even simple DNS
-   message exchanges may exceed this limit even when accounting for
-   header compression used such as 6LoWPAN IPHC [RFC6282] or SCHC
-   [RFC8724], [RFC8824].  While adoption layers such as 6LoWPAN
-   [RFC4944] or SCHC [RFC8724] offer fragmentation to overcome such
-   restrictions, already high packet loss in constrained networks only
-   multiply with fragmentation.  As such, a compression format for DNS
-   messages themselves is needed.
+   In constrained networks [RFC7228], the link layer may restrict the
+   payload sizes to only a few hundreds bytes.  Encrypted DNS
+   resolution, such as DNS over HTTPS (DoH) [RFC8484] or DNS over CoAP
+   (DoC) [I-D.ietf-core-dns-over-coap], may lead to DNS message sizes
+   that exceed this limit, even when implementing header compression
+   such as 6LoWPAN IPHC [RFC6282] or SCHC [RFC8724], [RFC8824].
 
-   Luckily, with both DoH and DoC a format can be selected using the
-   Media Type header and Content-Format option, respectively.  This
-   document specifies a compressed transport format for DNS messages for
-   such a use case.  DNS messages are encoded in Concise Binary Object
-   Representation (CBOR) {-cbor} and allows for the elision of
-   unnecessary or redundant information.
+   Although adoption layers such as 6LoWPAN [RFC4944] or SCHC [RFC8724]
+   offer fragmentation to comply with small MTUs, fragmentation should
+   be avoided in constrained networks, because fragmentation combined
+   with high packet loss multiplies the loss.  As such, a compression
+   format for DNS messages is needed.
+
+   This document specifies a compressed data format for DNS messages.
+   DNS messages are encoded in Concise Binary Object Representation
+   (CBOR) [RFC7049] and, additionally, unnecessary or redundant
+   information is removed.  To use the outcome of this specification in
+   DoH and DoC, this document also specifies a Media Type header for DoH
+   and a Content-Format option for DoC.
 
 2.  Terminology
 
