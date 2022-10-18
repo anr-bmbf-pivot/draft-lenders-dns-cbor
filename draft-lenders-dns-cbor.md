@@ -159,9 +159,10 @@ CBOR byte string.
 
 If and only if the record data represents a domain name (e.g., for CNAME or PTR records), the
 record data MAY be represented as a text string as specified in {{sec:domain-names}}.  This can
-save 2 bytes of data, because the byte representation of DNS names requires both an additional
+save 1 bytes of data, because the byte representation of DNS names requires both an additional
 byte to define the length of the first name component as well as a 0 byte at the end of the
-name.
+name. With CBOR on the other hand only 1 byte is required to define type and length of the text
+string.
 
 The representation of a DNS resource records is defined in {{fig:dns-rr}}.
 
