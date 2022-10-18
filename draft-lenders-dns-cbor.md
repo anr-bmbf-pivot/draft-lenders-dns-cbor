@@ -10,16 +10,16 @@ consensus: true
 v: 3
 submissiontype: IETF
 area: "Applications"
-workgroup: TBD
+workgroup: CBOR
 keyword:
  - Internet-Draft
  - CBOR
  - DNS
 venue:
-  group: TBD
+  group: CBOR
   type: Working Group
-  mail: TBD@example.com
-  arch: "nicfs.nic.ddn.mil:~/namedroppers/*.Z"
+  mail: cbor@ietf.org
+  arch: "https://mailarchive.ietf.org/arch/browse/cbor/"
   github: "anr-bmbf-pivot/draft-lenders-dns-cbor"
   latest: "https://anr-bmbf-pivot.github.io/draft-lenders-dns-cbor/draft-lenders-dns-cbor.html"
 
