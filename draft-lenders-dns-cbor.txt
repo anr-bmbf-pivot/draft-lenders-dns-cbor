@@ -73,7 +73,7 @@ Table of Contents
 
    1.  Introduction
    2.  Terminology
-   3.  CBOR Representation (application/dns+cbor)
+   3.  CBOR Representations (application/dns+cbor)
      3.1.  Domain Name Representation
      3.2.  DNS Queries
      3.3.  Standard DNS Resource Records (RRs)
@@ -130,7 +130,7 @@ Table of Contents
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-3.  CBOR Representation (application/dns+cbor)
+3.  CBOR Representations (application/dns+cbor)
 
    To keep overhead minimal, a DNS message is represented as CBOR
    arrays.  All CBOR items used in this specification are of definite
