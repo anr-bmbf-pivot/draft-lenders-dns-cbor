@@ -1181,9 +1181,6 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5">
                 <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="auto internal xref">3.5</a>.  <a href="#name-edns0" class="internal xref">EDNS(0)</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.6">
-                <p id="section-toc.1-1.3.2.6.1"><a href="#section-3.6" class="auto internal xref">3.6</a>.  <a href="#name-abnf" class="internal xref">ABNF</a></p>
-</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
@@ -1242,14 +1239,28 @@ All CBOR items used in this specification are of definite length.
 CBOR arrays that do not follow the length definitions below or in follow-up specifications, <span class="bcp14">MUST</span> be
 silently ignored.
 It is assumed, that query and response are distinguished message types for the transport protocol
-and that the query can be mapped to the response by the transport protocol of choice.<a href="#section-3-1" class="pilcrow">¶</a></p>
+and that the query can be mapped to the response by the transport protocol of choice.
+For the definition of the representation we use the Concise Data Definition Language (CDDL), as
+specified in <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <div id="sec_domain-names">
 <section id="section-3.1">
         <h3 id="name-domain-name-representation">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-domain-name-representation" class="section-name selfRef">Domain Name Representation</a>
         </h3>
-<p id="section-3.1-1">Domain names are represented in their commonly known string format (e.g. "example.org") as a text
-string.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">Domain names are represented in their commonly known string format (e.g. "example.org") [TBD.ref] in
+IDNA encoding <span>[<a href="#RFC5890" class="cite xref">RFC5890</a>]</span> as a text string.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">The definition for the domain name representation can be seen in <a href="#fig_domain-name" class="auto internal xref">Figure 1</a>.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+<span id="name-domain-name-definition"></span><div id="fig_domain-name">
+<figure id="figure-1">
+          <div class="alignCenter art-CDDL art-text artwork" id="section-3.1-3.1">
+<pre>
+domain-name = tstr .regexp "([^\.]+\.)*[^\.]+"
+</pre>
+</div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-domain-name-definition" class="selfRef">Domain Name Definition</a>
+          </figcaption></figure>
+</div>
 </section>
 </div>
 <div id="sec_queries">
@@ -1263,13 +1274,33 @@ record type (as unsigned integer), and an optional record class (as unsigned int
 If the record type is elided, record type <code>AAAA</code> as specified in <span>[<a href="#RFC3596" class="cite xref">RFC3596</a>]</span> is implied.
 If record class is elided, record class <code>IN</code> as specified in <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span> is implied.
 If a record class is required to be provided, the record type <span class="bcp14">MUST</span> also be provided.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">The definition for the DNS query representation can be seen in <a href="#fig_dns-query" class="auto internal xref">Figure 2</a><a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<span id="name-dns-query-definition"></span><div id="fig_dns-query">
+<figure id="figure-2">
+          <div class="alignCenter art-CDDLx art-text artwork" id="section-3.2-3.1">
+<pre>
+type-spec = (
+  record-type: uint,
+  ? record-class: uint,
+)
+dns-question = (
+  name: domain-name,
+  ? type: type-spec,
+)
+dns-query = [dns-question]
+</pre>
+</div>
+<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<a href="#name-dns-query-definition" class="selfRef">DNS Query Definition</a>
+          </figcaption></figure>
+</div>
 <div id="sec_query-examples">
 <section id="section-3.2.1">
           <h4 id="name-examples">
 <a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-examples" class="section-name selfRef">Examples</a>
           </h4>
-<p id="section-3.2.1-1">A DNS query for the <code>AAAA</code>/<code>IN</code> record of name "example.org" is represented as the following
-in CBOR diagnostic notation (see <span>[<a href="#RFC7049" class="cite xref">RFC7049</a>]</span>, section 6):<a href="#section-3.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.1-1">A DNS query for the <code>AAAA</code>/<code>IN</code> record of name "example.org" is represented as the following in CBOR
+extended diagnostic notation (EDN) as defined in Section 8 of <span>[<a href="#RFC7049" class="cite xref">RFC7049</a>]</span> and Appendix G of <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>:<a href="#section-3.2.1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3.2.1-2">
 <pre>
 ["example.org"]
@@ -1308,15 +1339,33 @@ question section, see <a href="#sec_responses" class="auto internal xref">Sectio
 If the record type is elided, record type from the question is implied. If
 record class is elided, record class from the question is implied. If a record class
 is required to be provided, the record type <span class="bcp14">MUST</span> also be provided.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
-<p id="section-3.3-3">The byte format of the record data follows the wire format as specified <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span>, section 3.3
-(or other specifications of the respective record type). Mind that this specifically does not
-include the RDLENGTH field from <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span> as this value is encoded in the length field of the
-CBOR byte string.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
+<p id="section-3.3-3">The byte format of the record data follows the wire format as specified <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span>, Section 3.3 (or
+other specifications of the respective record type).
+Mind that this specifically does not include the RDLENGTH field from <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span> as this value is
+encoded in the length field of the CBOR byte string.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
 <p id="section-3.3-4">If and only if the record data represents a domain name (e.g., for CNAME or PTR records), the record
-data <span class="bcp14">MAY</span> be represented as a text string as specified in {sec:domain-names}.
+data <span class="bcp14">MAY</span> be represented as a text string as specified in <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>.
 This can actually save us 2 bytes of data, as the byte representation of DNS names requires both an
 additional byte to define the length of the first name component, as well as a 0 byte at the end of
 the name.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
+<p id="section-3.3-5">The definition for DNS resource records can be seen in <a href="#fig_dns-rr" class="auto internal xref">Figure 3</a>.<a href="#section-3.3-5" class="pilcrow">¶</a></p>
+<span id="name-dns-resource-record-definit"></span><div id="fig_dns-rr">
+<figure id="figure-3">
+          <div class="alignCenter art-CDDL art-text artwork" id="section-3.3-6.1">
+<pre>
+rr = (
+  ? name: domain-name,
+  ttl: uint,
+  ? type: record-type,
+  rdata: bstr / domain-name,
+)
+dns-rr = [rr]
+</pre>
+</div>
+<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
+<a href="#name-dns-resource-record-definit" class="selfRef">DNS Resource Record Definition</a>
+          </figcaption></figure>
+</div>
 </section>
 </div>
 <div id="sec_responses">
@@ -1339,13 +1388,33 @@ section (TBD: back by empirical data). They follow the specification for 3 array
 the question section is encoded like a DNS query as specified in <a href="#sec_queries" class="auto internal xref">Section 3.2</a> and answer,
 authority, and additional section are represented each as an array of one or more DNS Resource
 Records (see <a href="#sec_rr" class="auto internal xref">Section 3.3</a>).<a href="#section-3.4-5" class="pilcrow">¶</a></p>
+<span id="name-dns-response-definition"></span><div id="fig_dns-response">
+<figure id="figure-4">
+          <div class="alignCenter art-CDDL art-text artwork" id="section-3.4-6.1">
+<pre>
+extra-sections = (
+  ? authority: [1* dns-rr],
+  additional: [1* dns-rr],
+)
+sections = (
+  ? question: dns-query,
+  answer: [1* dns-rr],
+  ? extra: extra-sections,
+)
+dns-response = [sections]
+</pre>
+</div>
+<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
+<a href="#name-dns-response-definition" class="selfRef">DNS Response Definition</a>
+          </figcaption></figure>
+</div>
 <div id="examples">
 <section id="section-3.4.1">
           <h4 id="name-examples-2">
 <a href="#section-3.4.1" class="section-number selfRef">3.4.1. </a><a href="#name-examples-2" class="section-name selfRef">Examples</a>
           </h4>
-<p id="section-3.4.1-1">The responses to the examples provided in <a href="#sec_query-examples" class="auto internal xref">Section 3.2.1</a> in CBOR diagnostic notation (see
-<span>[<a href="#RFC7049" class="cite xref">RFC7049</a>]</span>, section 6) can be seen below.<a href="#section-3.4.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.4.1-1">The responses to the examples provided in <a href="#sec_query-examples" class="auto internal xref">Section 3.2.1</a> in EDN as defined in Section 8 of
+<span>[<a href="#RFC7049" class="cite xref">RFC7049</a>]</span> and Appendix G of <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> can be seen below.<a href="#section-3.4.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.4.1-2">To represent an <code>AAAA</code> record with TTL 300 seconds for the IPv6 address 2001:db8::1, a minimal
 response to <code>["example.org"]</code> could be<a href="#section-3.4.1-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3.4.1-3">
@@ -1421,14 +1490,6 @@ required<a href="#section-3.4.1-5" class="pilcrow">¶</a></p>
 <a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-edns0" class="section-name selfRef">EDNS(0)</a>
         </h3>
 <p id="section-3.5-1">TBD, do we need special formatting here?<a href="#section-3.5-1" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="abnf">
-<section id="section-3.6">
-        <h3 id="name-abnf">
-<a href="#section-3.6" class="section-number selfRef">3.6. </a><a href="#name-abnf" class="section-name selfRef">ABNF</a>
-        </h3>
-<p id="section-3.6-1">TBD? But there is no ABNF definition for CBOR...<a href="#section-3.6-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1511,6 +1572,10 @@ registry <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, corres
       <dd>
 <span class="refAuthor">Thomson, S.</span>, <span class="refAuthor">Huitema, C.</span>, <span class="refAuthor">Ksinant, V.</span>, and <span class="refAuthor">M. Souissi</span>, <span class="refTitle">"DNS Extensions to Support IP Version 6"</span>, <span class="seriesInfo">STD 88</span>, <span class="seriesInfo">RFC 3596</span>, <span class="seriesInfo">DOI 10.17487/RFC3596</span>, <time datetime="2003-10" class="refDate">October 2003</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc3596">https://www.rfc-editor.org/rfc/rfc3596</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC5890">[RFC5890]</dt>
+      <dd>
+<span class="refAuthor">Klensin, J.</span>, <span class="refTitle">"Internationalized Domain Names for Applications (IDNA): Definitions and Document Framework"</span>, <span class="seriesInfo">RFC 5890</span>, <span class="seriesInfo">DOI 10.17487/RFC5890</span>, <time datetime="2010-08" class="refDate">August 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5890">https://www.rfc-editor.org/rfc/rfc5890</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC6838">[RFC6838]</dt>
       <dd>
 <span class="refAuthor">Freed, N.</span>, <span class="refAuthor">Klensin, J.</span>, and <span class="refAuthor">T. Hansen</span>, <span class="refTitle">"Media Type Specifications and Registration Procedures"</span>, <span class="seriesInfo">BCP 13</span>, <span class="seriesInfo">RFC 6838</span>, <span class="seriesInfo">DOI 10.17487/RFC6838</span>, <time datetime="2013-01" class="refDate">January 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6838">https://www.rfc-editor.org/rfc/rfc6838</a>&gt;</span>. </dd>
@@ -1524,8 +1589,12 @@ registry <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, corres
 <span class="refAuthor">Shelby, Z.</span>, <span class="refAuthor">Hartke, K.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"The Constrained Application Protocol (CoAP)"</span>, <span class="seriesInfo">RFC 7252</span>, <span class="seriesInfo">DOI 10.17487/RFC7252</span>, <time datetime="2014-06" class="refDate">June 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7252">https://www.rfc-editor.org/rfc/rfc7252</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-    <dd>
+      <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8610">[RFC8610]</dt>
+    <dd>
+<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Vigano, C.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures"</span>, <span class="seriesInfo">RFC 8610</span>, <span class="seriesInfo">DOI 10.17487/RFC8610</span>, <time datetime="2019-06" class="refDate">June 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8610">https://www.rfc-editor.org/rfc/rfc8610</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>

@@ -77,7 +77,6 @@ Table of Contents
      3.4.  DNS Responses
        3.4.1.  Examples
      3.5.  EDNS(0)
-     3.6.  ABNF
    4.  Security Considerations
    5.  IANA Considerations
      5.1.  Media Type Registration
@@ -106,12 +105,22 @@ Table of Contents
    or in follow-up specifications, MUST be silently ignored.  It is
    assumed, that query and response are distinguished message types for
    the transport protocol and that the query can be mapped to the
-   response by the transport protocol of choice.
+   response by the transport protocol of choice.  For the definition of
+   the representation we use the Concise Data Definition Language
+   (CDDL), as specified in [RFC8610].
 
 3.1.  Domain Name Representation
 
    Domain names are represented in their commonly known string format
-   (e.g. "example.org") as a text string.
+   (e.g. "example.org") [TBD.ref] in IDNA encoding [RFC5890] as a text
+   string.
+
+   The definition for the domain name representation can be seen in
+   Figure 1.
+
+              domain-name = tstr .regexp "([^\.]+\.)*[^\.]+"
+
+                      Figure 1: Domain Name Definition
 
 3.2.  DNS Queries
 
@@ -124,11 +133,27 @@ Table of Contents
    implied.  If a record class is required to be provided, the record
    type MUST also be provided.
 
+   The definition for the DNS query representation can be seen in
+   Figure 2
+
+                        type-spec = (
+                          record-type: uint,
+                          ? record-class: uint,
+                        )
+                        dns-question = (
+                          name: domain-name,
+                          ? type: type-spec,
+                        )
+                        dns-query = [dns-question]
+
+                       Figure 2: DNS Query Definition
+
 3.2.1.  Examples
 
    A DNS query for the AAAA/IN record of name "example.org" is
-   represented as the following in CBOR diagnostic notation (see
-   [RFC7049], section 6):
+   represented as the following in CBOR extended diagnostic notation
+   (EDN) as defined in Section 8 of [RFC7049] and Appendix G of
+   [RFC8610]:
 
    ["example.org"]
 
@@ -159,17 +184,29 @@ Table of Contents
    also be provided.
 
    The byte format of the record data follows the wire format as
-   specified [RFC1035], section 3.3 (or other specifications of the
+   specified [RFC1035], Section 3.3 (or other specifications of the
    respective record type).  Mind that this specifically does not
    include the RDLENGTH field from [RFC1035] as this value is encoded in
    the length field of the CBOR byte string.
 
    If and only if the record data represents a domain name (e.g., for
    CNAME or PTR records), the record data MAY be represented as a text
-   string as specified in {sec:domain-names}. This can actually save us
-   2 bytes of data, as the byte representation of DNS names requires
-   both an additional byte to define the length of the first name
-   component, as well as a 0 byte at the end of the name.
+   string as specified in Section 3.1.  This can actually save us 2
+   bytes of data, as the byte representation of DNS names requires both
+   an additional byte to define the length of the first name component,
+   as well as a 0 byte at the end of the name.
+
+   The definition for DNS resource records can be seen in Figure 3.
+
+                       rr = (
+                         ? name: domain-name,
+                         ttl: uint,
+                         ? type: record-type,
+                         rdata: bstr / domain-name,
+                       )
+                       dns-rr = [rr]
+
+                  Figure 3: DNS Resource Record Definition
 
 3.4.  DNS Responses
 
@@ -199,10 +236,24 @@ Table of Contents
    represented each as an array of one or more DNS Resource Records (see
    Section 3.3).
 
+                        extra-sections = (
+                          ? authority: [1* dns-rr],
+                          additional: [1* dns-rr],
+                        )
+                        sections = (
+                          ? question: dns-query,
+                          answer: [1* dns-rr],
+                          ? extra: extra-sections,
+                        )
+                        dns-response = [sections]
+
+                     Figure 4: DNS Response Definition
+
 3.4.1.  Examples
 
-   The responses to the examples provided in Section 3.2.1 in CBOR
-   diagnostic notation (see [RFC7049], section 6) can be seen below.
+   The responses to the examples provided in Section 3.2.1 in EDN as
+   defined in Section 8 of [RFC7049] and Appendix G of [RFC8610] can be
+   seen below.
 
    To represent an AAAA record with TTL 300 seconds for the IPv6 address
    2001:db8::1, a minimal response to ["example.org"] could be
@@ -269,10 +320,6 @@ Table of Contents
 3.5.  EDNS(0)
 
    TBD, do we need special formatting here?
-
-3.6.  ABNF
-
-   TBD?  But there is no ABNF definition for CBOR...
 
 4.  Security Considerations
 
@@ -363,6 +410,11 @@ Table of Contents
               RFC 3596, DOI 10.17487/RFC3596, October 2003,
               <https://www.rfc-editor.org/rfc/rfc3596>.
 
+   [RFC5890]  Klensin, J., "Internationalized Domain Names for
+              Applications (IDNA): Definitions and Document Framework",
+              RFC 5890, DOI 10.17487/RFC5890, August 2010,
+              <https://www.rfc-editor.org/rfc/rfc5890>.
+
    [RFC6838]  Freed, N., Klensin, J., and T. Hansen, "Media Type
               Specifications and Registration Procedures", BCP 13,
               RFC 6838, DOI 10.17487/RFC6838, January 2013,
@@ -380,6 +432,12 @@ Table of Contents
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC8610]  Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
+              Definition Language (CDDL): A Notational Convention to
+              Express Concise Binary Object Representation (CBOR) and
+              JSON Data Structures", RFC 8610, DOI 10.17487/RFC8610,
+              June 2019, <https://www.rfc-editor.org/rfc/rfc8610>.
 
 Acknowledgments
 
