@@ -1040,7 +1040,7 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="center">TODO - Abbreviation</td>
+<td class="center">dns+cbor</td>
 <td class="right">October 2022</td>
 </tr></thead>
 <tfoot><tr>
@@ -1586,7 +1586,7 @@ represented in CBOR extended diagnostic notation (EDN) (see Section 8 in
 ["example.org"]
 </pre><a href="#appendix-A.1-2" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A.1-3">The <code>A</code> record for the same name is represented as<a href="#appendix-A.1-3" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-3">A query of an <code>A</code> record for the same name is represented as<a href="#appendix-A.1-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-A.1-4">
 <pre>
 ["example.org", 1]
@@ -1623,7 +1623,7 @@ be valid:<a href="#appendix-A.2-5" class="pilcrow">¶</a></p>
 [[["example.org", 300, h'20010db8000000000000000000000001']]]
 </pre><a href="#appendix-A.2-6" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A.2-7">If the query can not be mapped to the response for some reason, a repsonse
+<p id="appendix-A.2-7">If the query can not be mapped to the response for some reason, a response
 would look like:<a href="#appendix-A.2-7" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-A.2-8">
 <pre>
@@ -1637,8 +1637,8 @@ would look like:<a href="#appendix-A.2-7" class="pilcrow">¶</a></p>
 [[300, h'c0000201']]
 </pre><a href="#appendix-A.2-10" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A.2-11">Note that here also the 1 of record type <code>IN</code> can be elided, as this record
-is specified in the question section.<a href="#appendix-A.2-11" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-11">Note that here also the 1 of record type <code>A</code> can be elided, as this record
+type is specified in the question section.<a href="#appendix-A.2-11" class="pilcrow">¶</a></p>
 <p id="appendix-A.2-12">Lastly, a response to <code>["example.org", 255, 255]</code> could be<a href="#appendix-A.2-12" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-A.2-13">
 <pre>
@@ -1674,7 +1674,6 @@ is specified in the question section.<a href="#appendix-A.2-11" class="pilcrow">
 2001:db8::1 and 2001:db8::2 and two nameservers for the example.org domain, ns1.example.org at
 2001:db8::35 and ns2.example.org at 2001.db8::3535. Each of the transmitted records has a TTL of
 3600 seconds.<a href="#appendix-A.2-14" class="pilcrow">¶</a></p>
-<p id="appendix-A.2-15">(TBD: The encoding of PTR and NS record data might be wrong...)<a href="#appendix-A.2-15" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
