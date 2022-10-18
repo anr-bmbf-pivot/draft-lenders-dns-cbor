@@ -63,21 +63,21 @@ The primary purpose is to keep DNS messages small in constrained networks.
 
 # Introduction
 
-Within constrained networks {{-constr-terms}}, the payload sizes on the link layer may be restricted
-to only a few hundreds of bytes.
-With encrypted transports, such as DNS over HTTPS (DoH) {{-doh}} or DNS over CoAP (DoC) {{-doc}},
-even simple DNS message exchanges may exceed this limit even when accounting for header compression
-used such as 6LoWPAN IPHC {{-iphc}} or SCHC {{-schc}}, {{-coap-schc}}.
-While adoption layers such as 6LoWPAN {{-6lowpan}} or SCHC {{-schc}} offer fragmentation to overcome
-such restrictions, already high packet loss in constrained networks only multiply with
-fragmentation.
-As such, a compression format for DNS messages themselves is needed.
+In constrained networks {{-constr-terms}}, the link layer may restrict the payload sizes to
+only a few hundreds bytes.  Encrypted DNS resolution, such as DNS over HTTPS (DoH) {{-doh}} or
+DNS over CoAP (DoC) {{-doc}}, may lead to DNS message sizes that exceed this limit, even when
+implementing header compression such as 6LoWPAN IPHC {{-iphc}} or SCHC {{-schc}},
+{{-coap-schc}}.
 
-Luckily, with both DoH and DoC a format can be selected using the Media Type header and
-Content-Format option, respectively.
-This document specifies a compressed transport format for DNS messages for such a use case.
-DNS messages are encoded in Concise Binary Object Representation (CBOR) {-cbor} and allows for the
-elision of unnecessary or redundant information.
+Although adoption layers such as 6LoWPAN {{-6lowpan}} or SCHC {{-schc}} offer fragmentation to
+comply with small MTUs, fragmentation should be avoided in constrained networks, because
+fragmentation combined with high packet loss multiplies the loss.  As such, a compression
+format for DNS messages is needed.
+
+This document specifies a compressed data format for DNS messages.  DNS messages are encoded in
+Concise Binary Object Representation (CBOR) {{-cbor}} and, additionally, unnecessary or
+redundant information is removed.  To use the outcome of this specification in DoH and DoC,
+this document also specifies a Media Type header for DoH and a Content-Format option for DoC.
 
 # Terminology
 
