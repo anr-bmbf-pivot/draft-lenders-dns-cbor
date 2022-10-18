@@ -11,7 +11,7 @@ Expires: 21 April 2023                                       HAW Hamburg
                                                          18 October 2022
 
 
-        A Compressed CBOR Representation Format for DNS Messages
+     A Concise Binary Object Representation (CBOR) of DNS Messages
                      draft-lenders-dns-cbor-latest
 
 Abstract
