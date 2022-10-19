@@ -5,10 +5,10 @@
 CBOR                                                       M. S. Lenders
 Internet-Draft                                                 FU Berlin
 Intended status: Standards Track                           T. C. Schmidt
-Expires: 21 April 2023                                       HAW Hamburg
+Expires: 22 April 2023                                       HAW Hamburg
                                                              M. Wählisch
                                                                FU Berlin
-                                                         18 October 2022
+                                                         19 October 2022
 
 
      A Concise Binary Object Representation (CBOR) of DNS Messages
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 April 2023.
+   This Internet-Draft will expire on 22 April 2023.
 
 Copyright Notice
 
@@ -486,7 +486,7 @@ A.2.  DNS Responses
    Lastly, a response to ["example.org", 255, 255] could be
 
    [
-     ["example.org", 255, 255],
+     ["example.org", 255, 1],
      [[3600, 12, "coap._udp.local"]],
      [
        [3600, 2, "ns1.example.org"],
