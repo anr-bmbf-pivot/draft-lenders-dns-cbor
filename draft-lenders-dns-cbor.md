@@ -345,8 +345,8 @@ type is specified in the question section.
 Lastly, a response to `["example.org", 255, 255]` could be
 
     [
-      ["example.org", 255, 255],
-      [[3600, 12, "coap._udp.local"]],
+      ["example.org", 12, 1],
+      [[3600, "_coap._udp.local"]],
       [
         [3600, 2, "ns1.example.org"],
         [3600, 2, "ns2.example.org"],
