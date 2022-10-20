@@ -381,4 +381,5 @@ This one advertises two local CoAP servers (identified by service name `_coap._u
 
 TODO acknowledge.
 
+- Carsten Bormann
 
