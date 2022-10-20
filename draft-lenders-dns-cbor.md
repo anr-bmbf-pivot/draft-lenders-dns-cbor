@@ -116,9 +116,13 @@ domain-name = tstr .regexp "([^.]+\.)*[^.]+"
 
 ## DNS Queries {#sec:queries}
 
-DNS queries are encoded as CBOR arrays containing up to 3 entries in the following order:  The
-name (as text string, see {{sec:domain-names}}), an optional record type (as unsigned integer),
-and an optional record class (as unsigned integer).
+DNS queries are encoded as CBOR arrays containing up to 3 entries in the following order: An
+optional transaction ID (as unsigned integer), the name (as text string, see {{sec:domain-names}}),
+an optional record type (as unsigned integer), and an optional record class (as unsigned integer).
+
+If the transaction ID is elided, the value 0 is assumed.
+It MUST be included and set to an unpredictable value less than $2^{32}$, if the DNS
+transport can not ensure the prevention of DNS response spoofing.
 
 If the record type is elided, record type `AAAA` as specified in {{-aaaa}} is assumed.
 If the record class is elided, record class `IN` as specified in {{-dns}} is assumed.
@@ -132,6 +136,7 @@ type-spec = (
   ? record-class: uint,
 )
 dns-question = (
+  ? id: uint,
   name: domain-name,
   ? type-spec,
 )
@@ -179,7 +184,12 @@ dns-rr = [rr]
 
 ## DNS Responses {#sec:responses}
 
-DNS responses are encoded as array of CBOR arrays containing up to 4 entries.
+DNS responses are encoded as a CBOR array containing up to 5 entries.
+The first entry MAY be an unsigned integer, representing the transaction ID of the response.
+If CBOR array is a response to a query that contains a transaction ID, it MUST be included and set
+to the corresponding value present in the query.
+If it is not included, the transaction ID is implied to be 0.
+The remaining 4 entries are arrays:
 
 If only 1 array is included, then this is the DNS answer section represented as an array of one
 or more DNS Resource Records (see {{sec:rr}}).
@@ -206,8 +216,10 @@ extra-sections = (
   additional: [+ dns-rr],
 )
 sections = ((
+  ? id: uint,
   answer: [+ dns-rr],
 ) // (
+  ? id: uint,
   question: dns-query,
   answer: [+ dns-rr],
   ? extra-sections,
