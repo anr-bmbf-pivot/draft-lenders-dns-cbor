@@ -361,7 +361,7 @@ Lastly, a response to `["example.org", 255, 255]` could be
       [[3600, "_coap._udp.local"]],
       [
         [3600, 2, "ns1.example.org"],
-        [3600, 2, "ns2.example.org"],
+        [3600, 2, "ns2.example.org"]
       ],
       [
         [
