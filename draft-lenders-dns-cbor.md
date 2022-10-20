@@ -40,7 +40,9 @@ normative:
   RFC1035: dns
   RFC3596: aaaa
   RFC7049: cbor
+  RFC7252: coap
   RFC8610: cddl
+  I-D.ietf-cbor-packed: cbor-packed
 
 informative:
   RFC4944: 6lowpan
@@ -49,6 +51,7 @@ informative:
   RFC8484: doh
   RFC8724: schc
   RFC8824: coap-schc
+  RFC9110: http-semantics
   I-D.ietf-core-dns-over-coap: doc
 
 
@@ -83,6 +86,8 @@ this document also specifies a Media Type header for DoH and a Content-Format op
 
 CBOR types (unsigned integer, byte string, text string, arrays, etc.) are used as defined in
 {{-cbor}}.
+
+TBD DNS server and client.
 
 A DNS query is a message that queries DNS information from an upstream DNS resolver.
 
@@ -123,6 +128,7 @@ an optional record type (as unsigned integer), and an optional record class (as 
 If the transaction ID is elided, the value 0 is assumed.
 It MUST be included and set to an unpredictable value less than $2^{32}$, if the DNS
 transport can not ensure the prevention of DNS response spoofing.
+An example for such a transport is unencrypted DoC (see {{-doc}}, Section 6).
 
 If the record type is elided, record type `AAAA` as specified in {{-aaaa}} is assumed.
 If the record class is elided, record class `IN` as specified in {{-dns}} is assumed.
@@ -232,6 +238,34 @@ dns-response = [sections]
 
 TBD, do we need special formatting here?
 
+## Name and Address Compression with Packed CBOR
+
+If both DNS server and client support packed CBOR {{-cbor-packed}}, it MAY be used for name and
+address compression.
+
+A DNS client uses media type "application/dns+cbor-packed" to negotiate (see, e.g.,
+{{-http-semantics}} or {{-coap}}, Section 5.5.4) with the DNS server if the server supports packed
+CBOR.
+If it does, it MAY send the DNS query in packed CBOR (media type "applicaton/dns+cbor-packed").
+The server then SHOULD reply with packed CBOR (media type "application/dns+cbor-packed") as well.
+
+The representation of DNS queries and responses in packed CBOR differs, in that both message types
+are represented as a CBOR array of two arrays.
+The first array is a packing table that is used both as shared item table and argument table (see
+{{-cbor-packed}}, Section 2.1).
+
+The representation of both message types is defined in {{fig:packed-cbor}}.
+
+~~~ CDDL
+packed-dns-cbor = [[pack-table], dns-query / dns-response]
+pack-table = any
+~~~
+{:cddl #fig:packed-cbor title="Definition of DNS messages in packed CBOR"}
+
+### Table Setup {#sec:pack-table-setup}
+
+TBD
+
 # Security Considerations
 
 TODO Security
@@ -240,6 +274,8 @@ TODO Security
 # IANA Considerations
 
 ## Media Type Registration {#media-type}
+
+### "application/dns+cbor"
 
 This document registers the media type for the serialization format of DNS messages in CBOR. It
 follows the procedures specified in {{!RFC6838}}.
@@ -287,11 +323,16 @@ Change controller: Martine S. Lenders <m.lenders@fu-berlin.de>
 
 Provisional registrations? No
 
+### "application/dns+cbor-packed"
+TBD
+
 ## CoAP Content-Format Registration
+
+### "application/dns-cbor"
 
 IANA is requested to assign CoAP Content-Format ID for the DNS message media
 type in the "CoAP Content-Formats" sub-registry, within the "CoRE Parameters"
-registry {{!RFC7252}}, corresponding the "application/dns+cbor" Media Type specified in
+registry {{-coap}}, corresponding the "application/dns+cbor" Media Type specified in
 {{media-type}}:
 
 Media-Type: application/dns+cbor
@@ -301,6 +342,9 @@ Encoding: -
 Id: TBD
 
 Reference: \[TBD-this-spec\]
+
+### "application/dns+cbor-packed"
+TBD
 
 --- back
 
