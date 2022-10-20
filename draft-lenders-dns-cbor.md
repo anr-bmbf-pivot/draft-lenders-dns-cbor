@@ -377,7 +377,7 @@ This one advertises two local CoAP servers (identified by service name `_coap._u
 3600 seconds.
 
 # Acknowledgments
-{:numbered="false"}
+{:unnumbered}
 
 TODO acknowledge.
 
