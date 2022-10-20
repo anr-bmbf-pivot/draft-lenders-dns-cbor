@@ -79,10 +79,16 @@ Table of Contents
      3.3.  Standard DNS Resource Records (RRs)
      3.4.  DNS Responses
      3.5.  EDNS(0)
+     3.6.  Name and Address Compression with Packed CBOR
+       3.6.1.  Table Setup
    4.  Security Considerations
    5.  IANA Considerations
      5.1.  Media Type Registration
+       5.1.1.  "application/dns+cbor"
+       5.1.2.  "application/dns+cbor-packed"
      5.2.  CoAP Content-Format Registration
+       5.2.1.  "application/dns-cbor"
+       5.2.2.  "application/dns+cbor-packed"
    6.  References
      6.1.  Normative References
      6.2.  Informative References
@@ -118,6 +124,8 @@ Table of Contents
 
    CBOR types (unsigned integer, byte string, text string, arrays, etc.)
    are used as defined in [RFC7049].
+
+   TBD DNS server and client.
 
    A DNS query is a message that queries DNS information from an
    upstream DNS resolver.
@@ -166,6 +174,8 @@ Table of Contents
    If the transaction ID is elided, the value 0 is assumed.  It MUST be
    included and set to an unpredictable value less than $2^{32}$, if the
    DNS transport can not ensure the prevention of DNS response spoofing.
+   An example for such a transport is unencrypted DoC (see
+   [I-D.ietf-core-dns-over-coap], Section 6).
 
    If the record type is elided, record type AAAA as specified in
    [RFC3596] is assumed.  If the record class is elided, record class IN
@@ -286,6 +296,36 @@ Table of Contents
 
    TBD, do we need special formatting here?
 
+3.6.  Name and Address Compression with Packed CBOR
+
+   If both DNS server and client support packed CBOR
+   [I-D.ietf-cbor-packed], it MAY be used for name and address
+   compression.
+
+   A DNS client uses media type "application/dns+cbor-packed" to
+   negotiate (see, e.g., [RFC9110] or [RFC7252], Section 5.5.4) with the
+   DNS server if the server supports packed CBOR.  If it does, it MAY
+   send the DNS query in packed CBOR (media type "applicaton/dns+cbor-
+   packed").  The server then SHOULD reply with packed CBOR (media type
+   "application/dns+cbor-packed") as well.
+
+   The representation of DNS queries and responses in packed CBOR
+   differs, in that both message types are represented as a CBOR array
+   of two arrays.  The first array is a packing table that is used both
+   as shared item table and argument table (see [I-D.ietf-cbor-packed],
+   Section 2.1).
+
+   The representation of both message types is defined in Figure 5.
+
+        packed-dns-cbor = [[pack-table], dns-query / dns-response]
+        pack-table = any
+
+            Figure 5: Definition of DNS messages in packed CBOR
+
+3.6.1.  Table Setup
+
+   TBD
+
 4.  Security Considerations
 
    TODO Security
@@ -293,6 +333,8 @@ Table of Contents
 5.  IANA Considerations
 
 5.1.  Media Type Registration
+
+5.1.1.  "application/dns+cbor"
 
    This document registers the media type for the serialization format
    of DNS messages in CBOR.  It follows the procedures specified in
@@ -344,7 +386,13 @@ Table of Contents
 
    Provisional registrations?  No
 
+5.1.2.  "application/dns+cbor-packed"
+
+   TBD
+
 5.2.  CoAP Content-Format Registration
+
+5.2.1.  "application/dns-cbor"
 
    IANA is requested to assign CoAP Content-Format ID for the DNS
    message media type in the "CoAP Content-Formats" sub-registry, within
@@ -359,9 +407,19 @@ Table of Contents
 
    Reference: [TBD-this-spec]
 
+5.2.2.  "application/dns+cbor-packed"
+
+   TBD
+
 6.  References
 
 6.1.  Normative References
+
+   [I-D.ietf-cbor-packed]
+              Bormann, C., "Packed CBOR", Work in Progress, Internet-
+              Draft, draft-ietf-cbor-packed-07, 24 July 2022,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-cbor-
+              packed-07>.
 
    [RFC1035]  Mockapetris, P., "Domain names - implementation and
               specification", STD 13, RFC 1035, DOI 10.17487/RFC1035,
@@ -445,6 +503,11 @@ Table of Contents
               Application Protocol (CoAP)", RFC 8824,
               DOI 10.17487/RFC8824, June 2021,
               <https://www.rfc-editor.org/rfc/rfc8824>.
+
+   [RFC9110]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
+              Ed., "HTTP Semantics", STD 97, RFC 9110,
+              DOI 10.17487/RFC9110, June 2022,
+              <https://www.rfc-editor.org/rfc/rfc9110>.
 
 Appendix A.  Examples
 

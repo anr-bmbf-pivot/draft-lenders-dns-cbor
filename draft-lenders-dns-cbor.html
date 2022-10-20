@@ -1176,6 +1176,14 @@ The primary purpose is to keep DNS messages small in constrained networks.<a hre
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5">
                 <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="auto internal xref">3.5</a>.  <a href="#name-edns0" class="internal xref">EDNS(0)</a></p>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.6">
+                <p id="section-toc.1-1.3.2.6.1"><a href="#section-3.6" class="auto internal xref">3.6</a>.  <a href="#name-name-and-address-compressio" class="internal xref">Name and Address Compression with Packed CBOR</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.6.2.1">
+                    <p id="section-toc.1-1.3.2.6.2.1.1"><a href="#section-3.6.1" class="auto internal xref">3.6.1</a>.  <a href="#name-table-setup" class="internal xref">Table Setup</a></p>
+</li>
+                </ul>
+</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
@@ -1186,9 +1194,25 @@ The primary purpose is to keep DNS messages small in constrained networks.<a hre
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
                 <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-media-type-registration" class="internal xref">Media Type Registration</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.1">
+                    <p id="section-toc.1-1.5.2.1.2.1.1"><a href="#section-5.1.1" class="auto internal xref">5.1.1</a>.  <a href="#name-application-dnscbor" class="internal xref">"application/dns+cbor"</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.2">
+                    <p id="section-toc.1-1.5.2.1.2.2.1"><a href="#section-5.1.2" class="auto internal xref">5.1.2</a>.  <a href="#name-application-dnscbor-packed" class="internal xref">"application/dns+cbor-packed"</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
                 <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-coap-content-format-registr" class="internal xref">CoAP Content-Format Registration</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.1">
+                    <p id="section-toc.1-1.5.2.2.2.1.1"><a href="#section-5.2.1" class="auto internal xref">5.2.1</a>.  <a href="#name-application-dns-cbor" class="internal xref">"application/dns-cbor"</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.2">
+                    <p id="section-toc.1-1.5.2.2.2.2.1"><a href="#section-5.2.2" class="auto internal xref">5.2.2</a>.  <a href="#name-application-dnscbor-packed-2" class="internal xref">"application/dns+cbor-packed"</a></p>
+</li>
+                </ul>
 </li>
             </ul>
 </li>
@@ -1251,12 +1275,13 @@ this document also specifies a Media Type header for DoH and a Content-Format op
       </h2>
 <p id="section-2-1">CBOR types (unsigned integer, byte string, text string, arrays, etc.) are used as defined in
 <span>[<a href="#RFC7049" class="cite xref">RFC7049</a>]</span>.<a href="#section-2-1" class="pilcrow">¶</a></p>
-<p id="section-2-2">A DNS query is a message that queries DNS information from an upstream DNS resolver.<a href="#section-2-2" class="pilcrow">¶</a></p>
-<p id="section-2-3">The term "constrained networks" is used as defined in <span>[<a href="#RFC7228" class="cite xref">RFC7228</a>]</span>.<a href="#section-2-3" class="pilcrow">¶</a></p>
-<p id="section-2-4">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
+<p id="section-2-2">TBD DNS server and client.<a href="#section-2-2" class="pilcrow">¶</a></p>
+<p id="section-2-3">A DNS query is a message that queries DNS information from an upstream DNS resolver.<a href="#section-2-3" class="pilcrow">¶</a></p>
+<p id="section-2-4">The term "constrained networks" is used as defined in <span>[<a href="#RFC7228" class="cite xref">RFC7228</a>]</span>.<a href="#section-2-4" class="pilcrow">¶</a></p>
+<p id="section-2-5">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
 "<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
 described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
-appear in all capitals, as shown here.<a href="#section-2-4" class="pilcrow">¶</a></p>
+appear in all capitals, as shown here.<a href="#section-2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="cbor-representations-applicationdnscbor">
@@ -1302,7 +1327,8 @@ optional transaction ID (as unsigned integer), the name (as text string, see <a 
 an optional record type (as unsigned integer), and an optional record class (as unsigned integer).<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 <p id="section-3.2-2">If the transaction ID is elided, the value 0 is assumed.
 It <span class="bcp14">MUST</span> be included and set to an unpredictable value less than $2^{32}$, if the DNS
-transport can not ensure the prevention of DNS response spoofing.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+transport can not ensure the prevention of DNS response spoofing.
+An example for such a transport is unencrypted DoC (see <span>[<a href="#I-D.ietf-core-dns-over-coap" class="cite xref">I-D.ietf-core-dns-over-coap</a>]</span>, Section 6).<a href="#section-3.2-2" class="pilcrow">¶</a></p>
 <p id="section-3.2-3">If the record type is elided, record type <code>AAAA</code> as specified in <span>[<a href="#RFC3596" class="cite xref">RFC3596</a>]</span> is assumed.
 If the record class is elided, record class <code>IN</code> as specified in <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span> is assumed.
 If a record class is required, the record type <span class="bcp14">MUST</span> also be provided.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
@@ -1433,6 +1459,45 @@ dns-response = [sections]
 <p id="section-3.5-1">TBD, do we need special formatting here?<a href="#section-3.5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
+<div id="name-and-address-compression-with-packed-cbor">
+<section id="section-3.6">
+        <h3 id="name-name-and-address-compressio">
+<a href="#section-3.6" class="section-number selfRef">3.6. </a><a href="#name-name-and-address-compressio" class="section-name selfRef">Name and Address Compression with Packed CBOR</a>
+        </h3>
+<p id="section-3.6-1">If both DNS server and client support packed CBOR <span>[<a href="#I-D.ietf-cbor-packed" class="cite xref">I-D.ietf-cbor-packed</a>]</span>, it <span class="bcp14">MAY</span> be used for name and
+address compression.<a href="#section-3.6-1" class="pilcrow">¶</a></p>
+<p id="section-3.6-2">A DNS client uses media type "application/dns+cbor-packed" to negotiate (see, e.g.,
+<span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> or <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, Section 5.5.4) with the DNS server if the server supports packed
+CBOR.
+If it does, it <span class="bcp14">MAY</span> send the DNS query in packed CBOR (media type "applicaton/dns+cbor-packed").
+The server then <span class="bcp14">SHOULD</span> reply with packed CBOR (media type "application/dns+cbor-packed") as well.<a href="#section-3.6-2" class="pilcrow">¶</a></p>
+<p id="section-3.6-3">The representation of DNS queries and responses in packed CBOR differs, in that both message types
+are represented as a CBOR array of two arrays.
+The first array is a packing table that is used both as shared item table and argument table (see
+<span>[<a href="#I-D.ietf-cbor-packed" class="cite xref">I-D.ietf-cbor-packed</a>]</span>, Section 2.1).<a href="#section-3.6-3" class="pilcrow">¶</a></p>
+<p id="section-3.6-4">The representation of both message types is defined in <a href="#fig_packed-cbor" class="auto internal xref">Figure 5</a>.<a href="#section-3.6-4" class="pilcrow">¶</a></p>
+<span id="name-definition-of-dns-messages-"></span><div id="fig_packed-cbor">
+<figure id="figure-5">
+          <div class="alignCenter art-CDDL art-text artwork" id="section-3.6-5.1">
+<pre>
+packed-dns-cbor = [[pack-table], dns-query / dns-response]
+pack-table = any
+</pre>
+</div>
+<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
+<a href="#name-definition-of-dns-messages-" class="selfRef">Definition of DNS messages in packed CBOR</a>
+          </figcaption></figure>
+</div>
+<div id="sec_pack-table-setup">
+<section id="section-3.6.1">
+          <h4 id="name-table-setup">
+<a href="#section-3.6.1" class="section-number selfRef">3.6.1. </a><a href="#name-table-setup" class="section-name selfRef">Table Setup</a>
+          </h4>
+<p id="section-3.6.1-1">TBD<a href="#section-3.6.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
 </section>
 </div>
 <div id="security-considerations">
@@ -1453,30 +1518,45 @@ dns-response = [sections]
         <h3 id="name-media-type-registration">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-media-type-registration" class="section-name selfRef">Media Type Registration</a>
         </h3>
-<p id="section-5.1-1">This document registers the media type for the serialization format of DNS messages in CBOR. It
-follows the procedures specified in <span>[<a href="#RFC6838" class="cite xref">RFC6838</a>]</span>.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
-<p id="section-5.1-2">Type name: application<a href="#section-5.1-2" class="pilcrow">¶</a></p>
-<p id="section-5.1-3">Subtype name: dns+cbor<a href="#section-5.1-3" class="pilcrow">¶</a></p>
-<p id="section-5.1-4">Required parameters: None<a href="#section-5.1-4" class="pilcrow">¶</a></p>
-<p id="section-5.1-5">Optional parameters: None<a href="#section-5.1-5" class="pilcrow">¶</a></p>
-<p id="section-5.1-6">Encoding considerations: Must be encoded as using <span>[<a href="#RFC7049" class="cite xref">RFC7049</a>]</span>. See [TBD-this-spec] for details.<a href="#section-5.1-6" class="pilcrow">¶</a></p>
-<p id="section-5.1-7">Security considerations: See <a href="#security-considerations" class="auto internal xref">Section 4</a> of this draft<a href="#section-5.1-7" class="pilcrow">¶</a></p>
-<p id="section-5.1-8">Interoperability considerations: TBD<a href="#section-5.1-8" class="pilcrow">¶</a></p>
-<p id="section-5.1-9">Published specification: [TBD-this-spec]<a href="#section-5.1-9" class="pilcrow">¶</a></p>
-<p id="section-5.1-10">Applications that use this media type: TBD DNS over X systems<a href="#section-5.1-10" class="pilcrow">¶</a></p>
-<p id="section-5.1-11">Fragment Identifier Considerations: TBD<a href="#section-5.1-11" class="pilcrow">¶</a></p>
-<p id="section-5.1-12">Additional information:<a href="#section-5.1-12" class="pilcrow">¶</a></p>
-<p id="section-5.1-13">   Deprecated alias names for this type: N/A<a href="#section-5.1-13" class="pilcrow">¶</a></p>
-<p id="section-5.1-14">   Magic number(s): N/A<a href="#section-5.1-14" class="pilcrow">¶</a></p>
-<p id="section-5.1-15">   File extension(s): dnsc<a href="#section-5.1-15" class="pilcrow">¶</a></p>
-<p id="section-5.1-16">   Macintosh file type code(s): none<a href="#section-5.1-16" class="pilcrow">¶</a></p>
-<p id="section-5.1-17">Person &amp; email address to contact for further information:
-   Martine S. Lenders <a href="mailto:m.lenders@fu-berlin.de">m.lenders@fu-berlin.de</a><a href="#section-5.1-17" class="pilcrow">¶</a></p>
-<p id="section-5.1-18">Intended usage: COMMON<a href="#section-5.1-18" class="pilcrow">¶</a></p>
-<p id="section-5.1-19">Restrictions on Usage: None?<a href="#section-5.1-19" class="pilcrow">¶</a></p>
-<p id="section-5.1-20">Author: Martine S. Lenders <a href="mailto:m.lenders@fu-berlin.de">m.lenders@fu-berlin.de</a><a href="#section-5.1-20" class="pilcrow">¶</a></p>
-<p id="section-5.1-21">Change controller: Martine S. Lenders <a href="mailto:m.lenders@fu-berlin.de">m.lenders@fu-berlin.de</a><a href="#section-5.1-21" class="pilcrow">¶</a></p>
-<p id="section-5.1-22">Provisional registrations? No<a href="#section-5.1-22" class="pilcrow">¶</a></p>
+<div id="applicationdnscbor">
+<section id="section-5.1.1">
+          <h4 id="name-application-dnscbor">
+<a href="#section-5.1.1" class="section-number selfRef">5.1.1. </a><a href="#name-application-dnscbor" class="section-name selfRef">"application/dns+cbor"</a>
+          </h4>
+<p id="section-5.1.1-1">This document registers the media type for the serialization format of DNS messages in CBOR. It
+follows the procedures specified in <span>[<a href="#RFC6838" class="cite xref">RFC6838</a>]</span>.<a href="#section-5.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-2">Type name: application<a href="#section-5.1.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-3">Subtype name: dns+cbor<a href="#section-5.1.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-4">Required parameters: None<a href="#section-5.1.1-4" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-5">Optional parameters: None<a href="#section-5.1.1-5" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-6">Encoding considerations: Must be encoded as using <span>[<a href="#RFC7049" class="cite xref">RFC7049</a>]</span>. See [TBD-this-spec] for details.<a href="#section-5.1.1-6" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-7">Security considerations: See <a href="#security-considerations" class="auto internal xref">Section 4</a> of this draft<a href="#section-5.1.1-7" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-8">Interoperability considerations: TBD<a href="#section-5.1.1-8" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-9">Published specification: [TBD-this-spec]<a href="#section-5.1.1-9" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-10">Applications that use this media type: TBD DNS over X systems<a href="#section-5.1.1-10" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-11">Fragment Identifier Considerations: TBD<a href="#section-5.1.1-11" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-12">Additional information:<a href="#section-5.1.1-12" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-13">   Deprecated alias names for this type: N/A<a href="#section-5.1.1-13" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-14">   Magic number(s): N/A<a href="#section-5.1.1-14" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-15">   File extension(s): dnsc<a href="#section-5.1.1-15" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-16">   Macintosh file type code(s): none<a href="#section-5.1.1-16" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-17">Person &amp; email address to contact for further information:
+   Martine S. Lenders <a href="mailto:m.lenders@fu-berlin.de">m.lenders@fu-berlin.de</a><a href="#section-5.1.1-17" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-18">Intended usage: COMMON<a href="#section-5.1.1-18" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-19">Restrictions on Usage: None?<a href="#section-5.1.1-19" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-20">Author: Martine S. Lenders <a href="mailto:m.lenders@fu-berlin.de">m.lenders@fu-berlin.de</a><a href="#section-5.1.1-20" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-21">Change controller: Martine S. Lenders <a href="mailto:m.lenders@fu-berlin.de">m.lenders@fu-berlin.de</a><a href="#section-5.1.1-21" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-22">Provisional registrations? No<a href="#section-5.1.1-22" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="applicationdnscbor-packed">
+<section id="section-5.1.2">
+          <h4 id="name-application-dnscbor-packed">
+<a href="#section-5.1.2" class="section-number selfRef">5.1.2. </a><a href="#name-application-dnscbor-packed" class="section-name selfRef">"application/dns+cbor-packed"</a>
+          </h4>
+<p id="section-5.1.2-1">TBD<a href="#section-5.1.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="coap-content-format-registration">
@@ -1484,14 +1564,29 @@ follows the procedures specified in <span>[<a href="#RFC6838" class="cite xref">
         <h3 id="name-coap-content-format-registr">
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-coap-content-format-registr" class="section-name selfRef">CoAP Content-Format Registration</a>
         </h3>
-<p id="section-5.2-1">IANA is requested to assign CoAP Content-Format ID for the DNS message media
+<div id="applicationdns-cbor">
+<section id="section-5.2.1">
+          <h4 id="name-application-dns-cbor">
+<a href="#section-5.2.1" class="section-number selfRef">5.2.1. </a><a href="#name-application-dns-cbor" class="section-name selfRef">"application/dns-cbor"</a>
+          </h4>
+<p id="section-5.2.1-1">IANA is requested to assign CoAP Content-Format ID for the DNS message media
 type in the "CoAP Content-Formats" sub-registry, within the "CoRE Parameters"
 registry <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, corresponding the "application/dns+cbor" Media Type specified in
-<a href="#media-type" class="auto internal xref">Section 5.1</a>:<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.2-2">Media-Type: application/dns+cbor<a href="#section-5.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.2-3">Encoding: -<a href="#section-5.2-3" class="pilcrow">¶</a></p>
-<p id="section-5.2-4">Id: TBD<a href="#section-5.2-4" class="pilcrow">¶</a></p>
-<p id="section-5.2-5">Reference: [TBD-this-spec]<a href="#section-5.2-5" class="pilcrow">¶</a></p>
+<a href="#media-type" class="auto internal xref">Section 5.1</a>:<a href="#section-5.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-2">Media-Type: application/dns+cbor<a href="#section-5.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-3">Encoding: -<a href="#section-5.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-4">Id: TBD<a href="#section-5.2.1-4" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-5">Reference: [TBD-this-spec]<a href="#section-5.2.1-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="applicationdnscbor-packed-1">
+<section id="section-5.2.2">
+          <h4 id="name-application-dnscbor-packed-2">
+<a href="#section-5.2.2" class="section-number selfRef">5.2.2. </a><a href="#name-application-dnscbor-packed-2" class="section-name selfRef">"application/dns+cbor-packed"</a>
+          </h4>
+<p id="section-5.2.2-1">TBD<a href="#section-5.2.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 </section>
@@ -1505,6 +1600,10 @@ registry <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, corres
 <a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
+<dt id="I-D.ietf-cbor-packed">[I-D.ietf-cbor-packed]</dt>
+        <dd>
+<span class="refAuthor">Bormann, C.</span>, <span class="refTitle">"Packed CBOR"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cbor-packed-07</span>, <time datetime="2022-07-24" class="refDate">24 July 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cbor-packed-07">https://datatracker.ietf.org/doc/html/draft-ietf-cbor-packed-07</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC1035">[RFC1035]</dt>
         <dd>
 <span class="refAuthor">Mockapetris, P.</span>, <span class="refTitle">"Domain names - implementation and specification"</span>, <span class="seriesInfo">STD 13</span>, <span class="seriesInfo">RFC 1035</span>, <span class="seriesInfo">DOI 10.17487/RFC1035</span>, <time datetime="1987-11" class="refDate">November 1987</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc1035">https://www.rfc-editor.org/rfc/rfc1035</a>&gt;</span>. </dd>
@@ -1573,8 +1672,12 @@ registry <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, corres
 <span class="refAuthor">Minaburo, A.</span>, <span class="refAuthor">Toutain, L.</span>, <span class="refAuthor">Gomez, C.</span>, <span class="refAuthor">Barthel, D.</span>, and <span class="refAuthor">JC. Zuniga</span>, <span class="refTitle">"SCHC: Generic Framework for Static Context Header Compression and Fragmentation"</span>, <span class="seriesInfo">RFC 8724</span>, <span class="seriesInfo">DOI 10.17487/RFC8724</span>, <time datetime="2020-04" class="refDate">April 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8724">https://www.rfc-editor.org/rfc/rfc8724</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8824">[RFC8824]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Minaburo, A.</span>, <span class="refAuthor">Toutain, L.</span>, and <span class="refAuthor">R. Andreasen</span>, <span class="refTitle">"Static Context Header Compression (SCHC) for the Constrained Application Protocol (CoAP)"</span>, <span class="seriesInfo">RFC 8824</span>, <span class="seriesInfo">DOI 10.17487/RFC8824</span>, <time datetime="2021-06" class="refDate">June 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8824">https://www.rfc-editor.org/rfc/rfc8824</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9110">[RFC9110]</dt>
+      <dd>
+<span class="refAuthor">Fielding, R., Ed.</span>, <span class="refAuthor">Nottingham, M., Ed.</span>, and <span class="refAuthor">J. Reschke, Ed.</span>, <span class="refTitle">"HTTP Semantics"</span>, <span class="seriesInfo">STD 97</span>, <span class="seriesInfo">RFC 9110</span>, <span class="seriesInfo">DOI 10.17487/RFC9110</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9110">https://www.rfc-editor.org/rfc/rfc9110</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
