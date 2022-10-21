@@ -5,10 +5,10 @@
 CBOR                                                       M. S. Lenders
 Internet-Draft                                                 FU Berlin
 Intended status: Standards Track                           T. C. Schmidt
-Expires: 23 April 2023                                       HAW Hamburg
+Expires: 24 April 2023                                       HAW Hamburg
                                                              M. Wählisch
                                                                FU Berlin
-                                                         20 October 2022
+                                                         21 October 2022
 
 
      A Concise Binary Object Representation (CBOR) of DNS Messages
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 April 2023.
+   This Internet-Draft will expire on 24 April 2023.
 
 Copyright Notice
 
@@ -300,31 +300,45 @@ Table of Contents
 
    If both DNS server and client support packed CBOR
    [I-D.ietf-cbor-packed], it MAY be used for name and address
-   compression.
+   compression in DNS responses.
 
    A DNS client uses media type "application/dns+cbor-packed" to
    negotiate (see, e.g., [RFC9110] or [RFC7252], Section 5.5.4) with the
    DNS server if the server supports packed CBOR.  If it does, it MAY
-   send the DNS query in packed CBOR (media type "applicaton/dns+cbor-
-   packed").  The server then SHOULD reply with packed CBOR (media type
-   "application/dns+cbor-packed") as well.
+   request the response to be in packed CBOR (media type "applicaton/
+   dns+cbor-packed").  The server then SHOULD reply with packed CBOR
+   (media type "application/dns+cbor-packed") as well.
 
-   The representation of DNS queries and responses in packed CBOR
-   differs, in that both message types are represented as a CBOR array
-   of two arrays.  The first array is a packing table that is used both
-   as shared item table and argument table (see [I-D.ietf-cbor-packed],
-   Section 2.1).
+   The representation of DNS responses in packed CBOR differs, in that
+   responses are now represented as a CBOR array of two arrays.  The
+   first array is a packing table that is used both as shared item table
+   and argument table (see [I-D.ietf-cbor-packed], Section 2.1), the
+   second is the compressed response.
 
-   The representation of both message types is defined in Figure 5.
+   The representation of a packed DNS response is defined in Figure 5.
 
-        packed-dns-cbor = [[pack-table], dns-query / dns-response]
-        pack-table = any
+         compr-dns-response = any /TBD/
+         packed-dns-response = [[pack-table], compr-dns-response]
+         pack-table = any
 
             Figure 5: Definition of DNS messages in packed CBOR
 
+   If an index in the packing table is referenced with shared item
+   reference ([I-D.ietf-cbor-packed], Section 2.2) a decoder uses the
+   packing table as a shared item table.  If an index in the packing
+   table is referenced as an argument ([I-D.ietf-cbor-packed], Sections
+   2.3 and 4), a decoder uses the packing table as an argument table.
+
 3.6.1.  Table Setup
 
-   TBD
+   TBD How to construct the packing table, here's a sketch:
+
+   *  Find most often used prefix and values
+
+      -  Probably some threshold needed, to prevent, e.g., 1 byte
+         prefixes filling valuable table space
+
+   *  Sort descending by number of occurrences: table done
 
 4.  Security Considerations
 
