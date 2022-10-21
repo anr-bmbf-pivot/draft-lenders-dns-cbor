@@ -241,30 +241,50 @@ TBD, do we need special formatting here?
 ## Name and Address Compression with Packed CBOR
 
 If both DNS server and client support packed CBOR {{-cbor-packed}}, it MAY be used for name and
-address compression.
+address compression in DNS responses.
 
 A DNS client uses media type "application/dns+cbor-packed" to negotiate (see, e.g.,
 {{-http-semantics}} or {{-coap}}, Section 5.5.4) with the DNS server if the server supports packed
 CBOR.
-If it does, it MAY send the DNS query in packed CBOR (media type "applicaton/dns+cbor-packed").
-The server then SHOULD reply with packed CBOR (media type "application/dns+cbor-packed") as well.
+If it does, it MAY request the response to be in packed CBOR (media type
+"applicaton/dns+cbor-packed").
+The server then SHOULD reply with the response in packed CBOR.
 
-The representation of DNS queries and responses in packed CBOR differs, in that both message types
-are represented as a CBOR array of two arrays.
+The representation of DNS responses in packed CBOR differs, in that responses are now represented as
+a CBOR array of two arrays.
 The first array is a packing table that is used both as shared item table and argument table (see
-{{-cbor-packed}}, Section 2.1).
+{{-cbor-packed}}, Section 2.1), the second is the compressed response.
 
-The representation of both message types is defined in {{fig:packed-cbor}}.
+The representation of a packed DNS response is defined in {{fig:packed-cbor}}.
 
 ~~~ CDDL
-packed-dns-cbor = [[pack-table], dns-query / dns-response]
+compr-dns-response = any /TBD/
+packed-dns-response = [[pack-table], compr-dns-response]
 pack-table = any
 ~~~
 {:cddl #fig:packed-cbor title="Definition of DNS messages in packed CBOR"}
 
+If an index in the packing table is referenced with shared item reference ({{-cbor-packed}},
+Section 2.2) a decoder uses the packing table as a shared item table.
+If an index in the packing table is referenced as an argument ({{-cbor-packed}}, Sections 2.3 and
+4), a decoder uses the packing table as an argument table.
+
+Discussion TBD:
+- For queries, as they are only one question, i.e. at most one value of each at most,
+  compression is not necessary.
+- Address and name compression are mostly about affix compression
+  (i.e. straight/inverse referencing) \
+  ⇒ For occasions were value is the affix (e.g., "example.org" in ANY example in
+  {{sec:response-examples}}) use shared item referencing to argument table to safe bytes (no extra
+  shared item table, no, e.g., 216(""), just simple(0))
+
 ### Table Setup {#sec:pack-table-setup}
 
-TBD
+TBD How to construct the packing table, here's a sketch:
+
+- Find most often used prefix and values
+  - Probably some threshold needed, to prevent, e.g., 1 byte prefixes filling valuable table space
+- Sort descending by number of occurrences: table done
 
 # Security Considerations
 
@@ -432,10 +452,10 @@ This one advertises two local CoAP servers (identified by service name `_coap._u
 2001:db8::35 and ns2.example.org at 2001.db8::3535. Each of the transmitted records has a TTL of
 3600 seconds.
 
+
 # Acknowledgments
 {:unnumbered}
 
 TODO acknowledge.
 
 - Carsten Bormann
-
