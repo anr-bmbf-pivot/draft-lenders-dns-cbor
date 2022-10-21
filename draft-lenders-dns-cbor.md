@@ -270,6 +270,7 @@ If an index in the packing table is referenced as an argument ({{-cbor-packed}},
 4), a decoder uses the packing table as an argument table.
 
 Discussion TBD:
+
 - For queries, as they are only one question, i.e. at most one value of each at most,
   compression is not necessary.
 - Address and name compression are mostly about affix compression
@@ -277,6 +278,54 @@ Discussion TBD:
   ⇒ For occasions were value is the affix (e.g., "example.org" in ANY example in
   {{sec:response-examples}}) use shared item referencing to argument table to safe bytes (no extra
   shared item table, no, e.g., 216(""), just simple(0))
+  - **Example:** Using Basic Packed CBOR ({{-cbor-packed}}, section 3.1):
+    - 131 bytes (Basic Packed CBOR)
+    - 200 bytes (plain CBOR, see {{sec:response-examples}})
+    - 194 bytes (wire-format)
+
+    >     113(
+    >       [
+    >         ["_coap._udp.local", "example.org", 3600, 28, 2],
+    >         [h'20010db800000000000000000000', simple(2)],
+    >         [
+    >           [simple(1), 12, 1],
+    >           [[simple(1), simple(0)]],
+    >           [
+    >             [simple(1), simple(4), 217("ns1.")],
+    >             [simple(1), simple(4), 217("ns2.")]
+    >           ],
+    >           [
+    >             [simple(0), simple(1), simple(3), 6(h'0001')],
+    >             [simple(0), simple(1), simple(3), 6(h'0002')],
+    >             [217("ns1."), simple(1), simple(3), 6(h'0035')],
+    >             [217("ns2."), simple(1), simple(3), 6(h'3535')]
+    >           ]
+    >         ]
+    >       ]
+    >     )
+
+    vs. application/dns+cbor-packed (shared and argument table as one) 126&nbsp;bytes:
+
+    >     [
+    >       [
+    >         h'20010DB800000000000000000000',
+    >         "_coap._udp.local" "example.org", 3600, 28, 2
+    >       ],
+    >       [
+    >         [simple(1), 12, 1],
+    >         [[simple(3), simple(1)]],
+    >         [
+    >           [simple(3), simple(5), 218("ns1.")],
+    >           [simple(3), simple(5), 218("ns2.")]
+    >         ],
+    >         [
+    >           [simple(1), simple(3), simple(4), 6('\u0000\u0001')],
+    >           [simple(1), simple(3), simple(4), 6('\u0000\u0002')],
+    >           [218("ns1."), simple(3), simple(4), 6(h'35')],
+    >           [218("ns2."), simple(3), simple(4), 6(h'3535')]
+    >         ]
+    >       ]
+    >     ]
 
 ### Table Setup {#sec:pack-table-setup}
 
@@ -284,7 +333,7 @@ TBD How to construct the packing table, here's a sketch:
 
 - Find most often used prefix and values
   - Probably some threshold needed, to prevent, e.g., 1 byte prefixes filling valuable table space
-- Sort descending by number of occurrences: table done
+- Sort descending by number of occurrences and length
 
 # Security Considerations
 
