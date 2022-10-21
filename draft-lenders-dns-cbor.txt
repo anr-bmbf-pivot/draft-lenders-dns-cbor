@@ -306,8 +306,8 @@ Table of Contents
    negotiate (see, e.g., [RFC9110] or [RFC7252], Section 5.5.4) with the
    DNS server if the server supports packed CBOR.  If it does, it MAY
    request the response to be in packed CBOR (media type "applicaton/
-   dns+cbor-packed").  The server then SHOULD reply with packed CBOR
-   (media type "application/dns+cbor-packed") as well.
+   dns+cbor-packed").  The server then SHOULD reply with the response in
+   packed CBOR.
 
    The representation of DNS responses in packed CBOR differs, in that
    responses are now represented as a CBOR array of two arrays.  The
@@ -328,6 +328,14 @@ Table of Contents
    packing table as a shared item table.  If an index in the packing
    table is referenced as an argument ([I-D.ietf-cbor-packed], Sections
    2.3 and 4), a decoder uses the packing table as an argument table.
+
+   Discussion TBD: - For queries, as they are only one question, i.e. at
+   most one value of each at most, compression is not necessary. -
+   Address and name compression are mostly about affix compression (i.e.
+   straight/inverse referencing) \ ==> For occasions were value is the
+   affix (e.g., "example.org" in ANY example in Appendix A.2) use shared
+   item referencing to argument table to safe bytes (no extra shared
+   item table, no, e.g., 216(""), just simple(0))
 
 3.6.1.  Table Setup
 
