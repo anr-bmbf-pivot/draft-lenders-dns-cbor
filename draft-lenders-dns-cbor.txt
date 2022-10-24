@@ -95,6 +95,8 @@ Table of Contents
    Appendix A.  Examples
      A.1.  DNS Queries
      A.2.  DNS Responses
+   Appendix B.  Change Log
+     B.1.  Since draft-lenders-dns-cbor-00
    Acknowledgments
    Authors' Addresses
 
@@ -602,9 +604,9 @@ Table of Contents
    [I-D.ietf-core-dns-over-coap]
               Lenders, M. S., Amsüss, C., Gündoğan, C., Schmidt, T. C.,
               and M. Wählisch, "DNS over CoAP (DoC)", Work in Progress,
-              Internet-Draft, draft-ietf-core-dns-over-coap-00, 5
-              September 2022, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-core-dns-over-coap-00>.
+              Internet-Draft, draft-ietf-core-dns-over-coap-01, 24
+              October 2022, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-core-dns-over-coap-01>.
 
    [RFC4944]  Montenegro, G., Kushalnagar, N., Hui, J., and D. Culler,
               "Transmission of IPv6 Packets over IEEE 802.15.4
@@ -726,6 +728,17 @@ A.2.  DNS Responses
    nameservers for the example.org domain, ns1.example.org at
    2001:db8::35 and ns2.example.org at 2001.db8::3535.  Each of the
    transmitted records has a TTL of 3600 seconds.
+
+Appendix B.  Change Log
+
+B.1.  Since draft-lenders-dns-cbor-00
+      (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-00)
+
+   *  Add support for DNS transaction IDs
+
+   *  Name and Address compression utilizing CBOR-packed
+
+   *  Minor fixes to CBOR EDN and CDDL
 
 Acknowledgments
 
