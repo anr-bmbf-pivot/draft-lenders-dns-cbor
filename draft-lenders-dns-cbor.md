@@ -39,9 +39,9 @@ author:
 normative:
   RFC1035: dns
   RFC3596: aaaa
-  RFC7049: cbor
   RFC7252: coap
   RFC8610: cddl
+  RFC8949: cbor
   I-D.ietf-cbor-packed: cbor-packed
 
 informative:
