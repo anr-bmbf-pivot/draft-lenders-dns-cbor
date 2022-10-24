@@ -5,10 +5,10 @@
 CBOR                                                       M. S. Lenders
 Internet-Draft                                                 FU Berlin
 Intended status: Standards Track                           T. C. Schmidt
-Expires: 24 April 2023                                       HAW Hamburg
+Expires: 27 April 2023                                       HAW Hamburg
                                                              M. Wählisch
                                                                FU Berlin
-                                                         21 October 2022
+                                                         24 October 2022
 
 
      A Concise Binary Object Representation (CBOR) of DNS Messages
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 April 2023.
+   This Internet-Draft will expire on 27 April 2023.
 
 Copyright Notice
 
@@ -317,9 +317,9 @@ Table of Contents
 
    The representation of a packed DNS response is defined in Figure 5.
 
-         compr-dns-response = any /TBD/
-         packed-dns-response = [[pack-table], compr-dns-response]
-         pack-table = any
+    compr-dns-response = any /TBD; how to express packed CBOR in CDDL?/
+    packed-dns-response = [[pack-table], compr-dns-response]
+    pack-table = any
 
             Figure 5: Definition of DNS messages in packed CBOR
 
@@ -352,7 +352,7 @@ Table of Contents
             113(
               [
                 ["_coap._udp.local", "example.org", 3600, 28, 2],
-                [h'20010db800000000000000000000', simple(2)],
+                [h'20010db800000000000000000000', simple(1)],
                 [
                   [simple(1), 12, 1],
                   [[simple(1), simple(0)]],
@@ -375,20 +375,20 @@ Table of Contents
 
             [
               [
-                h'20010DB800000000000000000000',
+                h'20010db800000000000000000000',
                 "_coap._udp.local" "example.org", 3600, 28, 2
               ],
               [
                 [simple(1), 12, 1],
                 [[simple(3), simple(1)]],
                 [
-                  [simple(3), simple(5), 218("ns1.")],
-                  [simple(3), simple(5), 218("ns2.")]
+                  [simple(2), simple(5), 218("ns1.")],
+                  [simple(2), simple(5), 218("ns2.")]
                 ],
                 [
-                  [simple(1), simple(3), simple(4), 6('\u0000\u0001')],
-                  [simple(1), simple(3), simple(4), 6('\u0000\u0002')],
-                  [218("ns1."), simple(3), simple(4), 6(h'35')],
+                  [simple(1), simple(3), simple(4), 6(h'0001')],
+                  [simple(1), simple(3), simple(4), 6(h'0002')],
+                  [218("ns1."), simple(3), simple(4), 6(h'0035')],
                   [218("ns2."), simple(3), simple(4), 6(h'3535')]
                 ]
               ]
@@ -405,6 +405,9 @@ Table of Contents
 
    *  Sort descending by number of occurrences and length
 
+      -  Long prefixes should take precedence for index 0 for Tag 6
+         usage
+
 4.  Security Considerations
 
    TODO Security
@@ -413,11 +416,11 @@ Table of Contents
 
 5.1.  Media Type Registration
 
-5.1.1.  "application/dns+cbor"
-
-   This document registers the media type for the serialization format
-   of DNS messages in CBOR.  It follows the procedures specified in
+   This document registers two media type for the serialization format
+   of DNS messages in CBOR.  They follow the procedures specified in
    [RFC6838].
+
+5.1.1.  "application/dns+cbor"
 
    Type name: application
 
@@ -467,16 +470,61 @@ Table of Contents
 
 5.1.2.  "application/dns+cbor-packed"
 
-   TBD
+   Type name: application
+
+   Subtype name: dns+cbor-packed
+
+   Required parameters: None
+
+   Optional parameters: None
+
+   Encoding considerations: Must be encoded as using [RFC7049].  See
+   [TBD-this-spec] for details.
+
+   Security considerations: See Section 4 of this draft
+
+   Interoperability considerations: TBD
+
+   Published specification: [TBD-this-spec]
+
+   Applications that use this media type: TBD DNS over X systems
+
+   Fragment Identifier Considerations: TBD
+
+   Additional information:
+
+      Deprecated alias names for this type: N/A
+
+      Magic number(s): N/A
+
+      File extension(s): dnsc
+
+      Macintosh file type code(s): none
+
+   Person & email address to contact for further information: Martine S.
+   Lenders m.lenders@fu-berlin.de (mailto:m.lenders@fu-berlin.de)
+
+   Intended usage: COMMON
+
+   Restrictions on Usage: None?
+
+   Author: Martine S.  Lenders m.lenders@fu-berlin.de
+   (mailto:m.lenders@fu-berlin.de)
+
+   Change controller: Martine S.  Lenders m.lenders@fu-berlin.de
+   (mailto:m.lenders@fu-berlin.de)
+
+   Provisional registrations?  No
 
 5.2.  CoAP Content-Format Registration
 
-5.2.1.  "application/dns-cbor"
+   IANA is requested to assign CoAP Content-Format ID for the new DNS
+   message media types in the "CoAP Content-Formats" sub-registry,
+   within the "CoRE Parameters" registry [RFC7252], corresponding the
+   "application/dns+cbor" media types "application/dns+cbor" and
+   "application/dns+cbor-packed"" specified in Section 5.1:
 
-   IANA is requested to assign CoAP Content-Format ID for the DNS
-   message media type in the "CoAP Content-Formats" sub-registry, within
-   the "CoRE Parameters" registry [RFC7252], corresponding the
-   "application/dns+cbor" Media Type specified in Section 5.1:
+5.2.1.  "application/dns-cbor"
 
    Media-Type: application/dns+cbor
 
@@ -488,7 +536,13 @@ Table of Contents
 
 5.2.2.  "application/dns+cbor-packed"
 
-   TBD
+   Media-Type: application/dns+cbor-packed
+
+   Encoding: -
+
+   Id: TBD
+
+   Reference: [TBD-this-spec]
 
 6.  References
 
