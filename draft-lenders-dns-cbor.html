@@ -1085,7 +1085,7 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">This document specifies a compressed data format of DNS messages using
-the Concise Binary Object Representation <span>[<a href="#RFC7049" class="cite xref">RFC7049</a>]</span>.
+the Concise Binary Object Representation <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.
 The primary purpose is to keep DNS messages small in constrained networks.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
@@ -1271,7 +1271,7 @@ comply with small MTUs, fragmentation should be avoided in constrained networks,
 fragmentation combined with high packet loss multiplies the loss.  As such, a compression
 format for DNS messages is needed.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">This document specifies a compressed data format for DNS messages.  DNS messages are encoded in
-Concise Binary Object Representation (CBOR) <span>[<a href="#RFC7049" class="cite xref">RFC7049</a>]</span> and, additionally, unnecessary or
+Concise Binary Object Representation (CBOR) <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> and, additionally, unnecessary or
 redundant information is removed.  To use the outcome of this specification in DoH and DoC,
 this document also specifies a Media Type header for DoH and a Content-Format option for DoC.<a href="#section-1-3" class="pilcrow">¶</a></p>
 </section>
@@ -1282,7 +1282,7 @@ this document also specifies a Media Type header for DoH and a Content-Format op
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-terminology" class="section-name selfRef">Terminology</a>
       </h2>
 <p id="section-2-1">CBOR types (unsigned integer, byte string, text string, arrays, etc.) are used as defined in
-<span>[<a href="#RFC7049" class="cite xref">RFC7049</a>]</span>.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-2-2">TBD DNS server and client.<a href="#section-2-2" class="pilcrow">¶</a></p>
 <p id="section-2-3">A DNS query is a message that queries DNS information from an upstream DNS resolver.<a href="#section-2-3" class="pilcrow">¶</a></p>
 <p id="section-2-4">The term "constrained networks" is used as defined in <span>[<a href="#RFC7228" class="cite xref">RFC7228</a>]</span>.<a href="#section-2-4" class="pilcrow">¶</a></p>
@@ -1643,7 +1643,7 @@ follow the procedures specified in <span>[<a href="#RFC6838" class="cite xref">R
 <p id="section-5.1.1-2">Subtype name: dns+cbor<a href="#section-5.1.1-2" class="pilcrow">¶</a></p>
 <p id="section-5.1.1-3">Required parameters: None<a href="#section-5.1.1-3" class="pilcrow">¶</a></p>
 <p id="section-5.1.1-4">Optional parameters: None<a href="#section-5.1.1-4" class="pilcrow">¶</a></p>
-<p id="section-5.1.1-5">Encoding considerations: Must be encoded as using <span>[<a href="#RFC7049" class="cite xref">RFC7049</a>]</span>. See [TBD-this-spec] for details.<a href="#section-5.1.1-5" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-5">Encoding considerations: Must be encoded as using <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>. See [TBD-this-spec] for details.<a href="#section-5.1.1-5" class="pilcrow">¶</a></p>
 <p id="section-5.1.1-6">Security considerations: See <a href="#security-considerations" class="auto internal xref">Section 4</a> of this draft<a href="#section-5.1.1-6" class="pilcrow">¶</a></p>
 <p id="section-5.1.1-7">Interoperability considerations: TBD<a href="#section-5.1.1-7" class="pilcrow">¶</a></p>
 <p id="section-5.1.1-8">Published specification: [TBD-this-spec]<a href="#section-5.1.1-8" class="pilcrow">¶</a></p>
@@ -1672,7 +1672,7 @@ follow the procedures specified in <span>[<a href="#RFC6838" class="cite xref">R
 <p id="section-5.1.2-2">Subtype name: dns+cbor-packed<a href="#section-5.1.2-2" class="pilcrow">¶</a></p>
 <p id="section-5.1.2-3">Required parameters: None<a href="#section-5.1.2-3" class="pilcrow">¶</a></p>
 <p id="section-5.1.2-4">Optional parameters: None<a href="#section-5.1.2-4" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-5">Encoding considerations: Must be encoded as using <span>[<a href="#RFC7049" class="cite xref">RFC7049</a>]</span>. See [TBD-this-spec] for details.<a href="#section-5.1.2-5" class="pilcrow">¶</a></p>
+<p id="section-5.1.2-5">Encoding considerations: Must be encoded as using <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>. See [TBD-this-spec] for details.<a href="#section-5.1.2-5" class="pilcrow">¶</a></p>
 <p id="section-5.1.2-6">Security considerations: See <a href="#security-considerations" class="auto internal xref">Section 4</a> of this draft<a href="#section-5.1.2-6" class="pilcrow">¶</a></p>
 <p id="section-5.1.2-7">Interoperability considerations: TBD<a href="#section-5.1.2-7" class="pilcrow">¶</a></p>
 <p id="section-5.1.2-8">Published specification: [TBD-this-spec]<a href="#section-5.1.2-8" class="pilcrow">¶</a></p>
@@ -1763,10 +1763,6 @@ specified in <a href="#media-type" class="auto internal xref">Section 5.1</a>:<a
         <dd>
 <span class="refAuthor">Freed, N.</span>, <span class="refAuthor">Klensin, J.</span>, and <span class="refAuthor">T. Hansen</span>, <span class="refTitle">"Media Type Specifications and Registration Procedures"</span>, <span class="seriesInfo">BCP 13</span>, <span class="seriesInfo">RFC 6838</span>, <span class="seriesInfo">DOI 10.17487/RFC6838</span>, <time datetime="2013-01" class="refDate">January 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6838">https://www.rfc-editor.org/rfc/rfc6838</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC7049">[RFC7049]</dt>
-        <dd>
-<span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">P. Hoffman</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR)"</span>, <span class="seriesInfo">RFC 7049</span>, <span class="seriesInfo">DOI 10.17487/RFC7049</span>, <time datetime="2013-10" class="refDate">October 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7049">https://www.rfc-editor.org/rfc/rfc7049</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC7252">[RFC7252]</dt>
         <dd>
 <span class="refAuthor">Shelby, Z.</span>, <span class="refAuthor">Hartke, K.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"The Constrained Application Protocol (CoAP)"</span>, <span class="seriesInfo">RFC 7252</span>, <span class="seriesInfo">DOI 10.17487/RFC7252</span>, <time datetime="2014-06" class="refDate">June 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7252">https://www.rfc-editor.org/rfc/rfc7252</a>&gt;</span>. </dd>
@@ -1776,8 +1772,12 @@ specified in <a href="#media-type" class="auto internal xref">Section 5.1</a>:<a
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8610">[RFC8610]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Vigano, C.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures"</span>, <span class="seriesInfo">RFC 8610</span>, <span class="seriesInfo">DOI 10.17487/RFC8610</span>, <time datetime="2019-06" class="refDate">June 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8610">https://www.rfc-editor.org/rfc/rfc8610</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8949">[RFC8949]</dt>
+      <dd>
+<span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">P. Hoffman</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR)"</span>, <span class="seriesInfo">STD 94</span>, <span class="seriesInfo">RFC 8949</span>, <span class="seriesInfo">DOI 10.17487/RFC8949</span>, <time datetime="2020-12" class="refDate">December 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8949">https://www.rfc-editor.org/rfc/rfc8949</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -1833,7 +1833,7 @@ specified in <a href="#media-type" class="auto internal xref">Section 5.1</a>:<a
         </h3>
 <p id="appendix-A.1-1">A DNS query of the record <code>AAAA</code> in class <code>IN</code> for name "example.org" is
 represented in CBOR extended diagnostic notation (EDN) (see Section 8 in
-<span>[<a href="#RFC7049" class="cite xref">RFC7049</a>]</span> and Appendix G in <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>) as follows:<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
+<span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> and Appendix G in <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>) as follows:<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-A.1-2">
 <pre>
 ["example.org"]
@@ -1860,7 +1860,7 @@ represented in CBOR extended diagnostic notation (EDN) (see Section 8 in
         </h3>
 <p id="appendix-A.2-1">The responses to the examples provided in <a href="#sec_query-examples" class="auto internal xref">Appendix A.1</a> are shown
 below. We use the CBOR extended diagnostic notation (EDN) (see Section 8 in
-<span>[<a href="#RFC7049" class="cite xref">RFC7049</a>]</span> and Appendix G in <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>).<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
+<span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> and Appendix G in <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>).<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.2-2">To represent an <code>AAAA</code> record with TTL 300 seconds for the IPv6 address 2001:db8::1, a minimal
 response to <code>["example.org"]</code> could be<a href="#appendix-A.2-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-A.2-3">

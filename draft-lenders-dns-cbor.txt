@@ -17,7 +17,7 @@ Expires: 27 April 2023                                       HAW Hamburg
 Abstract
 
    This document specifies a compressed data format of DNS messages
-   using the Concise Binary Object Representation [RFC7049].  The
+   using the Concise Binary Object Representation [RFC8949].  The
    primary purpose is to keep DNS messages small in constrained
    networks.
 
@@ -117,7 +117,7 @@ Table of Contents
 
    This document specifies a compressed data format for DNS messages.
    DNS messages are encoded in Concise Binary Object Representation
-   (CBOR) [RFC7049] and, additionally, unnecessary or redundant
+   (CBOR) [RFC8949] and, additionally, unnecessary or redundant
    information is removed.  To use the outcome of this specification in
    DoH and DoC, this document also specifies a Media Type header for DoH
    and a Content-Format option for DoC.
@@ -125,7 +125,7 @@ Table of Contents
 2.  Terminology
 
    CBOR types (unsigned integer, byte string, text string, arrays, etc.)
-   are used as defined in [RFC7049].
+   are used as defined in [RFC8949].
 
    TBD DNS server and client.
 
@@ -432,7 +432,7 @@ Table of Contents
 
    Optional parameters: None
 
-   Encoding considerations: Must be encoded as using [RFC7049].  See
+   Encoding considerations: Must be encoded as using [RFC8949].  See
    [TBD-this-spec] for details.
 
    Security considerations: See Section 4 of this draft
@@ -480,7 +480,7 @@ Table of Contents
 
    Optional parameters: None
 
-   Encoding considerations: Must be encoded as using [RFC7049].  See
+   Encoding considerations: Must be encoded as using [RFC8949].  See
    [TBD-this-spec] for details.
 
    Security considerations: See Section 4 of this draft
@@ -580,10 +580,6 @@ Table of Contents
               RFC 6838, DOI 10.17487/RFC6838, January 2013,
               <https://www.rfc-editor.org/rfc/rfc6838>.
 
-   [RFC7049]  Bormann, C. and P. Hoffman, "Concise Binary Object
-              Representation (CBOR)", RFC 7049, DOI 10.17487/RFC7049,
-              October 2013, <https://www.rfc-editor.org/rfc/rfc7049>.
-
    [RFC7252]  Shelby, Z., Hartke, K., and C. Bormann, "The Constrained
               Application Protocol (CoAP)", RFC 7252,
               DOI 10.17487/RFC7252, June 2014,
@@ -598,6 +594,11 @@ Table of Contents
               Express Concise Binary Object Representation (CBOR) and
               JSON Data Structures", RFC 8610, DOI 10.17487/RFC8610,
               June 2019, <https://www.rfc-editor.org/rfc/rfc8610>.
+
+   [RFC8949]  Bormann, C. and P. Hoffman, "Concise Binary Object
+              Representation (CBOR)", STD 94, RFC 8949,
+              DOI 10.17487/RFC8949, December 2020,
+              <https://www.rfc-editor.org/rfc/rfc8949>.
 
 6.2.  Informative References
 
@@ -650,7 +651,7 @@ A.1.  DNS Queries
 
    A DNS query of the record AAAA in class IN for name "example.org" is
    represented in CBOR extended diagnostic notation (EDN) (see Section 8
-   in [RFC7049] and Appendix G in [RFC8610]) as follows:
+   in [RFC8949] and Appendix G in [RFC8610]) as follows:
 
    ["example.org"]
 
@@ -666,7 +667,7 @@ A.2.  DNS Responses
 
    The responses to the examples provided in Appendix A.1 are shown
    below.  We use the CBOR extended diagnostic notation (EDN) (see
-   Section 8 in [RFC7049] and Appendix G in [RFC8610]).
+   Section 8 in [RFC8949] and Appendix G in [RFC8610]).
 
    To represent an AAAA record with TTL 300 seconds for the IPv6 address
    2001:db8::1, a minimal response to ["example.org"] could be
