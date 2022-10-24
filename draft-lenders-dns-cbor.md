@@ -258,7 +258,7 @@ The first array is a packing table that is used both as shared item table and ar
 The representation of a packed DNS response is defined in {{fig:packed-cbor}}.
 
 ~~~ CDDL
-compr-dns-response = any /TBD/
+compr-dns-response = any /TBD; how to express packed CBOR in CDDL?/
 packed-dns-response = [[pack-table], compr-dns-response]
 pack-table = any
 ~~~
@@ -286,7 +286,7 @@ Discussion TBD:
     >     113(
     >       [
     >         ["_coap._udp.local", "example.org", 3600, 28, 2],
-    >         [h'20010db800000000000000000000', simple(2)],
+    >         [h'20010db800000000000000000000', simple(1)],
     >         [
     >           [simple(1), 12, 1],
     >           [[simple(1), simple(0)]],
@@ -308,20 +308,20 @@ Discussion TBD:
 
     >     [
     >       [
-    >         h'20010DB800000000000000000000',
+    >         h'20010db800000000000000000000',
     >         "_coap._udp.local" "example.org", 3600, 28, 2
     >       ],
     >       [
     >         [simple(1), 12, 1],
     >         [[simple(3), simple(1)]],
     >         [
-    >           [simple(3), simple(5), 218("ns1.")],
-    >           [simple(3), simple(5), 218("ns2.")]
+    >           [simple(2), simple(5), 218("ns1.")],
+    >           [simple(2), simple(5), 218("ns2.")]
     >         ],
     >         [
-    >           [simple(1), simple(3), simple(4), 6('\u0000\u0001')],
-    >           [simple(1), simple(3), simple(4), 6('\u0000\u0002')],
-    >           [218("ns1."), simple(3), simple(4), 6(h'35')],
+    >           [simple(1), simple(3), simple(4), 6(h'0001')],
+    >           [simple(1), simple(3), simple(4), 6(h'0002')],
+    >           [218("ns1."), simple(3), simple(4), 6(h'0035')],
     >           [218("ns2."), simple(3), simple(4), 6(h'3535')]
     >         ]
     >       ]
@@ -334,6 +334,7 @@ TBD How to construct the packing table, here's a sketch:
 - Find most often used prefix and values
   - Probably some threshold needed, to prevent, e.g., 1 byte prefixes filling valuable table space
 - Sort descending by number of occurrences and length
+  - Long prefixes should take precedence for index 0 for Tag 6 usage
 
 # Security Considerations
 
@@ -344,10 +345,10 @@ TODO Security
 
 ## Media Type Registration {#media-type}
 
-### "application/dns+cbor"
+This document registers two media type for the serialization format of DNS messages in CBOR. They
+follow the procedures specified in {{!RFC6838}}.
 
-This document registers the media type for the serialization format of DNS messages in CBOR. It
-follows the procedures specified in {{!RFC6838}}.
+### "application/dns+cbor"
 
 Type name: application
 
@@ -393,16 +394,60 @@ Change controller: Martine S. Lenders <m.lenders@fu-berlin.de>
 Provisional registrations? No
 
 ### "application/dns+cbor-packed"
-TBD
+
+Type name: application
+
+Subtype name: dns+cbor-packed
+
+Required parameters: None
+
+Optional parameters: None
+
+Encoding considerations: Must be encoded as using {{-cbor}}. See \[TBD-this-spec\] for details.
+
+Security considerations: See {{security-considerations}} of this draft
+
+Interoperability considerations: TBD
+
+Published specification: \[TBD-this-spec\]
+
+Applications that use this media type: TBD DNS over X systems
+
+Fragment Identifier Considerations: TBD
+
+Additional information:
+
+&nbsp;&nbsp;&nbsp;Deprecated alias names for this type: N/A
+
+&nbsp;&nbsp;&nbsp;Magic number(s): N/A
+
+&nbsp;&nbsp;&nbsp;File extension(s): dnsc
+
+&nbsp;&nbsp;&nbsp;Macintosh file type code(s): none
+
+Person & email address to contact for further information:
+   Martine S. Lenders <m.lenders@fu-berlin.de>
+
+Intended usage: COMMON
+
+Restrictions on Usage: None?
+
+Author: Martine S. Lenders <m.lenders@fu-berlin.de>
+
+Change controller: Martine S. Lenders <m.lenders@fu-berlin.de>
+
+Provisional registrations? No
+
 
 ## CoAP Content-Format Registration
 
-### "application/dns-cbor"
+IANA is requested to assign CoAP Content-Format ID for the new DNS message media
+types in the "CoAP Content-Formats"
+sub-registry, within the "CoRE Parameters" registry {{-coap}}, corresponding the
+"application/dns+cbor" media types "application/dns+cbor" and "application/dns+cbor-packed""
+specified in {{media-type}}:
 
-IANA is requested to assign CoAP Content-Format ID for the DNS message media
-type in the "CoAP Content-Formats" sub-registry, within the "CoRE Parameters"
-registry {{-coap}}, corresponding the "application/dns+cbor" Media Type specified in
-{{media-type}}:
+### "application/dns-cbor"
 
 Media-Type: application/dns+cbor
 
@@ -413,7 +458,15 @@ Id: TBD
 Reference: \[TBD-this-spec\]
 
 ### "application/dns+cbor-packed"
-TBD
+
+Media-Type: application/dns+cbor-packed
+
+Encoding: -
+
+Id: TBD
+
+Reference: \[TBD-this-spec\]
+
 
 --- back
 
