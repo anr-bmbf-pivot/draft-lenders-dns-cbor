@@ -554,6 +554,15 @@ This one advertises two local CoAP servers (identified by service name `_coap._u
 2001:db8::35 and ns2.example.org at 2001.db8::3535. Each of the transmitted records has a TTL of
 3600 seconds.
 
+# Change Log
+
+Since [draft-lenders-dns-cbor-00]
+---------------------------------
+- Add support for DNS transaction IDs
+- Name and Address compression utilizing CBOR-packed
+- Minor fixes to CBOR EDN and CDDL
+
+[draft-lenders-dns-cbor-00]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-00
 
 # Acknowledgments
 {:unnumbered}
