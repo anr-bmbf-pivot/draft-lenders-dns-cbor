@@ -312,7 +312,7 @@ Discussion TBD:
     >         "_coap._udp.local" "example.org", 3600, 28, 2
     >       ],
     >       [
-    >         [simple(1), 12, 1],
+    >         [simple(2), 12, 1],
     >         [[simple(3), simple(1)]],
     >         [
     >           [simple(2), simple(5), 218("ns1.")],
