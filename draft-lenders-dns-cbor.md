@@ -243,11 +243,11 @@ TBD, do we need special formatting here?
 If both DNS server and client support packed CBOR {{-cbor-packed}}, it MAY be used for name and
 address compression in DNS responses.
 
-A DNS client uses media type "application/dns+cbor-packed" to negotiate (see, e.g.,
+A DNS client uses media type "application/dns+cbor;packed=1" to negotiate (see, e.g.,
 {{-http-semantics}} or {{-coap}}, Section 5.5.4) with the DNS server if the server supports packed
 CBOR.
 If it does, it MAY request the response to be in packed CBOR (media type
-"applicaton/dns+cbor-packed").
+"applicaton/dns+cbor;packed=1").
 The server then SHOULD reply with the response in packed CBOR.
 
 The representation of DNS responses in packed CBOR differs, in that responses are now represented as
@@ -304,7 +304,7 @@ Discussion TBD:
     >       ]
     >     )
 
-    vs. application/dns+cbor-packed (shared and argument table as one) 126&nbsp;bytes:
+    vs. application/dns+cbor;packed=1 (shared and argument table as one) 126&nbsp;bytes:
 
     >     [
     >       [
@@ -345,8 +345,8 @@ TODO Security
 
 ## Media Type Registration {#media-type}
 
-This document registers two media type for the serialization format of DNS messages in CBOR. They
-follow the procedures specified in {{!RFC6838}}.
+This document registers a media type for the serialization format of DNS messages in CBOR. It
+follows the procedures specified in {{!RFC6838}}.
 
 ### "application/dns+cbor"
 
@@ -356,7 +356,7 @@ Subtype name: dns+cbor
 
 Required parameters: None
 
-Optional parameters: None
+Optional parameters: packed
 
 Encoding considerations: Must be encoded as using {{-cbor}}. See \[TBD-this-spec\] for details.
 
@@ -392,60 +392,13 @@ Author: Martine S. Lenders <m.lenders@fu-berlin.de>
 Change controller: Martine S. Lenders <m.lenders@fu-berlin.de>
 
 Provisional registrations? No
-
-### "application/dns+cbor-packed"
-
-Type name: application
-
-Subtype name: dns+cbor-packed
-
-Required parameters: None
-
-Optional parameters: None
-
-Encoding considerations: Must be encoded as using {{-cbor}}. See \[TBD-this-spec\] for details.
-
-Security considerations: See {{security-considerations}} of this draft
-
-Interoperability considerations: TBD
-
-Published specification: \[TBD-this-spec\]
-
-Applications that use this media type: TBD DNS over X systems
-
-Fragment Identifier Considerations: TBD
-
-Additional information:
-
-&nbsp;&nbsp;&nbsp;Deprecated alias names for this type: N/A
-
-&nbsp;&nbsp;&nbsp;Magic number(s): N/A
-
-&nbsp;&nbsp;&nbsp;File extension(s): dnsc
-
-&nbsp;&nbsp;&nbsp;Macintosh file type code(s): none
-
-Person & email address to contact for further information:
-   Martine S. Lenders <m.lenders@fu-berlin.de>
-
-Intended usage: COMMON
-
-Restrictions on Usage: None?
-
-Author: Martine S. Lenders <m.lenders@fu-berlin.de>
-
-Change controller: Martine S. Lenders <m.lenders@fu-berlin.de>
-
-Provisional registrations? No
-
 
 ## CoAP Content-Format Registration
 
 IANA is requested to assign CoAP Content-Format ID for the new DNS message media
 types in the "CoAP Content-Formats"
 sub-registry, within the "CoRE Parameters" registry {{-coap}}, corresponding the
-"application/dns+cbor" media types "application/dns+cbor" and "application/dns+cbor-packed""
-specified in {{media-type}}:
+"application/dns+cbor" media type specified in {{media-type}}:
 
 ### "application/dns-cbor"
 
@@ -457,9 +410,9 @@ Id: TBD
 
 Reference: \[TBD-this-spec\]
 
-### "application/dns+cbor-packed"
+### "application/dns+cbor;packed=1"
 
-Media-Type: application/dns+cbor-packed
+Media-Type: application/dns+cbor;packed=1
 
 Encoding: -
 
