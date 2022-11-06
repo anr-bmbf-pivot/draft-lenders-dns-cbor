@@ -5,10 +5,10 @@
 CBOR                                                       M. S. Lenders
 Internet-Draft                                                 FU Berlin
 Intended status: Standards Track                           T. C. Schmidt
-Expires: 27 April 2023                                       HAW Hamburg
+Expires: 10 May 2023                                         HAW Hamburg
                                                              M. Wählisch
                                                                FU Berlin
-                                                         24 October 2022
+                                                         6 November 2022
 
 
      A Concise Binary Object Representation (CBOR) of DNS Messages
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 April 2023.
+   This Internet-Draft will expire on 10 May 2023.
 
 Copyright Notice
 
@@ -85,10 +85,9 @@ Table of Contents
    5.  IANA Considerations
      5.1.  Media Type Registration
        5.1.1.  "application/dns+cbor"
-       5.1.2.  "application/dns+cbor-packed"
      5.2.  CoAP Content-Format Registration
        5.2.1.  "application/dns-cbor"
-       5.2.2.  "application/dns+cbor-packed"
+       5.2.2.  "application/dns+cbor;packed=1"
    6.  References
      6.1.  Normative References
      6.2.  Informative References
@@ -304,12 +303,12 @@ Table of Contents
    [I-D.ietf-cbor-packed], it MAY be used for name and address
    compression in DNS responses.
 
-   A DNS client uses media type "application/dns+cbor-packed" to
+   A DNS client uses media type "application/dns+cbor;packed=1" to
    negotiate (see, e.g., [RFC9110] or [RFC7252], Section 5.5.4) with the
    DNS server if the server supports packed CBOR.  If it does, it MAY
    request the response to be in packed CBOR (media type "applicaton/
-   dns+cbor-packed").  The server then SHOULD reply with the response in
-   packed CBOR.
+   dns+cbor;packed=1").  The server then SHOULD reply with the response
+   in packed CBOR.
 
    The representation of DNS responses in packed CBOR differs, in that
    responses are now represented as a CBOR array of two arrays.  The
@@ -372,7 +371,7 @@ Table of Contents
               ]
             )
 
-         vs. application/dns+cbor-packed (shared and argument table as
+         vs. application/dns+cbor;packed=1 (shared and argument table as
          one) 126 bytes:
 
             [
@@ -381,7 +380,7 @@ Table of Contents
                 "_coap._udp.local" "example.org", 3600, 28, 2
               ],
               [
-                [simple(1), 12, 1],
+                [simple(2), 12, 1],
                 [[simple(3), simple(1)]],
                 [
                   [simple(2), simple(5), 218("ns1.")],
@@ -418,8 +417,8 @@ Table of Contents
 
 5.1.  Media Type Registration
 
-   This document registers two media type for the serialization format
-   of DNS messages in CBOR.  They follow the procedures specified in
+   This document registers a media type for the serialization format of
+   DNS messages in CBOR.  It follows the procedures specified in
    [RFC6838].
 
 5.1.1.  "application/dns+cbor"
@@ -430,55 +429,7 @@ Table of Contents
 
    Required parameters: None
 
-   Optional parameters: None
-
-   Encoding considerations: Must be encoded as using [RFC8949].  See
-   [TBD-this-spec] for details.
-
-   Security considerations: See Section 4 of this draft
-
-   Interoperability considerations: TBD
-
-   Published specification: [TBD-this-spec]
-
-   Applications that use this media type: TBD DNS over X systems
-
-   Fragment Identifier Considerations: TBD
-
-   Additional information:
-
-      Deprecated alias names for this type: N/A
-
-      Magic number(s): N/A
-
-      File extension(s): dnsc
-
-      Macintosh file type code(s): none
-
-   Person & email address to contact for further information: Martine S.
-   Lenders m.lenders@fu-berlin.de (mailto:m.lenders@fu-berlin.de)
-
-   Intended usage: COMMON
-
-   Restrictions on Usage: None?
-
-   Author: Martine S.  Lenders m.lenders@fu-berlin.de
-   (mailto:m.lenders@fu-berlin.de)
-
-   Change controller: Martine S.  Lenders m.lenders@fu-berlin.de
-   (mailto:m.lenders@fu-berlin.de)
-
-   Provisional registrations?  No
-
-5.1.2.  "application/dns+cbor-packed"
-
-   Type name: application
-
-   Subtype name: dns+cbor-packed
-
-   Required parameters: None
-
-   Optional parameters: None
+   Optional parameters: packed
 
    Encoding considerations: Must be encoded as using [RFC8949].  See
    [TBD-this-spec] for details.
@@ -523,8 +474,7 @@ Table of Contents
    IANA is requested to assign CoAP Content-Format ID for the new DNS
    message media types in the "CoAP Content-Formats" sub-registry,
    within the "CoRE Parameters" registry [RFC7252], corresponding the
-   "application/dns+cbor" media types "application/dns+cbor" and
-   "application/dns+cbor-packed"" specified in Section 5.1:
+   "application/dns+cbor" media type specified in Section 5.1:
 
 5.2.1.  "application/dns-cbor"
 
@@ -536,9 +486,9 @@ Table of Contents
 
    Reference: [TBD-this-spec]
 
-5.2.2.  "application/dns+cbor-packed"
+5.2.2.  "application/dns+cbor;packed=1"
 
-   Media-Type: application/dns+cbor-packed
+   Media-Type: application/dns+cbor;packed=1
 
    Encoding: -
 

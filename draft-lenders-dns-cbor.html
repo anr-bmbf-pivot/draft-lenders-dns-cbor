@@ -13,13 +13,13 @@
 the Concise Binary Object Representation  .
 The primary purpose is to keep DNS messages small in constrained networks. 
     " name="description">
-<meta content="xml2rfc 3.15.1" name="generator">
+<meta content="xml2rfc 3.15.2" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="CBOR" name="keyword">
 <meta content="DNS" name="keyword">
 <meta content="draft-lenders-dns-cbor-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.15.1
+  xml2rfc 3.15.2
     Python 3.10.5
     appdirs 1.4.4
     ConfigArgParse 1.5.3
@@ -27,7 +27,6 @@ The primary purpose is to keep DNS messages small in constrained networks.
     html5lib 1.1
     intervaltree 3.1.0
     Jinja2 3.1.2
-    kitchen 1.2.6
     lxml 4.9.1
     MarkupSafe 2.1.1
     pycountry 22.3.5
@@ -35,6 +34,7 @@ The primary purpose is to keep DNS messages small in constrained networks.
     requests 2.27.1
     setuptools 59.4.0
     six 1.16.0
+    wcwidth 0.2.5
 -->
 <link href="draft-lenders-dns-cbor.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1041,11 +1041,11 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">dns+cbor</td>
-<td class="right">October 2022</td>
+<td class="right">November 2022</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lenders, et al.</td>
-<td class="center">Expires 27 April 2023</td>
+<td class="center">Expires 10 May 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1058,12 +1058,12 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-lenders-dns-cbor-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2022-10-24" class="published">24 October 2022</time>
+<time datetime="2022-11-06" class="published">6 November 2022</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-04-27">27 April 2023</time></dd>
+<dd class="expires"><time datetime="2023-05-10">10 May 2023</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1123,7 +1123,7 @@ The primary purpose is to keep DNS messages small in constrained networks.<a hre
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 27 April 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 10 May 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1198,9 +1198,6 @@ The primary purpose is to keep DNS messages small in constrained networks.<a hre
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.1">
                     <p id="section-toc.1-1.5.2.1.2.1.1"><a href="#section-5.1.1" class="auto internal xref">5.1.1</a>.  <a href="#name-application-dnscbor" class="internal xref">"application/dns+cbor"</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.2">
-                    <p id="section-toc.1-1.5.2.1.2.2.1"><a href="#section-5.1.2" class="auto internal xref">5.1.2</a>.  <a href="#name-application-dnscbor-packed" class="internal xref">"application/dns+cbor-packed"</a></p>
-</li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
@@ -1210,7 +1207,7 @@ The primary purpose is to keep DNS messages small in constrained networks.<a hre
                     <p id="section-toc.1-1.5.2.2.2.1.1"><a href="#section-5.2.1" class="auto internal xref">5.2.1</a>.  <a href="#name-application-dns-cbor" class="internal xref">"application/dns-cbor"</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.2">
-                    <p id="section-toc.1-1.5.2.2.2.2.1"><a href="#section-5.2.2" class="auto internal xref">5.2.2</a>.  <a href="#name-application-dnscbor-packed-2" class="internal xref">"application/dns+cbor-packed"</a></p>
+                    <p id="section-toc.1-1.5.2.2.2.2.1"><a href="#section-5.2.2" class="auto internal xref">5.2.2</a>.  <a href="#name-application-dnscborpacked1" class="internal xref">"application/dns+cbor;packed=1"</a></p>
 </li>
                 </ul>
 </li>
@@ -1474,11 +1471,11 @@ dns-response = [sections]
         </h3>
 <p id="section-3.6-1">If both DNS server and client support packed CBOR <span>[<a href="#I-D.ietf-cbor-packed" class="cite xref">I-D.ietf-cbor-packed</a>]</span>, it <span class="bcp14">MAY</span> be used for name and
 address compression in DNS responses.<a href="#section-3.6-1" class="pilcrow">¶</a></p>
-<p id="section-3.6-2">A DNS client uses media type "application/dns+cbor-packed" to negotiate (see, e.g.,
+<p id="section-3.6-2">A DNS client uses media type "application/dns+cbor;packed=1" to negotiate (see, e.g.,
 <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> or <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, Section 5.5.4) with the DNS server if the server supports packed
 CBOR.
 If it does, it <span class="bcp14">MAY</span> request the response to be in packed CBOR (media type
-"applicaton/dns+cbor-packed").
+"applicaton/dns+cbor;packed=1").
 The server then <span class="bcp14">SHOULD</span> reply with the response in packed CBOR.<a href="#section-3.6-2" class="pilcrow">¶</a></p>
 <p id="section-3.6-3">The representation of DNS responses in packed CBOR differs, in that responses are now represented as
 a CBOR array of two arrays.
@@ -1553,7 +1550,7 @@ shared item table, no, e.g., 216(""), just simple(0))<a href="#section-3.6-8.2.1
 </li>
                 </ul>
 <p id="section-3.6-8.2.2.1.4">
-vs. application/dns+cbor-packed (shared and argument table as one) 126 bytes:<a href="#section-3.6-8.2.2.1.4" class="pilcrow">¶</a></p>
+vs. application/dns+cbor;packed=1 (shared and argument table as one) 126 bytes:<a href="#section-3.6-8.2.2.1.4" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-3.6-8.2.2.1.5.1">
                     <div class="alignLeft art-text artwork" id="section-3.6-8.2.2.1.5.1.1">
@@ -1564,7 +1561,7 @@ vs. application/dns+cbor-packed (shared and argument table as one) 126 bytes:<a
     "_coap._udp.local" "example.org", 3600, 28, 2
   ],
   [
-    [simple(1), 12, 1],
+    [simple(2), 12, 1],
     [[simple(3), simple(1)]],
     [
       [simple(2), simple(5), 218("ns1.")],
@@ -1632,8 +1629,8 @@ vs. application/dns+cbor-packed (shared and argument table as one) 126 bytes:<a
         <h3 id="name-media-type-registration">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-media-type-registration" class="section-name selfRef">Media Type Registration</a>
         </h3>
-<p id="section-5.1-1">This document registers two media type for the serialization format of DNS messages in CBOR. They
-follow the procedures specified in <span>[<a href="#RFC6838" class="cite xref">RFC6838</a>]</span>.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-1">This document registers a media type for the serialization format of DNS messages in CBOR. It
+follows the procedures specified in <span>[<a href="#RFC6838" class="cite xref">RFC6838</a>]</span>.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <div id="applicationdnscbor">
 <section id="section-5.1.1">
           <h4 id="name-application-dnscbor">
@@ -1642,7 +1639,7 @@ follow the procedures specified in <span>[<a href="#RFC6838" class="cite xref">R
 <p id="section-5.1.1-1">Type name: application<a href="#section-5.1.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.1.1-2">Subtype name: dns+cbor<a href="#section-5.1.1-2" class="pilcrow">¶</a></p>
 <p id="section-5.1.1-3">Required parameters: None<a href="#section-5.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-5.1.1-4">Optional parameters: None<a href="#section-5.1.1-4" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-4">Optional parameters: packed<a href="#section-5.1.1-4" class="pilcrow">¶</a></p>
 <p id="section-5.1.1-5">Encoding considerations: Must be encoded as using <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>. See [TBD-this-spec] for details.<a href="#section-5.1.1-5" class="pilcrow">¶</a></p>
 <p id="section-5.1.1-6">Security considerations: See <a href="#security-considerations" class="auto internal xref">Section 4</a> of this draft<a href="#section-5.1.1-6" class="pilcrow">¶</a></p>
 <p id="section-5.1.1-7">Interoperability considerations: TBD<a href="#section-5.1.1-7" class="pilcrow">¶</a></p>
@@ -1663,35 +1660,6 @@ follow the procedures specified in <span>[<a href="#RFC6838" class="cite xref">R
 <p id="section-5.1.1-21">Provisional registrations? No<a href="#section-5.1.1-21" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="applicationdnscbor-packed">
-<section id="section-5.1.2">
-          <h4 id="name-application-dnscbor-packed">
-<a href="#section-5.1.2" class="section-number selfRef">5.1.2. </a><a href="#name-application-dnscbor-packed" class="section-name selfRef">"application/dns+cbor-packed"</a>
-          </h4>
-<p id="section-5.1.2-1">Type name: application<a href="#section-5.1.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-2">Subtype name: dns+cbor-packed<a href="#section-5.1.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-3">Required parameters: None<a href="#section-5.1.2-3" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-4">Optional parameters: None<a href="#section-5.1.2-4" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-5">Encoding considerations: Must be encoded as using <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>. See [TBD-this-spec] for details.<a href="#section-5.1.2-5" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-6">Security considerations: See <a href="#security-considerations" class="auto internal xref">Section 4</a> of this draft<a href="#section-5.1.2-6" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-7">Interoperability considerations: TBD<a href="#section-5.1.2-7" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-8">Published specification: [TBD-this-spec]<a href="#section-5.1.2-8" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-9">Applications that use this media type: TBD DNS over X systems<a href="#section-5.1.2-9" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-10">Fragment Identifier Considerations: TBD<a href="#section-5.1.2-10" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-11">Additional information:<a href="#section-5.1.2-11" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-12">   Deprecated alias names for this type: N/A<a href="#section-5.1.2-12" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-13">   Magic number(s): N/A<a href="#section-5.1.2-13" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-14">   File extension(s): dnsc<a href="#section-5.1.2-14" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-15">   Macintosh file type code(s): none<a href="#section-5.1.2-15" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-16">Person &amp; email address to contact for further information:
-   Martine S. Lenders <a href="mailto:m.lenders@fu-berlin.de">m.lenders@fu-berlin.de</a><a href="#section-5.1.2-16" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-17">Intended usage: COMMON<a href="#section-5.1.2-17" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-18">Restrictions on Usage: None?<a href="#section-5.1.2-18" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-19">Author: Martine S. Lenders <a href="mailto:m.lenders@fu-berlin.de">m.lenders@fu-berlin.de</a><a href="#section-5.1.2-19" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-20">Change controller: Martine S. Lenders <a href="mailto:m.lenders@fu-berlin.de">m.lenders@fu-berlin.de</a><a href="#section-5.1.2-20" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-21">Provisional registrations? No<a href="#section-5.1.2-21" class="pilcrow">¶</a></p>
-</section>
-</div>
 </section>
 </div>
 <div id="coap-content-format-registration">
@@ -1702,8 +1670,7 @@ follow the procedures specified in <span>[<a href="#RFC6838" class="cite xref">R
 <p id="section-5.2-1">IANA is requested to assign CoAP Content-Format ID for the new DNS message media
 types in the "CoAP Content-Formats"
 sub-registry, within the "CoRE Parameters" registry <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, corresponding the
-"application/dns+cbor" media types "application/dns+cbor" and "application/dns+cbor-packed""
-specified in <a href="#media-type" class="auto internal xref">Section 5.1</a>:<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+"application/dns+cbor" media type specified in <a href="#media-type" class="auto internal xref">Section 5.1</a>:<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 <div id="applicationdns-cbor">
 <section id="section-5.2.1">
           <h4 id="name-application-dns-cbor">
@@ -1715,12 +1682,12 @@ specified in <a href="#media-type" class="auto internal xref">Section 5.1</a>:<a
 <p id="section-5.2.1-4">Reference: [TBD-this-spec]<a href="#section-5.2.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="applicationdnscbor-packed-1">
+<div id="applicationdnscborpacked1">
 <section id="section-5.2.2">
-          <h4 id="name-application-dnscbor-packed-2">
-<a href="#section-5.2.2" class="section-number selfRef">5.2.2. </a><a href="#name-application-dnscbor-packed-2" class="section-name selfRef">"application/dns+cbor-packed"</a>
+          <h4 id="name-application-dnscborpacked1">
+<a href="#section-5.2.2" class="section-number selfRef">5.2.2. </a><a href="#name-application-dnscborpacked1" class="section-name selfRef">"application/dns+cbor;packed=1"</a>
           </h4>
-<p id="section-5.2.2-1">Media-Type: application/dns+cbor-packed<a href="#section-5.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.2-1">Media-Type: application/dns+cbor;packed=1<a href="#section-5.2.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.2.2-2">Encoding: -<a href="#section-5.2.2-2" class="pilcrow">¶</a></p>
 <p id="section-5.2.2-3">Id: TBD<a href="#section-5.2.2-3" class="pilcrow">¶</a></p>
 <p id="section-5.2.2-4">Reference: [TBD-this-spec]<a href="#section-5.2.2-4" class="pilcrow">¶</a></p>
