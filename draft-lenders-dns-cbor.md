@@ -137,10 +137,10 @@ If the first element of the resource record is a string, the first element is a 
 name is elided, the name is derived from the question section of the message.
 For responses, the question section is either taken from the query (see {{sec:queries}}) or provided
 with the response see {{sec:responses}}.
-If necessary, the query is derived from the transport context.
+The query may be derived from the transport context.
 If the record type is elided, the record type from the question is assumed.
 If record class is elided, the record class from the question is assumed.
-If a record class is required, the record type MUST also be provided.
+When a record class is required, the record type MUST also be provided.
 
 The byte format of the record data as a byte string follows the wire format as specified in Section
 3.3 {{-dns}} (or other specifications of the respective record type).  Note that this format does
@@ -150,8 +150,8 @@ CBOR byte string.
 If the record data represents a domain name (e.g., for CNAME or PTR records), the record data MAY be
 represented as a text string as specified in {{sec:domain-names}}.
 This can save 1 byte of data, because the byte representation of DNS names requires both an
-additional byte to define the length of the first name component as well as a 0 byte at the end of
-the name.
+additional byte to define the length of the first name component and well as a zero byte at the end
+of the name.
 With CBOR on the other hand only 1 byte is required to define type and length of the text string.
 Likewise, if the record data is purely a numerical value, it can be expressed as either an unsigned
 or negative integer.
@@ -203,7 +203,7 @@ The question section is encoded as a CBOR array containing up to 3 entries:
 
 If the record type is elided, record type `AAAA` as specified in {{-aaaa}} is assumed.
 If the record class is elided, record class `IN` as specified in {{-dns}} is assumed.
-If a record class is required, the record type MUST also be provided.
+When a record class is required, the record type MUST also be provided.
 
 The remainder of the query is either empty or MUST consist of up to two arrays.
 The first array, if present, encodes the authority section of the query as an array of DNS
@@ -255,20 +255,20 @@ response, they MUST be set accordingly and thus included in the response.
 If the flags are not included, the flags are implied to be 0x8000 (everything unset except for the
 QR flag).
 
-If only 1 array is included in the response, then this is the DNS answer section represented as an
+If the response includes only 1 array, this is the DNS answer section represented as an
 array of one or more DNS Resource Records (see {{sec:rr}}).
 
-If 2 arrays are included in the response, then the first entry is a question section and the second
+If the response includes 2 arrays, the first entry is a question section and the second
 entry is an answer section. The question section is encoded like as specified in {{sec:queries}},
 the answer section is represented as an array of one or more DNS Resource Records (see {{sec:rr}}).
 
-If 3 arrays are included, then the first section is a question section, the second an answer
+If the response includes 3 arrays, the first section is a question section, the second an answer
 section, and the third an additional section (TBD: back choice to favor additional section by
 empirical data). Again, the question section is encoded like a DNS query as specified in
 {{sec:queries}} and both answer and additional sections are represented each as an array of one
 or more DNS Resource Records (see {{sec:rr}}).
 
-If 4 arrays are included, then the first section is a question section, the second an answer
+If the response includes 4 arrays, the first section is a question section, the second an answer
 section, the third an authority section, and the fourth an additional section (TBD: back by
 empirical data). They follow the specification of 3 arrays in the answer. The authority section is
 also represented as an array of one or more DNS Resource Records (see {{sec:rr}}).
