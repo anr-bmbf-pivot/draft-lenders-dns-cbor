@@ -572,6 +572,11 @@ This one advertises two local CoAP servers (identified by service name `_coap._u
 
 # Change Log
 
+Since [draft-lenders-dns-cbor-01]
+---------------------------------
+- Update definitions to accommodate for TID and flags, as well as more sections in query
+- Clarify fallback to wire-format
+
 Since [draft-lenders-dns-cbor-00]
 ---------------------------------
 - Add support for DNS transaction IDs
