@@ -28,6 +28,9 @@ author:
     organization: Freie Universität Berlin
     abbrev: FU Berlin
     email: m.lenders@fu-berlin.de
+ -  fullname: Carsten Bormann
+    organization: Universität Bremen TZI
+    email: cabo@tzi.org
  -  fullname: Thomas C. Schmidt
     organization: HAW Hamburg
     email: t.schmidt@haw-hamburg.de
