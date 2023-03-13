@@ -156,7 +156,8 @@ represented as a text string as specified in {{sec:domain-names}}.
 This can save 1 byte of data, because the byte representation of DNS names requires both an
 additional byte to define the length of the first name component and well as a zero byte at the end
 of the name.
-With CBOR on the other hand only 1 byte is required to define type and length of the text string.
+With CBOR on the other hand only 1 byte is required to define type and length of the text string up
+until a string length of 23 characters.
 Likewise, if the record data is purely a numerical value, it can be expressed as either an unsigned
 or negative integer.
 
