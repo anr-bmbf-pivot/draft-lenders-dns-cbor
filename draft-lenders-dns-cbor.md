@@ -122,91 +122,145 @@ domain-name = tstr .regexp "([^.]+\.)*[^.]+"
 ~~~
 {:cddl #fig:domain-name title="Domain Name Definition"}
 
-## DNS Queries {#sec:queries}
+## Standard DNS Resource Records (RRs) {#sec:rr}
 
-DNS queries are encoded as CBOR arrays containing up to 3 entries in the following order: An
-optional transaction ID (as unsigned integer), the name (as text string, see {{sec:domain-names}}),
-an optional record type (as unsigned integer), and an optional record class (as unsigned integer).
+DNS resource records are encoded either in their binary form as a byte string or as CBOR arrays
+containing 2 to 5 entries in the following order:
 
-If the transaction ID is elided, the value 0 is assumed.
-It MUST be included and set to an unpredictable value less than $2^{32}$, if the DNS
-transport can not ensure the prevention of DNS response spoofing.
-An example for such a transport is unencrypted DoC (see {{-doc}}, Section 6).
+1. An optional name (as text string, see {{sec:domain-names}}),
+2. A TTL (as unsigned integer),
+3. An optional record type (as unsigned integer),
+4. An optional record class (as unsigned integer), and lastly
+5. A record data entry (as unsigned integer, negative integer, byte string, or text string).
 
-If the record type is elided, record type `AAAA` as specified in {{-aaaa}} is assumed.
-If the record class is elided, record class `IN` as specified in {{-dns}} is assumed.
+If the first element of the resource record is a string, the first element is a name.  If the
+name is elided, the name is derived from the question section of the message.
+For responses, the question section is either taken from the query (see {{sec:queries}}) or provided
+with the response see {{sec:responses}}.
+If necessary, the query is derived from the transport context.
+If the record type is elided, the record type from the question is assumed.
+If record class is elided, the record class from the question is assumed.
 If a record class is required, the record type MUST also be provided.
 
-The representation of a DNS query is defined in {{fig:dns-query}}.
+The byte format of the record data as a byte string follows the wire format as specified in Section
+3.3 {{-dns}} (or other specifications of the respective record type).  Note that this format does
+not include the RDLENGTH field from {{-dns}} as this value is encoded in the length field of the
+CBOR byte string.
+
+If the record data represents a domain name (e.g., for CNAME or PTR records), the record data MAY be
+represented as a text string as specified in {{sec:domain-names}}.
+This can save 1 byte of data, because the byte representation of DNS names requires both an
+additional byte to define the length of the first name component as well as a 0 byte at the end of
+the name.
+With CBOR on the other hand only 1 byte is required to define type and length of the text string.
+Likewise, if the record data is purely a numerical value, it can be expressed as either an unsigned
+or negative integer.
+
+The representation of a DNS resource records is defined in {{fig:dns-rr}}.
 
 ~~~ CDDL
 type-spec = (
   record-type: uint,
   ? record-class: uint,
 )
-dns-question = (
-  ? id: uint,
-  name: domain-name,
-  ? type-spec,
-)
-dns-query = [dns-question]
-~~~
-{:cddl #fig:dns-query title="DNS Query Definition"}
-
-## Standard DNS Resource Records (RRs) {#sec:rr}
-
-DNS resource records are encoded as CBOR arrays containing 2 to 5 entries in the following
-order: An optional name (as text string, see {{sec:domain-names}}), a TTL (as unsigned
-integer), an optional record type (as unsigned integer), an optional record class (as unsigned
-integer), and lastly a record data entry (as byte string or text string).
-
-If the first element of the resource record is a string, the first element is a name.  If the
-name is elided, the name from the query, either derived from transport context or the provided
-question section, see {{sec:responses}}, is assumed.  If the record type is elided, the record
-type from the question is assumed. If record class is elided, the record class from the
-question is assumed. If a record class is required, the record type MUST also be provided.
-
-The byte format of the record data follows the wire format as specified in Section 3.3 {{-dns}}
-(or other specifications of the respective record type).  Note that this format does not
-include the RDLENGTH field from {{-dns}} as this value is encoded in the length field of the
-CBOR byte string.
-
-If and only if the record data represents a domain name (e.g., for CNAME or PTR records), the
-record data MAY be represented as a text string as specified in {{sec:domain-names}}.  This can
-save 1 bytes of data, because the byte representation of DNS names requires both an additional
-byte to define the length of the first name component as well as a 0 byte at the end of the
-name. With CBOR on the other hand only 1 byte is required to define type and length of the text
-string.
-
-The representation of a DNS resource records is defined in {{fig:dns-rr}}.
-
-~~~ CDDL
 rr = (
   ? name: domain-name,
   ttl: uint,
   ? type-spec,
-  rdata: bstr / domain-name,
+  rdata: int / bstr / domain-name,
 )
-dns-rr = [rr]
+dns-rr = [rr] / bstr
 ~~~
 {:cddl #fig:dns-rr title="DNS Resource Record Definition"}
 
+## DNS Queries {#sec:queries}
+
+DNS queries are encoded as CBOR arrays containing up to 5 entries in the following order:
+
+1. An optional transaction ID (as unsigned integer),
+2. An optional flag field (as unsigned integer),
+3. The question section (as array),
+4. An optional authority section (as array), and
+5. An optional additional section (as array)
+
+If the first element of the query is an array, it is the question section, if it is an
+unsigned integer, it is the transaction ID.
+If the transaction ID is present and followed by another unsigned integer, that element is a flag
+field and maps to the header flags in {{-dns}} and the "DNS Header Flags" IANA registry including
+the QR flag and the Opcode.
+It MUST be lesser than 2^16.
+
+If the transaction ID is elided, the value 0 is assumed, same for the flags.
+The transaction ID MUST be included and set to an unpredictable value lesser than 2^32, if the DNS
+transport can not ensure the prevention of DNS response spoofing.
+An example for such a transport is unencrypted DoC (see {{-doc}}, Section 6).
+
+The question section is encoded as a CBOR array containing up to 3 entries:
+
+1. The queried name (as text string, see {{sec:domain-names}}),
+2. An optional record type (as unsigned integer), and
+3. An optional record class (as unsigned integer)
+
+If the record type is elided, record type `AAAA` as specified in {{-aaaa}} is assumed.
+If the record class is elided, record class `IN` as specified in {{-dns}} is assumed.
+If a record class is required, the record type MUST also be provided.
+
+The remainder of the query is either empty or MUST consist of up to two arrays.
+The first array, if present, encodes the authority section of the query as an array of DNS
+resource records (see {{sec:rr}})
+The second array, if present, encodes the additional section of the query as an array of DNS
+resource records (see {{sec:rr}})
+
+The representation of a DNS query is defined in {{fig:dns-query}}.
+
+~~~ CDDL
+query-id-flags = (
+  id: uint .default 0,
+  ? flags: uint .default 0,
+)
+question-section = (
+  name: domain-name,
+  ? type-spec,
+)
+extra-sections = (
+  ? authority: [+ dns-rr],
+  additional: [+ dns-rr],
+)
+query-sections = (
+  ? query-id-flags,
+  [question-section],
+  ? extra-sections,
+)
+dns-query = [query-sections]
+~~~
+{:cddl #fig:dns-query title="DNS Query Definition"}
+
 ## DNS Responses {#sec:responses}
 
-DNS responses are encoded as a CBOR array containing up to 5 entries.
-The first entry MAY be an unsigned integer, representing the transaction ID of the response.
-If CBOR array is a response to a query that contains a transaction ID, it MUST be included and set
-to the corresponding value present in the query.
+DNS responses are encoded as a CBOR array containing up to 7 entries.
+
+1. An optional transaction ID (as unsigned integer),
+2. An optional flag field (as unsigned integer),
+3. An optional question section (as array, encoded as described in {{sec:queries}})
+4. The answer section (as array),
+4. An optional authority section (as array), and
+5. An optional additional section (as array)
+
+If the CBOR array is a response to a query that contains a transaction ID, it MUST be included and
+set to the corresponding value present in the query.
 If it is not included, the transaction ID is implied to be 0.
-The remaining 4 entries are arrays:
 
-If only 1 array is included, then this is the DNS answer section represented as an array of one
-or more DNS Resource Records (see {{sec:rr}}).
+If the CBOR array is a response to a query for which the flags indicate that flags are set in the
+response, they MUST be set accordingly and thus included in the response.
+If the flags are not included, the flags are implied to be 0x8000 (everything unset except for the
+QR flag).
 
-If 2 arrays are included, then the first entry is a question section and the second entry is
-an answer section. The question section is encoded like a DNS query as specified in
-{{sec:queries}}, the answer section is represented as an array of one or more DNS Resource
-Records (see {{sec:rr}}).
+If only 1 array is included in the response, then this is the DNS answer section represented as an
+array of one or more DNS Resource Records (see {{sec:rr}}).
+
+If 2 arrays are included in the response, then the first entry is a question section and the second
+entry is an answer section. The question section is encoded like as specified in {{sec:queries}},
+the answer section is represented as an array of one or more DNS Resource Records (see {{sec:rr}}).
 
 If 3 arrays are included, then the first section is a question section, the second an answer
 section, and the third an additional section (TBD: back choice to favor additional section by
@@ -220,20 +274,20 @@ empirical data). They follow the specification of 3 arrays in the answer. The au
 also represented as an array of one or more DNS Resource Records (see {{sec:rr}}).
 
 ~~~ CDDL
-extra-sections = (
-  ? authority: [+ dns-rr],
-  additional: [+ dns-rr],
+response-id-flags = (
+  id: uint .default 0,
+  ? flags: uint .default 0x8000,
 )
-sections = ((
-  ? id: uint,
+response-sections = ((
+  ? response-id-flags,
   answer: [+ dns-rr],
 ) // (
-  ? id: uint,
-  question: dns-query,
+  ? response-id-flags,
+  question: [question-section],
   answer: [+ dns-rr],
   ? extra-sections,
 ))
-dns-response = [sections]
+dns-response = [response-sections]
 ~~~
 {:cddl #fig:dns-response title="DNS Response Definition"}
 
@@ -434,16 +488,16 @@ A DNS query of the record `AAAA` in class `IN` for name "example.org" is
 represented in CBOR extended diagnostic notation (EDN) (see Section 8 in
 {{-cbor}} and Appendix G in {{-cddl}}) as follows:
 
-    ["example.org"]
+    [["example.org"]]
 
 
 A query of an `A` record for the same name is represented as
 
-    ["example.org", 1]
+    [["example.org", 1]]
 
 A query of `ANY` record for that name is represented as
 
-    ["example.org", 255, 255]
+    [["example.org", 255, 255]]
 
 ## DNS Responses {#sec:response-examples}
 
