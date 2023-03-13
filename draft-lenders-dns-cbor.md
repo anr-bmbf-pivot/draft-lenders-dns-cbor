@@ -107,6 +107,10 @@ DNS query and DNS response are distinguished message types and that the query ca
 the response by the transport protocol of choice.  To define the representation of binary
 objects we use the Concise Data Definition Language (CDDL) {{-cddl}}.
 
+If, for any reason, a DNS message is not representable in the CBOR format specified in this
+document, a fallback to the another DNS message format, e.g., the classic DNS wire format, MUST
+always possible.
+
 ## Domain Name Representation {#sec:domain-names}
 
 Domain names are represented in their commonly known string format (e.g., "example.org", see Section
