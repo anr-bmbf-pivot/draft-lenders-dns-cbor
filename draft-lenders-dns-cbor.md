@@ -109,7 +109,7 @@ objects we use the Concise Data Definition Language (CDDL) {{-cddl}}.
 
 If, for any reason, a DNS message is not representable in the CBOR format specified in this
 document, a fallback to the another DNS message format, e.g., the classic DNS wire format, MUST
-always possible.
+always be possible.
 
 ## Domain Name Representation {#sec:domain-names}
 
@@ -137,11 +137,12 @@ containing 2 to 5 entries in the following order:
 4. An optional record class (as unsigned integer), and lastly
 5. A record data entry (as unsigned integer, negative integer, byte string, or text string).
 
-If the first element of the resource record is a string, the first element is a name.  If the
-name is elided, the name is derived from the question section of the message.
+If the first item of the resource record is a text string, it is its name.
+If the name is elided, the name is derived from the question section of the message.
 For responses, the question section is either taken from the query (see {{sec:queries}}) or provided
 with the response see {{sec:responses}}.
 The query may be derived from the transport context.
+
 If the record type is elided, the record type from the question is assumed.
 If record class is elided, the record class from the question is assumed.
 When a record class is required, the record type MUST also be provided.
@@ -188,9 +189,9 @@ DNS queries are encoded as CBOR arrays containing up to 5 entries in the followi
 4. An optional authority section (as array), and
 5. An optional additional section (as array)
 
-If the first element of the query is an array, it is the question section, if it is an
-unsigned integer, it is the transaction ID.
-If the transaction ID is present and followed by another unsigned integer, that element is a flag
+If the first item of the query is an array, it is the question section, if it is an unsigned
+integer, it is the transaction ID.
+If the transaction ID is present and followed by another unsigned integer, that item is a flag
 field and maps to the header flags in {{-dns}} and the "DNS Header Flags" IANA registry including
 the QR flag and the Opcode.
 It MUST be lesser than 2^16.
@@ -336,8 +337,8 @@ Discussion TBD:
 - For queries, as they are only one question, i.e. at most one value of each at most,
   compression is not necessary.
 - Address and name compression are mostly about affix compression
-  (i.e. straight/inverse referencing) \
-  ⇒ For occasions were value is the affix (e.g., "example.org" in ANY example in
+  (i.e. straight/inverse referencing)<br>
+  ==> For occasions were value is the affix (e.g., "example.org" in ANY example in
   {{sec:response-examples}}) use shared item referencing to argument table to safe bytes (no extra
   shared item table, no, e.g., 216(""), just simple(0))
   - **Example:** Using Basic Packed CBOR ({{-cbor-packed}}, section 3.1):
