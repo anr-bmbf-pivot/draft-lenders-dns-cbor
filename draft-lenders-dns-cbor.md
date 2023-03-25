@@ -342,20 +342,20 @@ Discussion TBD:
   {{sec:response-examples}}) use shared item referencing to argument table to safe bytes (no extra
   shared item table, no, e.g., 216(""), just simple(0))
   - **Example:** Using Basic Packed CBOR ({{-cbor-packed}}, section 3.1):
-    - 131 bytes (Basic Packed CBOR)
+    - 130 bytes (Basic Packed CBOR)
     - 200 bytes (plain CBOR, see {{sec:response-examples}})
     - 194 bytes (wire-format)
 
     >     113(
     >       [
-    >         ["_coap._udp.local", "example.org", 3600, 28, 2],
+    >         ["_coap._udp.local", "example.org", 3600, 28],
     >         [h'20010db800000000000000000000', simple(1)],
     >         [
     >           [simple(1), 12, 1],
     >           [[simple(1), simple(0)]],
     >           [
-    >             [simple(1), simple(4), 217("ns1.")],
-    >             [simple(1), simple(4), 217("ns2.")]
+    >             [simple(1), 2, 217("ns1.")],
+    >             [simple(1), 2, 217("ns2.")]
     >           ],
     >           [
     >             [simple(0), simple(1), simple(3), 6(h'0001')],
@@ -372,14 +372,14 @@ Discussion TBD:
     >     [
     >       [
     >         h'20010db800000000000000000000',
-    >         "_coap._udp.local", "example.org", 3600, 28, 2
+    >         "_coap._udp.local", "example.org", 3600, 28
     >       ],
     >       [
     >         [simple(2), 12, 1],
     >         [[simple(3), simple(1)]],
     >         [
-    >           [simple(2), simple(5), 218("ns1.")],
-    >           [simple(2), simple(5), 218("ns2.")]
+    >           [simple(2), 2, 218("ns1.")],
+    >           [simple(2), 2, 218("ns2.")]
     >         ],
     >         [
     >           [simple(1), simple(3), simple(4), 6(h'0001')],
