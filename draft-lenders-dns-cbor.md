@@ -301,10 +301,12 @@ dns-response = [response-sections]
 
 TBD, do we need special formatting here?
 
-## Name and Address Compression with Packed CBOR
+# Name and Address Compression with Packed CBOR
 
 If both DNS server and client support packed CBOR {{-cbor-packed}}, it MAY be used for name and
 address compression in DNS responses.
+
+## Media Type Negotiation
 
 A DNS client uses media type "application/dns+cbor;packed=1" to negotiate (see, e.g.,
 {{-http-semantics}} or {{-coap}}, Section 5.5.4) with the DNS server if the server supports packed
@@ -313,25 +315,40 @@ If it does, it MAY request the response to be in packed CBOR (media type
 "applicaton/dns+cbor;packed=1").
 The server then SHOULD reply with the response in packed CBOR.
 
+## DNS Representation in Packed CBOR
+
 The representation of DNS responses in packed CBOR differs, in that responses are now represented as
 a CBOR array of two arrays.
 The first array is a packing table that is used both as shared item table and argument table (see
 {{-cbor-packed}}, Section 2.1), the second is the compressed response.
-
-The representation of a packed DNS response is defined in {{fig:packed-cbor}}.
-
-~~~ CDDL
-compr-dns-response = any /TBD; how to express packed CBOR in CDDL?/
-packed-dns-response = [[pack-table], compr-dns-response]
-pack-table = any
-~~~
-{:cddl #fig:packed-cbor title="Definition of DNS messages in packed CBOR"}
 
 If an index in the packing table is referenced with shared item reference ({{-cbor-packed}},
 Section 2.2) a decoder uses the packing table as a shared item table.
 If an index in the packing table is referenced as an argument ({{-cbor-packed}}, Sections 2.3 and
 4), a decoder uses the packing table as an argument table.
 
+## Compression {#sec:pack-compression}
+
+How the compressor constructs the packing table, i.e., how the compression is applied, is out of
+scope of this document. Several potential compression algorithms were evaluated in \[TBD\].
+
+## Discussion
+
+The DNS-specific specification for packed CBOR merges the argument and shared item table into one
+packed table. This differentiates it from the Basic Packed CBOR format specified in
+{{-cbor-packed}}.
+
+In DNS compression only affix compression, i.e. straight/inverse referencing, and shared value
+referencing are needed for DNS compression, but no further functions. Since for those types of
+references, the arguments of the affix compression and the shared values do not collide—shared
+values are just affixes with an empty rump—we only need one table. Using this specific constrained
+for DNS, allows us to save the additional bytes that would be required for the 113 tag and the extra
+array in the Basic Packed CBOR format.
+
+Compression of queries is not specified, as apart from EDNS(0) (_TBD_), they only consist of one
+question most of the time.
+
+<!--
 Discussion TBD:
 
 - For queries, as they are only one question, i.e. at most one value of each at most,
@@ -388,16 +405,11 @@ Discussion TBD:
     >           [218("ns2."), simple(3), simple(4), 6(h'3535')]
     >         ]
     >       ]
-    >     ]
+    >     ] -->
 
-### Table Setup {#sec:pack-table-setup}
+# Comparison to wire format
 
-TBD How to construct the packing table, here's a sketch:
-
-- Find most often used prefix and values
-  - Probably some threshold needed, to prevent, e.g., 1 byte prefixes filling valuable table space
-- Sort descending by number of occurrences and length
-  - Long prefixes should take precedence for index 0 for Tag 6 usage
+TBD: Table comparing DNS wire-format, DNS+CBOR, and DNS+CBOR-packed
 
 # Security Considerations
 
