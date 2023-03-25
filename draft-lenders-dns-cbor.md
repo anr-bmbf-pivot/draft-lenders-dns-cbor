@@ -372,7 +372,7 @@ Discussion TBD:
     >     [
     >       [
     >         h'20010db800000000000000000000',
-    >         "_coap._udp.local" "example.org", 3600, 28, 2
+    >         "_coap._udp.local", "example.org", 3600, 28, 2
     >       ],
     >       [
     >         [simple(2), 12, 1],
