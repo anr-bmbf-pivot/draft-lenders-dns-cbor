@@ -586,6 +586,7 @@ This one advertises two local CoAP servers (identified by service name `_coap._u
 
 Since [draft-lenders-dns-cbor-01]
 ---------------------------------
+- Use MIME type parameter for packed instead of own MIME type
 - Update definitions to accommodate for TID and flags, as well as more sections in query
 - Clarify fallback to wire-format
 
