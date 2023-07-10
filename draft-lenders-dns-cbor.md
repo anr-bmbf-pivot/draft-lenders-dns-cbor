@@ -299,7 +299,8 @@ dns-response = [response-sections]
 
 ## EDNS(0)
 
-TBD, do we need special formatting here?
+TBD, do we need special formatting here? Yes! We'll use tags.
+Other special regcords may be needed as well.
 
 # Name and Address Compression with Packed CBOR
 
