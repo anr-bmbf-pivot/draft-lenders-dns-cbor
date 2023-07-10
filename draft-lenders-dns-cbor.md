@@ -601,6 +601,8 @@ Since [draft-lenders-dns-cbor-00]
 - Name and Address compression utilizing CBOR-packed
 - Minor fixes to CBOR EDN and CDDL
 
+[draft-lenders-dns-cbor-02]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-02
+[draft-lenders-dns-cbor-01]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-01
 [draft-lenders-dns-cbor-00]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-00
 
 # Acknowledgments
