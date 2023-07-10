@@ -585,6 +585,10 @@ This one advertises two local CoAP servers (identified by service name `_coap._u
 
 # Change Log
 
+Since [draft-lenders-dns-cbor-02]
+---------------------------------
+- Add Discussion section and note on compression
+
 Since [draft-lenders-dns-cbor-01]
 ---------------------------------
 - Use MIME type parameter for packed instead of own MIME type
