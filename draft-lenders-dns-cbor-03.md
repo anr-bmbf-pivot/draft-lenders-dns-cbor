@@ -340,14 +340,14 @@ packed table. This differentiates it from the Basic Packed CBOR format specified
 {{-cbor-packed}}.
 
 In DNS compression only affix compression, i.e. straight/inverse referencing, and shared value
-referencing are needed for DNS compression, but no further functions. Since for those types of
-references, the arguments of the affix compression and the shared values do not collide—shared
-values are just affixes with an empty rump—we only need one table. Using this specific constrained
-for DNS, allows us to save the additional bytes that would be required for the 113 tag and the extra
-array in the Basic Packed CBOR format.
+referencing are needed and no further functions. Since for those types of references, the arguments
+of the affix compression and the shared values do not collide—shared values are just affixes with an
+empty rump—we only need one table. Using this specific constrained for DNS, allows us to save the
+additional bytes that would be required for the 113 tag and the extra array in the Basic Packed CBOR
+format.
 
-Compression of queries is not specified, as apart from EDNS(0) (_TBD_), they only consist of one
-question most of the time.
+Packed compression of queries is not specified, as apart from EDNS(0) (_TBD_), they only consist of
+one question most of the time.
 
 <!--
 Discussion TBD:
