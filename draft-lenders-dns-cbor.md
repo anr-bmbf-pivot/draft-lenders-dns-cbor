@@ -34,10 +34,14 @@ author:
  -  fullname: Thomas C. Schmidt
     organization: HAW Hamburg
     email: t.schmidt@haw-hamburg.de
- -  fullname: Matthias Wählisch
-    organization: Freie Universität Berlin
-    abbrev: FU Berlin
-    email: m.waehlisch@fu-berlin.de
+ -  name: Matthias Wählisch
+    org: TUD Dresden University of Technology
+    abbrev: TU Dresden
+    street: Helmholtzstr. 10
+    city: Dresden
+    code: D-01069
+    country: Germany
+    email: m.waehlisch@tu-dresden.de
 
 normative:
   RFC1035: dns
