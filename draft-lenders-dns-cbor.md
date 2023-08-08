@@ -201,7 +201,7 @@ opt-attr-val = (
 opt = [opt-attr-val]
 opt-rr = (
   ? udp-payload-size: uint .default 512,
-  rdata: [* opt],
+  options: [* opt],
   ? opt-rcode-v-flags,
 )
 ~~~
