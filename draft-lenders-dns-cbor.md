@@ -183,7 +183,7 @@ rr = (
 
 ### EDNS OPT Pseudo-RRs
 
-TBD
+TBD; reverse extended flags to get MSB-defined DO into LSB?
 
 ~~~ CDDL
 opt-rcode-v = (
