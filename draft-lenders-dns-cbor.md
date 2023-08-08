@@ -167,23 +167,25 @@ until a string length of 23 characters.
 Likewise, if the record data is purely a numerical value, it can be expressed as either an unsigned
 or negative integer.
 
-### EDNS OPT Pseudo-RRs
-
-TBD
-
-### Other special RRs
-Further special records, e.g., TSIG can be defined in other specifications and are out of scope of
-this document.
-
-### RR Definition
-
-The representation of a DNS resource records is defined in {{fig:dns-rr}}.
-
 ~~~ CDDL
 type-spec = (
   record-type: uint,
   ? record-class: uint,
 )
+rr = (
+  ? name: domain-name,
+  ttl: uint,
+  ? type-spec,
+  rdata: int / bstr / domain-name,
+)
+~~~
+{:cddl #fig:dns-standard-rr title="DNS Standard Resource Record Definition"}
+
+### EDNS OPT Pseudo-RRs
+
+TBD
+
+~~~ CDDL
 opt-rcode-v = (
   rcode: uint,
   ? version: uint,
@@ -197,12 +199,18 @@ opt = (
   rdata: bstr,
   ? opt-rcode-v-flags,
 )
-rr = (
-  ? name: domain-name,
-  ttl: uint,
-  ? type-spec,
-  rdata: int / bstr / domain-name,
-)
+~~~
+{:cddl #fig:dns-opt-rr title="DNS OPT Resource Record Definition"}
+
+### Other special RRs
+Further special records, e.g., TSIG can be defined in other specifications and are out of scope of
+this document.
+
+### RR Definition
+
+The representation of a DNS resource records is defined in {{fig:dns-rr}}.
+
+~~~ CDDL
 dns-rr = [rr] / #6.20([opt]) / bstr
 ~~~
 {:cddl #fig:dns-rr title="DNS Resource Record Definition"}
