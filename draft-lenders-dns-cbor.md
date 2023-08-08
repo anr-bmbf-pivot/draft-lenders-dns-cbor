@@ -194,9 +194,14 @@ opt-rcode-v-flags = (
   flags: uint,
   ? opt-rcode-v,
 )
-opt = (
+opt-attr-val = (
+  ocode: uint,
+  odata: bstr,
+)
+opt = [opt-attr-val]
+opt-rr = (
   ? udp-payload-size: uint .default 512,
-  rdata: bstr,
+  rdata: [* opt],
   ? opt-rcode-v-flags,
 )
 ~~~
@@ -211,7 +216,7 @@ this document.
 The representation of a DNS resource records is defined in {{fig:dns-rr}}.
 
 ~~~ CDDL
-dns-rr = [rr] / #6.20([opt]) / bstr
+dns-rr = [rr] / #6.20([opt-rr]) / bstr
 ~~~
 {:cddl #fig:dns-rr title="DNS Resource Record Definition"}
 
