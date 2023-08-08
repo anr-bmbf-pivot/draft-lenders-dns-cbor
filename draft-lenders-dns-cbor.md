@@ -130,7 +130,8 @@ domain-name = tstr .regexp "([^.]+\.)*[^.]+"
 ~~~
 {:cddl #fig:domain-name title="Domain Name Definition"}
 
-## Standard DNS Resource Records (RRs) {#sec:rr}
+## DNS Resource Records (RRs) {#sec:rr}
+### Standard RRs
 
 DNS resource records are encoded either in their binary form as a byte string or as CBOR arrays
 containing 2 to 5 entries in the following order:
@@ -166,6 +167,16 @@ until a string length of 23 characters.
 Likewise, if the record data is purely a numerical value, it can be expressed as either an unsigned
 or negative integer.
 
+### EDNS OPT Pseudo-RRs
+
+TBD
+
+### Other special RRs
+Further special records, e.g., TSIG can be defined in other specifications and are out of scope of
+this document.
+
+### RR Definition
+
 The representation of a DNS resource records is defined in {{fig:dns-rr}}.
 
 ~~~ CDDL
@@ -173,13 +184,26 @@ type-spec = (
   record-type: uint,
   ? record-class: uint,
 )
+opt-rcode-v = (
+  rcode: uint,
+  ? version: uint,
+)
+opt-rcode-v-flags = (
+  flags: uint,
+  ? opt-rcode-v,
+)
+opt = (
+  ? udp-payload-size: uint .default 512,
+  rdata: bstr,
+  ? opt-rcode-v-flags,
+)
 rr = (
   ? name: domain-name,
   ttl: uint,
   ? type-spec,
   rdata: int / bstr / domain-name,
 )
-dns-rr = [rr] / bstr
+dns-rr = [rr] / #6.20([opt]) / bstr
 ~~~
 {:cddl #fig:dns-rr title="DNS Resource Record Definition"}
 
@@ -300,11 +324,6 @@ response-sections = ((
 dns-response = [response-sections]
 ~~~
 {:cddl #fig:dns-response title="DNS Response Definition"}
-
-## EDNS(0)
-
-TBD, do we need special formatting here? Yes! We'll use tags.
-Other special regcords may be needed as well.
 
 # Name and Address Compression with Packed CBOR
 
