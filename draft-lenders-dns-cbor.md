@@ -187,11 +187,11 @@ TBD
 
 ~~~ CDDL
 opt-rcode-v = (
-  rcode: uint,
-  ? version: uint,
+  rcode: uint .default 0,
+  ? version: uint .default 0,
 )
 opt-rcode-v-flags = (
-  flags: uint,
+  flags: uint .default 0,
   ? opt-rcode-v,
 )
 opt-attr-val = (
