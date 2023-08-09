@@ -21,3 +21,4 @@ draft-lenders-dns-cbor.xml
 package-lock.json
 report.xml
 !requirements.txt
+sourcecode/

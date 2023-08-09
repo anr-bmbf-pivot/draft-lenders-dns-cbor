@@ -123,10 +123,10 @@ document, domain names remain case-insensitive as specified in {{-dns}}.
 
 The representation of a domain name is defined in {{fig:domain-name}}.
 
-{:cddl: artwork-align="center"}
+{:cddl: artwork-align="center" sourcecode-name="dns-cbor.cddl"}
 
-~~~ CDDL
-domain-name = tstr .regexp "([^.]+\.)*[^.]+"
+~~~ cddl
+domain-name = tstr .regexp "([^.]+[.])*[^.]+"
 ~~~
 {:cddl #fig:domain-name title="Domain Name Definition"}
 
@@ -167,7 +167,7 @@ until a string length of 23 characters.
 Likewise, if the record data is purely a numerical value, it can be expressed as either an unsigned
 or negative integer.
 
-~~~ CDDL
+~~~ cddl
 type-spec = (
   record-type: uint,
   ? record-class: uint,
@@ -185,7 +185,7 @@ rr = (
 
 TBD; reverse extended flags to get MSB-defined DO into LSB?
 
-~~~ CDDL
+~~~ cddl
 opt-rcode-v = (
   rcode: uint .default 0,
   ? version: uint .default 0,
@@ -215,7 +215,7 @@ this document.
 
 The representation of a DNS resource records is defined in {{fig:dns-rr}}.
 
-~~~ CDDL
+~~~ cddl
 dns-rr = [rr] / #6.20([opt-rr]) / bstr
 ~~~
 {:cddl #fig:dns-rr title="DNS Resource Record Definition"}
@@ -260,7 +260,7 @@ resource records (see {{sec:rr}})
 
 The representation of a DNS query is defined in {{fig:dns-query}}.
 
-~~~ CDDL
+~~~ cddl
 query-id-flags = (
   id: uint .default 0,
   ? flags: uint .default 0,
@@ -307,7 +307,7 @@ array of one or more DNS Resource Records (see {{sec:rr}}).
 
 If the response includes more than 2 arrays, the first entry may be the question section, identified
 by not being an array of arrays. If it is present, it is followed by the answer section. The
-question section is encoded like as specified in {{sec:queries}.
+question section is encoded like as specified in {{sec:queries}}.
 
 If the answer section is followed by 1 additional array, it is the additional section (TBD:
 back choice to favor additional section by empirical data). Like the answer section, the additional
@@ -318,7 +318,7 @@ the second the additional section (TBD: back choice to favor additional section 
 The authority section is also represented as an array of one or more DNS Resource Records (see
 {{sec:rr}}).
 
-~~~ CDDL
+~~~ cddl
 response-id-flags = (
   id: uint .default 0,
   ? flags: uint .default 0x8000,
