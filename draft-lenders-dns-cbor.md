@@ -172,12 +172,12 @@ type-spec = (
   record-type: uint,
   ? record-class: uint,
 )
-rr = (
+rr = [
   ? name: domain-name,
   ttl: uint,
   ? type-spec,
   rdata: int / bstr / domain-name,
-)
+]
 ~~~
 {:cddl #fig:dns-standard-rr title="DNS Standard Resource Record Definition"}
 
@@ -199,11 +199,11 @@ opt-attr-val = (
   odata: bstr,
 )
 opt = [opt-attr-val]
-opt-rr = (
+opt-rr = [
   ? udp-payload-size: uint .default 512,
   options: [* opt],
   ? opt-rcode-v-flags,
-)
+]
 ~~~
 {:cddl #fig:dns-opt-rr title="DNS OPT Resource Record Definition"}
 
@@ -216,7 +216,7 @@ this document.
 The representation of a DNS resource records is defined in {{fig:dns-rr}}.
 
 ~~~ cddl
-dns-rr = [rr] / #6.20([opt-rr]) / bstr
+dns-rr = rr / #6.20(opt-rr) / bstr
 ~~~
 {:cddl #fig:dns-rr title="DNS Resource Record Definition"}
 
@@ -265,20 +265,19 @@ query-id-flags = (
   id: uint .default 0,
   ? flags: uint .default 0,
 )
-question-section = (
+question-section = [
   name: domain-name,
   ? type-spec,
-)
+]
 extra-sections = (
   ? authority: [+ dns-rr],
   additional: [+ dns-rr],
 )
-query-sections = (
+dns-query = [
   ? query-id-flags,
-  [question-section],
+  question-section,
   ? extra-sections,
-)
-dns-query = [query-sections]
+]
 ~~~
 {:cddl #fig:dns-query title="DNS Query Definition"}
 
@@ -323,13 +322,12 @@ response-id-flags = (
   id: uint .default 0,
   ? flags: uint .default 0x8000,
 )
-response-sections = (
+dns-response = [
   ? response-id-flags,
-  ? question: [question-section],
-  answer: [+ dns-rr],
+  ? question-section,
+  answer-section: [+ dns-rr],
   ? extra-sections,
-)
-dns-response = [response-sections]
+]
 ~~~
 {:cddl #fig:dns-response title="DNS Response Definition"}
 
