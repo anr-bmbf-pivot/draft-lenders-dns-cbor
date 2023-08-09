@@ -10,3 +10,8 @@ else
 	git clone -q --depth 10 $(CLONE_ARGS) \
 	    -b main https://github.com/martinthomson/i-d-template $(LIBDIR)
 endif
+
+
+sourcecode: draft-lenders-dns-cbor.xml
+	rm -rf sourcecode.ba?
+	kramdown-rfc-extract-sourcecode -tfiles $<
