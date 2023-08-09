@@ -305,35 +305,30 @@ QR flag).
 If the response includes only 1 array, this is the DNS answer section represented as an
 array of one or more DNS Resource Records (see {{sec:rr}}).
 
-If the response includes 2 arrays, the first entry is a question section and the second
-entry is an answer section. The question section is encoded like as specified in {{sec:queries}},
-the answer section is represented as an array of one or more DNS Resource Records (see {{sec:rr}}).
+If the response includes more than 2 arrays, the first entry may be the question section, identified
+by not being an array of arrays. If it is present, it is followed by the answer section. The
+question section is encoded like as specified in {{sec:queries}.
 
-If the response includes 3 arrays, the first section is a question section, the second an answer
-section, and the third an additional section (TBD: back choice to favor additional section by
-empirical data). Again, the question section is encoded like a DNS query as specified in
-{{sec:queries}} and both answer and additional sections are represented each as an array of one
-or more DNS Resource Records (see {{sec:rr}}).
+If the answer section is followed by 1 additional array, it is the additional section (TBD:
+back choice to favor additional section by empirical data). Like the answer section, the additional
+sections is represented as an array of one or more DNS Resource Records (see {{sec:rr}}).
 
-If the response includes 4 arrays, the first section is a question section, the second an answer
-section, the third an authority section, and the fourth an additional section (TBD: back by
-empirical data). They follow the specification of 3 arrays in the answer. The authority section is
-also represented as an array of one or more DNS Resource Records (see {{sec:rr}}).
+If the answer section is followed by 2 additional arrays, the first is the authority section, and
+the second the additional section (TBD: back choice to favor additional section by empirical data).
+The authority section is also represented as an array of one or more DNS Resource Records (see
+{{sec:rr}}).
 
 ~~~ CDDL
 response-id-flags = (
   id: uint .default 0,
   ? flags: uint .default 0x8000,
 )
-response-sections = ((
+response-sections = (
   ? response-id-flags,
-  answer: [+ dns-rr],
-) // (
-  ? response-id-flags,
-  question: [question-section],
+  ? question: [question-section],
   answer: [+ dns-rr],
   ? extra-sections,
-))
+)
 dns-response = [response-sections]
 ~~~
 {:cddl #fig:dns-response title="DNS Response Definition"}
