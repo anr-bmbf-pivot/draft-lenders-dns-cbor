@@ -123,7 +123,7 @@ document, domain names remain case-insensitive as specified in {{-dns}}.
 
 The representation of a domain name is defined in {{fig:domain-name}}.
 
-{:cddl: artwork-align="center"}
+{:cddl: artwork-align="center" sourcecode-name="dns-cbor.cddl"}
 
 ~~~ cddl
 domain-name = tstr .regexp "([^.]+\.)*[^.]+"
