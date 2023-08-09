@@ -354,9 +354,9 @@ The server then SHOULD reply with the response in packed CBOR.
 
 ## DNS Representation in Packed CBOR
 
-The representation of DNS responses in packed CBOR has the same semantics as for tag 113
+The representation of DNS responses in packed CBOR has the same semantics as for tag TBD113
 ({{-cbor-packed}}, Section 3.1) with the rump being the compressed response.
-The difference to {{-cbor-packed}} is that tag 113 to the array is OPTIONAL.
+The difference to {{-cbor-packed}} is that tag TBD113 is OPTIONAL.
 
 Compression of queries is not specified, as apart from EDNS options (see Section {{sec:edns}}), they
 only consist of one question most of the time.
