@@ -181,7 +181,7 @@ rr = (
 ~~~
 {:cddl #fig:dns-standard-rr title="DNS Standard Resource Record Definition"}
 
-### EDNS OPT Pseudo-RRs
+### EDNS OPT Pseudo-RRs {#sec:edns}
 
 TBD; reverse extended flags to get MSB-defined DO into LSB?
 
@@ -354,36 +354,17 @@ The server then SHOULD reply with the response in packed CBOR.
 
 ## DNS Representation in Packed CBOR
 
-The representation of DNS responses in packed CBOR differs, in that responses are now represented as
-a CBOR array of two arrays.
-The first array is a packing table that is used both as shared item table and argument table (see
-{{-cbor-packed}}, Section 2.1), the second is the compressed response.
+The representation of DNS responses in packed CBOR has the same semantics as for tag 113
+({{-cbor-packed}}, Section 3.1) with the rump being the compressed response.
+The difference to {{-cbor-packed}} is that tag 113 to the array is OPTIONAL.
 
-If an index in the packing table is referenced with shared item reference ({{-cbor-packed}},
-Section 2.2) a decoder uses the packing table as a shared item table.
-If an index in the packing table is referenced as an argument ({{-cbor-packed}}, Sections 2.3 and
-4), a decoder uses the packing table as an argument table.
+Compression of queries is not specified, as apart from EDNS options (see Section {{sec:edns}}), they
+only consist of one question most of the time.
 
 ## Compression {#sec:pack-compression}
 
 How the compressor constructs the packing table, i.e., how the compression is applied, is out of
 scope of this document. Several potential compression algorithms were evaluated in \[TBD\].
-
-## Discussion
-
-The DNS-specific specification for packed CBOR merges the argument and shared item table into one
-packed table. This differentiates it from the Basic Packed CBOR format specified in
-{{-cbor-packed}}.
-
-In DNS compression only affix compression, i.e. straight/inverse referencing, and shared value
-referencing are needed for DNS compression, but no further functions. Since for those types of
-references, the arguments of the affix compression and the shared values do not collide—shared
-values are just affixes with an empty rump—we only need one table. Using this specific constrained
-for DNS, allows us to save the additional bytes that would be required for the 113 tag and the extra
-array in the Basic Packed CBOR format.
-
-Compression of queries is not specified, as apart from EDNS(0) (_TBD_), they only consist of one
-question most of the time.
 
 <!--
 Discussion TBD:
