@@ -131,6 +131,7 @@ domain-name = tstr .regexp "([^.]+[.])*[^.]+"
 {:cddl #fig:domain-name title="Domain Name Definition"}
 
 ## DNS Resource Records (RRs) {#sec:rr}
+
 ### Standard RRs
 
 DNS resource records are encoded either in their binary form as a byte string or as CBOR arrays
