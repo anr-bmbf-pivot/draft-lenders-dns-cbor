@@ -46,6 +46,7 @@ author:
 normative:
   RFC1035: dns
   RFC3596: aaaa
+  RFC6891: edns
   RFC7252: coap
   RFC8610: cddl
   RFC8949: cbor
@@ -111,6 +112,11 @@ DNS query and DNS response are distinguished message types and that the query ca
 the response by the transport protocol of choice.  To define the representation of binary
 objects we use the Concise Data Definition Language (CDDL) {{-cddl}}.
 
+~~~ cddl
+dns-message = dns-query / dns-response
+~~~
+{:cddl #fig:dns-msg title="This document defines both DNS Queries and Responses in CDDL"}
+
 If, for any reason, a DNS message is not representable in the CBOR format specified in this
 document, a fallback to the another DNS message format, e.g., the classic DNS wire format, MUST
 always be possible.
@@ -130,12 +136,27 @@ domain-name = tstr .regexp "([^.]+[.])*[^.]+"
 ~~~
 {:cddl #fig:domain-name title="Domain Name Definition"}
 
-## DNS Resource Records (RRs) {#sec:rr}
+## DNS Resource Records {#sec:rr}
+
+This document specifies the representation of both standard DNS resource records (RRs, see {{-dns}})
+and EDNS option pseudo-RRs (see {{-edns}}).
+If for any reason, a resource record can not be represented in the given formats, they can be
+represented in their binary wire-format form, as a byte string.
+
+Further special records, e.g., TSIG can be defined in follow-up specifications and are out of scope
+of this document.
+
+The representation of a DNS resource records is defined in {{fig:dns-rr}}.
+
+~~~ cddl
+dns-rr = rr / #6.20(opt-rr) / bstr
+~~~
+{:cddl #fig:dns-rr title="DNS Resource Record Definition"}
 
 ### Standard RRs
 
-DNS resource records are encoded either in their binary form as a byte string or as CBOR arrays
-containing 2 to 5 entries in the following order:
+Standard DNS resource records are encoded as CBOR arrays containing 2 to 5 entries in the following
+order:
 
 1. An optional name (as text string, see {{sec:domain-names}}),
 2. A TTL (as unsigned integer),
@@ -207,19 +228,6 @@ opt-rr = [
 ]
 ~~~
 {:cddl #fig:dns-opt-rr title="DNS OPT Resource Record Definition"}
-
-### Other special RRs
-Further special records, e.g., TSIG can be defined in other specifications and are out of scope of
-this document.
-
-### RR Definition
-
-The representation of a DNS resource records is defined in {{fig:dns-rr}}.
-
-~~~ cddl
-dns-rr = rr / #6.20(opt-rr) / bstr
-~~~
-{:cddl #fig:dns-rr title="DNS Resource Record Definition"}
 
 ## DNS Queries {#sec:queries}
 
