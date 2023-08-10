@@ -306,7 +306,7 @@ array of one or more DNS Resource Records (see {{sec:rr}}).
 
 If the response includes more than 2 arrays, the first entry may be the question section, identified
 by not being an array of arrays. If it is present, it is followed by the answer section. The
-question section is encoded like as specified in {{sec:queries}}.
+question section is encoded as specified in {{sec:queries}}.
 
 If the answer section is followed by 1 additional array, it is the additional section (TBD:
 back choice to favor additional section by empirical data). Like the answer section, the additional
