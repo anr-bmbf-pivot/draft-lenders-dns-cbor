@@ -233,23 +233,21 @@ opt-rr = [
 
 DNS queries are encoded as CBOR arrays containing up to 5 entries in the following order:
 
-1. An optional transaction ID (as unsigned integer),
-2. An optional flag field (as unsigned integer),
-3. The question section (as array),
-4. An optional authority section (as array), and
-5. An optional additional section (as array)
+1. An optional flag field (as unsigned integer),
+2. The question section (as array),
+3. An optional authority section (as array), and
+4. An optional additional section (as array)
 
 If the first item of the query is an array, it is the question section, if it is an unsigned
-integer, it is the transaction ID.
-If the transaction ID is present and followed by another unsigned integer, that item is a flag
-field and maps to the header flags in {{-dns}} and the "DNS Header Flags" IANA registry including
-the QR flag and the Opcode.
+integer, it is as flag field and maps to the header flags in {{-dns}} and the "DNS Header Flags"
+IANA registry including the QR flag and the Opcode.
 It MUST be lesser than 2^16.
 
-If the transaction ID is elided, the value 0 is assumed, same for the flags.
-The transaction ID MUST be included and set to an unpredictable value lesser than 2^32, if the DNS
-transport can not ensure the prevention of DNS response spoofing.
-An example for such a transport is unencrypted DoC (see {{-doc}}, Section 6).
+If the flags are elided, the value 0 is assumed.
+
+This specification assumes that the DNS messages are sent over a transport that can map the queries
+to their responses, e.g., DNS over HTTPS {{-doh}} or DNS over CoAP {{-doc}}.
+As a consequence, the DNS transaction ID is always elided and the value 0 is assumed.
 
 The question section is encoded as a CBOR array containing up to 3 entries:
 
@@ -270,10 +268,6 @@ resource records (see {{sec:rr}})
 The representation of a DNS query is defined in {{fig:dns-query}}.
 
 ~~~ cddl
-query-id-flags = (
-  id: uint .default 0,
-  ? flags: uint .default 0,
-)
 question-section = [
   name: domain-name,
   ? type-spec,
@@ -283,7 +277,7 @@ extra-sections = (
   additional: [+ dns-rr],
 )
 dns-query = [
-  ? query-id-flags,
+  ? flags: uint .default 0x0000,
   question-section,
   ? extra-sections,
 ]
@@ -294,16 +288,13 @@ dns-query = [
 
 DNS responses are encoded as a CBOR array containing up to 7 entries.
 
-1. An optional transaction ID (as unsigned integer),
-2. An optional flag field (as unsigned integer),
-3. An optional question section (as array, encoded as described in {{sec:queries}})
-4. The answer section (as array),
+1. An optional flag field (as unsigned integer),
+2. An optional question section (as array, encoded as described in {{sec:queries}})
+3. The answer section (as array),
 4. An optional authority section (as array), and
 5. An optional additional section (as array)
 
-If the CBOR array is a response to a query that contains a transaction ID, it MUST be included and
-set to the corresponding value present in the query.
-If it is not included, the transaction ID is implied to be 0.
+As for queries, the DNS transaction ID is elided and implied to be 0.
 
 If the CBOR array is a response to a query for which the flags indicate that flags are set in the
 response, they MUST be set accordingly and thus included in the response.
@@ -327,12 +318,8 @@ The authority section is also represented as an array of one or more DNS Resourc
 {{sec:rr}}).
 
 ~~~ cddl
-response-id-flags = (
-  id: uint .default 0,
-  ? flags: uint .default 0x8000,
-)
 dns-response = [
-  ? response-id-flags,
+  ? flags: uint .default 0x8000,
   ? question-section,
   answer-section: [+ dns-rr],
   ? extra-sections,
