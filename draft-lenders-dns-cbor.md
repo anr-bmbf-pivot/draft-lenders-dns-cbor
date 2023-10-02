@@ -218,9 +218,9 @@ Name and record type can be elided as they are always "." and OPT (41), respecti
 The UDP payload size may be the first element as an unsigned integer in the array but it can be
 elided if it defaults to 512, the maximum allowable size for DNS over UDP {{-edns}}.
 
-The next element in the array is an array of the options, which are represented in turn by an array
-consisting of two elements, an unsigned integer, the option code, followed by a byte string, the
-option data.
+The next element is an array of the options, which are represented two elements each, an unsigned
+integer, the option code, followed by a byte string, the option data.
+Multiple options alternate between unsigned integer and byte string within the array.
 
 After that, up to three unsigned integers are following.
 The first being the extended flags as unsigned integer (implied to be 0 if elided),
@@ -240,10 +240,10 @@ opt-rr = [
   options: [* opt],
   ? opt-rcode-v-flags,
 ]
-opt = [
+opt = (
   ocode: uint,
   odata: bstr,
-]
+)
 opt-rcode-v-flags = (
   flags: uint .default 0,
   ? opt-rcode-v,
