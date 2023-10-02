@@ -25,9 +25,13 @@ venue:
 
 author:
  -  fullname: Martine Sophie Lenders
-    organization: Freie Universität Berlin
-    abbrev: FU Berlin
-    email: m.lenders@fu-berlin.de
+    org: TUD Dresden University of Technology
+    abbrev: TU Dresden
+    street: Helmholtzstr. 10
+    city: Dresden
+    code: D-01069
+    country: Germany
+    email: martine.lenders@tu-dresden.de
  -  fullname: Carsten Bormann
     organization: Universität Bremen TZI
     email: cabo@tzi.org
