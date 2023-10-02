@@ -373,8 +373,8 @@ The representation of DNS responses in packed CBOR has the same semantics as for
 ({{-cbor-packed}}, Section 3.1) with the rump being the compressed response.
 The difference to {{-cbor-packed}} is that tag TBD113 is OPTIONAL.
 
-Compression of queries is not specified, as apart from EDNS options (see Section {{sec:edns}}), they
-only consist of one question most of the time.
+Packed compression of queries is not specified, as apart from EDNS(0) (see {{sec:edns}}), they only
+consist of one question most of the time.
 
 ## Compression {#sec:pack-compression}
 
