@@ -154,7 +154,7 @@ of this document.
 The representation of a DNS resource records is defined in {{fig:dns-rr}}.
 
 ~~~ cddl
-dns-rr = rr / #6.20(opt-rr) / bstr
+dns-rr = rr / #6.141(opt-rr) / bstr
 ~~~
 {:cddl #fig:dns-rr title="DNS Resource Record Definition"}
 
@@ -211,7 +211,7 @@ rr = [
 ### EDNS OPT Pseudo-RRs {#sec:edns}
 
 EDNS OPT Pseudo-RRs are represented as a CBOR array.
-To distinguish them from normal standard RRs, they are marked with tag TBD20.
+To distinguish them from normal standard RRs, they are marked with tag TBD141.
 
 Name and record type can be elided as they are always "." and OPT (41), respectively {{-edns}}.
 
@@ -535,7 +535,7 @@ In the registry "{{cbor-tags (CBOR Tags)<IANA.cbor-tags}}" {{IANA.cbor-tags}},
 IANA is requested to allocate the tags defined in {{tab-tag-values}}.
 
 |                    Tag | Data Item   | Semantics               | Reference              |
-|                  TBD20 | array       | CBOR EDNS option record | draft-lenders-dns-cbor |
+|                 TBD141 | array       | CBOR EDNS option record | draft-lenders-dns-cbor |
 {: #tab-tag-values cols='r l l' title="Values for Tag Numbers"}
 
 --- back
