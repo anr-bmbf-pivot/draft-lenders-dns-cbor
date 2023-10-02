@@ -51,6 +51,7 @@ normative:
   RFC8610: cddl
   RFC8949: cbor
   I-D.ietf-cbor-packed: cbor-packed
+  IANA.cbor-tags: tags
 
 informative:
   RFC4944: 6lowpan
@@ -502,6 +503,14 @@ Id: TBD
 
 Reference: \[TBD-this-spec\]
 
+## CBOR Tags Registry
+
+In the registry "{{cbor-tags (CBOR Tags)<IANA.cbor-tags}}" {{IANA.cbor-tags}},
+IANA is requested to allocate the tags defined in {{tab-tag-values}}.
+
+|                    Tag | Data Item   | Semantics               | Reference              |
+|                  TBD20 | array       | CBOR EDNS option record | draft-lenders-dns-cbor |
+{: #tab-tag-values cols='r l l' title="Values for Tag Numbers"}
 
 --- back
 
