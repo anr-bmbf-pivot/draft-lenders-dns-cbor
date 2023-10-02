@@ -235,24 +235,23 @@ TBD: reverse extended flags to get MSB-defined DO into LSB?
 Note that future EDNS versions may require a different format than the one described above.
 
 ~~~ cddl
-opt-rcode-v = (
-  rcode: uint .default 0,
-  ? version: uint .default 0,
-)
-opt-rcode-v-flags = (
-  flags: uint .default 0,
-  ? opt-rcode-v,
-)
-opt-attr-val = (
-  ocode: uint,
-  odata: bstr,
-)
-opt = [opt-attr-val]
 opt-rr = [
   ? udp-payload-size: uint .default 512,
   options: [* opt],
   ? opt-rcode-v-flags,
 ]
+opt = [
+  ocode: uint,
+  odata: bstr,
+]
+opt-rcode-v-flags = (
+  flags: uint .default 0,
+  ? opt-rcode-v,
+)
+opt-rcode-v = (
+  rcode: uint .default 0,
+  ? version: uint .default 0,
+)
 ~~~
 {:cddl #fig:dns-opt-rr title="DNS OPT Resource Record Definition"}
 
