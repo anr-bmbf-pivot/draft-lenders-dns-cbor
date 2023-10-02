@@ -114,7 +114,7 @@ To keep overhead minimal, a DNS message is represented as CBOR arrays.  All CBOR
 this specification are of definite length.  CBOR arrays that do not follow the length
 definitions of this or follow-up specifications, MUST be silently ignored.  It is assumed that
 DNS query and DNS response are distinguished message types and that the query can be mapped to
-the response by the transport protocol of choice.  To define the representation of binary
+the response by the transfer protocol of choice.  To define the representation of binary
 objects we use the Concise Data Definition Language (CDDL) {{-cddl}}.
 
 ~~~ cddl
@@ -173,7 +173,7 @@ If the first item of the resource record is a text string, it is its name.
 If the name is elided, the name is derived from the question section of the message.
 For responses, the question section is either taken from the query (see {{sec:queries}}) or provided
 with the response see {{sec:responses}}.
-The query may be derived from the context of transport protocol.
+The query may be derived from the context of the transfer protocol.
 
 If the record type is elided, the record type from the question is assumed.
 If record class is elided, the record class from the question is assumed.
@@ -271,7 +271,7 @@ It MUST be lesser than 2^16.
 
 If the flags are elided, the value 0 is assumed.
 
-This specification assumes that the DNS messages are sent over a transport protocol that can map the
+This specification assumes that the DNS messages are sent over a transfer protocol that can map the
 queries to their responses, e.g., DNS over HTTPS {{-doh}} or DNS over CoAP {{-doc}}.
 As a consequence, the DNS transaction ID is always elided and the value 0 is assumed.
 
