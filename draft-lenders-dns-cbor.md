@@ -210,7 +210,29 @@ rr = [
 
 ### EDNS OPT Pseudo-RRs {#sec:edns}
 
-TBD; reverse extended flags to get MSB-defined DO into LSB?
+EDNS OPT Pseudo-RRs are represented as a CBOR array.
+To distinguish them from normal standard RRs, they are marked with tag TBD20.
+
+Name and record type can be elided as they are always "." and OPT (41), respectively {{-edns}}.
+
+The UDP payload size may be the first element as an unsigned integer in the array but it can be
+elided if it defaults to 512, the maximum allowable size for DNS over UDP {{-edns}}.
+
+The next element in the array is an array of the options, which are represented in turn by an array
+consisting of two elements, an unsigned integer, the option code, followed by a byte string, the
+option data.
+
+After that, up to three unsigned integers are following.
+The first being the extended flags as unsigned integer (implied to be 0 if elided),
+the second the extended RCODE as an unsigned integer (implied to be 0 if elided), and
+the third the EDNS version (implied to be 0 if elided).
+They are dependent on each of their previous elements.
+If the EDNS version is not elided, both extended flags and extended RCODE MUST not be elided.
+If the RCODE is not elided the extended flags MUST not be elided.
+
+TBD: reverse extended flags to get MSB-defined DO into LSB?
+
+Note that future EDNS versions may require a different format than the one described above.
 
 ~~~ cddl
 opt-rcode-v = (
