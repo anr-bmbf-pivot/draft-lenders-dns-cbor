@@ -3,7 +3,7 @@ title: "A Concise Binary Object Representation (CBOR) of DNS Messages"
 abbrev: "dns+cbor"
 category: std
 
-docname: draft-lenders-dns-cbor-03
+docname: draft-lenders-dns-cbor-latest
 number:
 date:
 consensus: true
@@ -25,27 +25,37 @@ venue:
 
 author:
  -  fullname: Martine Sophie Lenders
-    organization: Freie Universität Berlin
-    abbrev: FU Berlin
-    email: m.lenders@fu-berlin.de
+    org: TUD Dresden University of Technology
+    abbrev: TU Dresden
+    street: Helmholtzstr. 10
+    city: Dresden
+    code: D-01069
+    country: Germany
+    email: martine.lenders@tu-dresden.de
  -  fullname: Carsten Bormann
     organization: Universität Bremen TZI
     email: cabo@tzi.org
  -  fullname: Thomas C. Schmidt
     organization: HAW Hamburg
     email: t.schmidt@haw-hamburg.de
- -  fullname: Matthias Wählisch
-    organization: Freie Universität Berlin
-    abbrev: FU Berlin
-    email: m.waehlisch@fu-berlin.de
+ -  name: Matthias Wählisch
+    org: TUD Dresden University of Technology
+    abbrev: TU Dresden
+    street: Helmholtzstr. 10
+    city: Dresden
+    code: D-01069
+    country: Germany
+    email: m.waehlisch@tu-dresden.de
 
 normative:
   RFC1035: dns
   RFC3596: aaaa
+  RFC6891: edns
   RFC7252: coap
   RFC8610: cddl
   RFC8949: cbor
   I-D.ietf-cbor-packed: cbor-packed
+  IANA.cbor-tags: tags
 
 informative:
   RFC4944: 6lowpan
@@ -104,8 +114,13 @@ To keep overhead minimal, a DNS message is represented as CBOR arrays.  All CBOR
 this specification are of definite length.  CBOR arrays that do not follow the length
 definitions of this or follow-up specifications, MUST be silently ignored.  It is assumed that
 DNS query and DNS response are distinguished message types and that the query can be mapped to
-the response by the transport protocol of choice.  To define the representation of binary
+the response by the transfer protocol of choice.  To define the representation of binary
 objects we use the Concise Data Definition Language (CDDL) {{-cddl}}.
+
+~~~ cddl
+dns-message = dns-query / dns-response
+~~~
+{:cddl #fig:dns-msg title="This document defines both DNS Queries and Responses in CDDL"}
 
 If, for any reason, a DNS message is not representable in the CBOR format specified in this
 document, a fallback to the another DNS message format, e.g., the classic DNS wire format, MUST
@@ -119,17 +134,34 @@ document, domain names remain case-insensitive as specified in {{-dns}}.
 
 The representation of a domain name is defined in {{fig:domain-name}}.
 
-{:cddl: artwork-align="center"}
+{:cddl: sourcecode-name="dns-cbor.cddl"}
 
-~~~ CDDL
-domain-name = tstr .regexp "([^.]+\.)*[^.]+"
+~~~ cddl
+domain-name = tstr .regexp "([^.]+[.])*[^.]+"
 ~~~
 {:cddl #fig:domain-name title="Domain Name Definition"}
 
-## Standard DNS Resource Records (RRs) {#sec:rr}
+## DNS Resource Records {#sec:rr}
 
-DNS resource records are encoded either in their binary form as a byte string or as CBOR arrays
-containing 2 to 5 entries in the following order:
+This document specifies the representation of both standard DNS resource records (RRs, see {{-dns}})
+and EDNS option pseudo-RRs (see {{-edns}}).
+If for any reason, a resource record can not be represented in the given formats, they can be
+represented in their binary wire-format form, as a byte string.
+
+Further special records, e.g., TSIG can be defined in follow-up specifications and are out of scope
+of this document.
+
+The representation of a DNS resource records is defined in {{fig:dns-rr}}.
+
+~~~ cddl
+dns-rr = rr / #6.141(opt-rr) / bstr
+~~~
+{:cddl #fig:dns-rr title="DNS Resource Record Definition"}
+
+### Standard RRs
+
+Standard DNS resource records are encoded as CBOR arrays containing 2 to 5 entries in the following
+order:
 
 1. An optional name (as text string, see {{sec:domain-names}}),
 2. A TTL (as unsigned integer),
@@ -141,7 +173,7 @@ If the first item of the resource record is a text string, it is its name.
 If the name is elided, the name is derived from the question section of the message.
 For responses, the question section is either taken from the query (see {{sec:queries}}) or provided
 with the response see {{sec:responses}}.
-The query may be derived from the transport context.
+The query may be derived from the context of the transfer protocol.
 
 If the record type is elided, the record type from the question is assumed.
 If record class is elided, the record class from the question is assumed.
@@ -162,44 +194,86 @@ until a string length of 23 characters.
 Likewise, if the record data is purely a numerical value, it can be expressed as either an unsigned
 or negative integer.
 
-The representation of a DNS resource records is defined in {{fig:dns-rr}}.
-
-~~~ CDDL
-type-spec = (
-  record-type: uint,
-  ? record-class: uint,
-)
-rr = (
+~~~ cddl
+rr = [
   ? name: domain-name,
   ttl: uint,
   ? type-spec,
   rdata: int / bstr / domain-name,
+]
+type-spec = (
+  record-type: uint,
+  ? record-class: uint,
 )
-dns-rr = [rr] / bstr
 ~~~
-{:cddl #fig:dns-rr title="DNS Resource Record Definition"}
+{:cddl #fig:dns-standard-rr title="DNS Standard Resource Record Definition"}
+
+### EDNS OPT Pseudo-RRs {#sec:edns}
+
+EDNS OPT Pseudo-RRs are represented as a CBOR array.
+To distinguish them from normal standard RRs, they are marked with tag TBD141.
+
+Name and record type can be elided as they are always "." and OPT (41), respectively {{-edns}}.
+
+The UDP payload size may be the first element as an unsigned integer in the array but it can be
+elided if it defaults to 512, the maximum allowable size for DNS over UDP {{-edns}}.
+
+The next element is an array of the options, which are represented two elements each, an unsigned
+integer, the option code, followed by a byte string, the option data.
+Multiple options alternate between unsigned integer and byte string within the array.
+
+After that, up to three unsigned integers are following.
+The first being the extended flags as unsigned integer (implied to be 0 if elided),
+the second the extended RCODE as an unsigned integer (implied to be 0 if elided), and
+the third the EDNS version (implied to be 0 if elided).
+They are dependent on each of their previous elements.
+If the EDNS version is not elided, both extended flags and extended RCODE MUST not be elided.
+If the RCODE is not elided the extended flags MUST not be elided.
+
+TBD: reverse extended flags to get MSB-defined DO into LSB?
+
+Note that future EDNS versions may require a different format than the one described above.
+
+~~~ cddl
+opt-rr = [
+  ? udp-payload-size: uint .default 512,
+  options: [* opt],
+  ? opt-rcode-v-flags,
+]
+opt = (
+  ocode: uint,
+  odata: bstr,
+)
+opt-rcode-v-flags = (
+  flags: uint .default 0,
+  ? opt-rcode-v,
+)
+opt-rcode-v = (
+  rcode: uint .default 0,
+  ? version: uint .default 0,
+)
+~~~
+{:cddl #fig:dns-opt-rr title="DNS OPT Resource Record Definition"}
 
 ## DNS Queries {#sec:queries}
 
 DNS queries are encoded as CBOR arrays containing up to 5 entries in the following order:
 
-1. An optional transaction ID (as unsigned integer),
-2. An optional flag field (as unsigned integer),
-3. The question section (as array),
-4. An optional authority section (as array), and
-5. An optional additional section (as array)
+1. An optional flag field (as unsigned integer),
+2. The question section (as array),
+3. An optional authority section (as array), and
+4. An optional additional section (as array)
 
 If the first item of the query is an array, it is the question section, if it is an unsigned
-integer, it is the transaction ID.
-If the transaction ID is present and followed by another unsigned integer, that item is a flag
-field and maps to the header flags in {{-dns}} and the "DNS Header Flags" IANA registry including
-the QR flag and the Opcode.
+integer, it is as flag field and maps to the header flags in {{-dns}} and the "DNS Header Flags"
+IANA registry including the QR flag and the Opcode.
 It MUST be lesser than 2^16.
 
-If the transaction ID is elided, the value 0 is assumed, same for the flags.
-The transaction ID MUST be included and set to an unpredictable value lesser than 2^32, if the DNS
-transport can not ensure the prevention of DNS response spoofing.
-An example for such a transport is unencrypted DoC (see {{-doc}}, Section 6).
+If the flags are elided, the value 0 is assumed.
+
+This specification assumes that the DNS messages are sent over a transfer protocol that can map the
+queries to their responses, e.g., DNS over HTTPS {{-doh}} or DNS over CoAP {{-doc}}.
+As a consequence, the DNS transaction ID is always elided and the value 0 is assumed.
 
 The question section is encoded as a CBOR array containing up to 3 entries:
 
@@ -219,25 +293,20 @@ resource records (see {{sec:rr}})
 
 The representation of a DNS query is defined in {{fig:dns-query}}.
 
-~~~ CDDL
-query-id-flags = (
-  id: uint .default 0,
-  ? flags: uint .default 0,
-)
-question-section = (
+~~~ cddl
+dns-query = [
+  ? flags: uint .default 0x0000,
+  question-section,
+  ? extra-sections,
+]
+question-section = [
   name: domain-name,
   ? type-spec,
-)
+]
 extra-sections = (
   ? authority: [+ dns-rr],
   additional: [+ dns-rr],
 )
-query-sections = (
-  ? query-id-flags,
-  [question-section],
-  ? extra-sections,
-)
-dns-query = [query-sections]
 ~~~
 {:cddl #fig:dns-query title="DNS Query Definition"}
 
@@ -245,16 +314,13 @@ dns-query = [query-sections]
 
 DNS responses are encoded as a CBOR array containing up to 7 entries.
 
-1. An optional transaction ID (as unsigned integer),
-2. An optional flag field (as unsigned integer),
-3. An optional question section (as array, encoded as described in {{sec:queries}})
-4. The answer section (as array),
+1. An optional flag field (as unsigned integer),
+2. An optional question section (as array, encoded as described in {{sec:queries}})
+3. The answer section (as array),
 4. An optional authority section (as array), and
 5. An optional additional section (as array)
 
-If the CBOR array is a response to a query that contains a transaction ID, it MUST be included and
-set to the corresponding value present in the query.
-If it is not included, the transaction ID is implied to be 0.
+As for queries, the DNS transaction ID is elided and implied to be 0.
 
 If the CBOR array is a response to a query for which the flags indicate that flags are set in the
 response, they MUST be set accordingly and thus included in the response.
@@ -264,43 +330,28 @@ QR flag).
 If the response includes only 1 array, this is the DNS answer section represented as an
 array of one or more DNS Resource Records (see {{sec:rr}}).
 
-If the response includes 2 arrays, the first entry is a question section and the second
-entry is an answer section. The question section is encoded like as specified in {{sec:queries}},
-the answer section is represented as an array of one or more DNS Resource Records (see {{sec:rr}}).
+If the response includes more than 2 arrays, the first entry may be the question section, identified
+by not being an array of arrays. If it is present, it is followed by the answer section. The
+question section is encoded as specified in {{sec:queries}}.
 
-If the response includes 3 arrays, the first section is a question section, the second an answer
-section, and the third an additional section (TBD: back choice to favor additional section by
-empirical data). Again, the question section is encoded like a DNS query as specified in
-{{sec:queries}} and both answer and additional sections are represented each as an array of one
-or more DNS Resource Records (see {{sec:rr}}).
+If the answer section is followed by 1 additional array, it is the additional section (TBD:
+back choice to favor additional section by empirical data). Like the answer section, the additional
+sections is represented as an array of one or more DNS Resource Records (see {{sec:rr}}).
 
-If the response includes 4 arrays, the first section is a question section, the second an answer
-section, the third an authority section, and the fourth an additional section (TBD: back by
-empirical data). They follow the specification of 3 arrays in the answer. The authority section is
-also represented as an array of one or more DNS Resource Records (see {{sec:rr}}).
+If the answer section is followed by 2 additional arrays, the first is the authority section, and
+the second the additional section (TBD: back choice to favor additional section by empirical data).
+The authority section is also represented as an array of one or more DNS Resource Records (see
+{{sec:rr}}).
 
-~~~ CDDL
-response-id-flags = (
-  id: uint .default 0,
+~~~ cddl
+dns-response = [
   ? flags: uint .default 0x8000,
-)
-response-sections = ((
-  ? response-id-flags,
-  answer: [+ dns-rr],
-) // (
-  ? response-id-flags,
-  question: [question-section],
-  answer: [+ dns-rr],
+  ? question-section,
+  answer-section: [+ dns-rr],
   ? extra-sections,
-))
-dns-response = [response-sections]
+]
 ~~~
 {:cddl #fig:dns-response title="DNS Response Definition"}
-
-## EDNS(0)
-
-TBD, do we need special formatting here? Yes! We'll use tags.
-Other special regcords may be needed as well.
 
 # Name and Address Compression with Packed CBOR
 
@@ -318,36 +369,17 @@ The server then SHOULD reply with the response in packed CBOR.
 
 ## DNS Representation in Packed CBOR
 
-The representation of DNS responses in packed CBOR differs, in that responses are now represented as
-a CBOR array of two arrays.
-The first array is a packing table that is used both as shared item table and argument table (see
-{{-cbor-packed}}, Section 2.1), the second is the compressed response.
+The representation of DNS responses in packed CBOR has the same semantics as for tag TBD113
+({{-cbor-packed}}, Section 3.1) with the rump being the compressed response.
+The difference to {{-cbor-packed}} is that tag TBD113 is OPTIONAL.
 
-If an index in the packing table is referenced with shared item reference ({{-cbor-packed}},
-Section 2.2) a decoder uses the packing table as a shared item table.
-If an index in the packing table is referenced as an argument ({{-cbor-packed}}, Sections 2.3 and
-4), a decoder uses the packing table as an argument table.
+Packed compression of queries is not specified, as apart from EDNS(0) (see {{sec:edns}}), they only
+consist of one question most of the time.
 
 ## Compression {#sec:pack-compression}
 
 How the compressor constructs the packing table, i.e., how the compression is applied, is out of
 scope of this document. Several potential compression algorithms were evaluated in \[TBD\].
-
-## Discussion
-
-The DNS-specific specification for packed CBOR merges the argument and shared item table into one
-packed table. This differentiates it from the Basic Packed CBOR format specified in
-{{-cbor-packed}}.
-
-In DNS compression only affix compression, i.e. straight/inverse referencing, and shared value
-referencing are needed and no further functions. Since for those types of references, the arguments
-of the affix compression and the shared values do not collide—shared values are just affixes with an
-empty rump—we only need one table. Using this specific constrained for DNS, allows us to save the
-additional bytes that would be required for the 113 tag and the extra array in the Basic Packed CBOR
-format.
-
-Packed compression of queries is not specified, as apart from EDNS(0) (_TBD_), they only consist of
-one question most of the time.
 
 <!--
 Discussion TBD:
@@ -496,6 +528,14 @@ Id: TBD
 
 Reference: \[TBD-this-spec\]
 
+## CBOR Tags Registry
+
+In the registry "{{cbor-tags (CBOR Tags)<IANA.cbor-tags}}" {{IANA.cbor-tags}},
+IANA is requested to allocate the tags defined in {{tab-tag-values}}.
+
+|                    Tag | Data Item   | Semantics               | Reference              |
+|                 TBD141 | array       | CBOR EDNS option record | draft-lenders-dns-cbor |
+{: #tab-tag-values cols='r l l' title="Values for Tag Numbers"}
 
 --- back
 
@@ -585,6 +625,12 @@ This one advertises two local CoAP servers (identified by service name `_coap._u
 
 # Change Log
 
+Since [draft-lenders-dns-cbor-03]
+---------------------------------
+- Provide format description for EDNS OPT Pseudo-RRs
+- Simplify CDDL to more idiomatic style
+- Remove DNS transaction IDs
+
 Since [draft-lenders-dns-cbor-02]
 ---------------------------------
 - Add Discussion section and note on compression
@@ -601,6 +647,9 @@ Since [draft-lenders-dns-cbor-00]
 - Name and Address compression utilizing CBOR-packed
 - Minor fixes to CBOR EDN and CDDL
 
+[draft-lenders-dns-cbor-03]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-03
+[draft-lenders-dns-cbor-02]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-02
+[draft-lenders-dns-cbor-01]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-01
 [draft-lenders-dns-cbor-00]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-00
 
 # Acknowledgments
