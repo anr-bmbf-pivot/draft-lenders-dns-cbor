@@ -195,16 +195,16 @@ Likewise, if the record data is purely a numerical value, it can be expressed as
 or negative integer.
 
 ~~~ cddl
-type-spec = (
-  record-type: uint,
-  ? record-class: uint,
-)
 rr = [
   ? name: domain-name,
   ttl: uint,
   ? type-spec,
   rdata: int / bstr / domain-name,
 ]
+type-spec = (
+  record-type: uint,
+  ? record-class: uint,
+)
 ~~~
 {:cddl #fig:dns-standard-rr title="DNS Standard Resource Record Definition"}
 
@@ -294,6 +294,11 @@ resource records (see {{sec:rr}})
 The representation of a DNS query is defined in {{fig:dns-query}}.
 
 ~~~ cddl
+dns-query = [
+  ? flags: uint .default 0x0000,
+  question-section,
+  ? extra-sections,
+]
 question-section = [
   name: domain-name,
   ? type-spec,
@@ -302,11 +307,6 @@ extra-sections = (
   ? authority: [+ dns-rr],
   additional: [+ dns-rr],
 )
-dns-query = [
-  ? flags: uint .default 0x0000,
-  question-section,
-  ? extra-sections,
-]
 ~~~
 {:cddl #fig:dns-query title="DNS Query Definition"}
 
