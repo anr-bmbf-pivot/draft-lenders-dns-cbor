@@ -464,10 +464,6 @@ Discussion TBD:
     >       ]
     >     ] -->
 
-# Comparison to wire format
-
-TBD: Table comparing DNS wire-format, DNS+CBOR, and DNS+CBOR-packed
-
 # Implementation Status
 
 {::boilerplate RFC7942}
@@ -692,6 +688,23 @@ This one advertises two local CoAP servers (identified by service name `_coap._u
 2001:db8::1 and 2001:db8::2 and two nameservers for the example.org domain, ns1.example.org at
 2001:db8::35 and ns2.example.org at 2001.db8::3535. Each of the transmitted records has a TTL of
 3600 seconds.
+
+# Comparison to Wire Format
+
+{{tab-cbor-comparison}} shows a comparison between the wire format and the application/cbor+dns
+format. Note that the worst case results typically appear only rarely in DNS. The DNS wire format is
+preferred in those cases.
+
+| Item                         | Wire format           | application/cbor+dns best      | application/cbor+dns worst                  |
+| ---------------------------- | --------------------- | ------------------------------ | ------------------------------------------- |
+| Header (ID & Flags)          | 4 bytes               | 1 byte (flags elided)          | 4 bytes (QR, Opcode, AA, TC, or RD are set) |
+| Count fields                 | 2 bytes               | 1 byte (array length)          | 3 bytes (> 255 records in section)           |
+| Question section             | 6 bytes + name length | 2 bytes + name length (type and class elided, <24 name length) | 10 bytes + name length (type > 255, class > 255, name length > 255) |
+| Standard RR with byte rdata  | 12 bytes + name length + rdata length | 3 bytes + rdata length (name, type, and class elided, rdata length < 24) | 18 bytes + name length + rdata length (type > 255, class > 255, name length > 255, rdata length > 255) |
+| Standard RR with name rdata  | 12 bytes + name length + rdata length | 6 bytes (name and class elided, type < 24, rdata **name compressed** _TBD_) | 18 bytes + name length + rdata length (type > 255, class > 255, name length > 255, rdata length > 255) |
+| EDNS Opt Pseudo-RR           | 11 bytes + for each option 4 bytes + value length | 2 bytes + for each option 2 bytes + value length (all but options elided, option code and length < 24) | 14 bytes + for each option 6 bytes + value length (UDP payload size > 255, option codes and length > 255, DO flag set, rcode > 255, version > 255) |
+{: #tab-cbor-comparison cols='l l l l' title="Comparison of application/cbor+dns to wire format"}
+
 
 # Change Log
 
