@@ -468,9 +468,32 @@ experimentation and feedback that have made the implemented protocols more
 mature.  It is up to the individual working groups to use this information
 as they see fit".
 
+## Python decoder/encoder
+
 The authors of this document provide a [decoder/encoder
 implementation](https://github.com/netd-tud/cbor4dns) of both the unpacked and packed format
-specified in this document.
+specified in this document in Python.
+
+Level of maturity:
+: prototype
+
+Version compability:
+: draft-lenders-dns-cbor-04
+
+License:
+: MIT
+
+Contact information:
+: `Martine Lenders <martine.lenders@tu-dresden.de>`
+
+Last update of this information:
+: October 2023
+
+## Embedded decoder/encoder
+
+The authors of this document provide a [decoder/encoder
+implementation](https://github.com/RIOT-OS/RIOT/pull/19989) of the unpacked format specified in this
+document for the RIOT operating system. It can only encode queries and decode responses.
 
 Level of maturity:
 : prototype
