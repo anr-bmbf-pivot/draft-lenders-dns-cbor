@@ -691,6 +691,12 @@ This one advertises two local CoAP servers (identified by service name `_coap._u
 
 # Change Log
 
+Since [draft-lenders-dns-cbor-04]
+---------------------------------
+- Add Implementation Status section
+- Remove int as representation for rdata
+- Add note on representation of more structured rdata
+
 Since [draft-lenders-dns-cbor-03]
 ---------------------------------
 - Provide format description for EDNS OPT Pseudo-RRs
@@ -713,6 +719,7 @@ Since [draft-lenders-dns-cbor-00]
 - Name and Address compression utilizing CBOR-packed
 - Minor fixes to CBOR EDN and CDDL
 
+[draft-lenders-dns-cbor-04]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-04
 [draft-lenders-dns-cbor-03]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-03
 [draft-lenders-dns-cbor-02]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-02
 [draft-lenders-dns-cbor-01]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-01
