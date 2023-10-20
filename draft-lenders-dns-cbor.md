@@ -200,7 +200,7 @@ rr = [
   ? name: domain-name,
   ttl: uint,
   ? type-spec,
-  rdata: int / bstr / domain-name,
+  rdata: bstr / domain-name,
 ]
 type-spec = (
   record-type: uint,
