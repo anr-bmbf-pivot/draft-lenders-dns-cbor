@@ -5,12 +5,12 @@
 CBOR                                                       M. S. Lenders
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              C. Bormann
-Expires: 15 April 2024                            Universität Bremen TZI
+Expires: 22 April 2024                            Universität Bremen TZI
                                                            T. C. Schmidt
                                                              HAW Hamburg
                                                              M. Wählisch
                                         TU Dresden & Barkhausen Institut
-                                                         13 October 2023
+                                                         20 October 2023
 
 
      A Concise Binary Object Representation (CBOR) of DNS Messages
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Lenders, et al.           Expires 15 April 2024                 [Page 1]
+Lenders, et al.           Expires 22 April 2024                 [Page 1]
 
 Internet-Draft                  dns+cbor                    October 2023
 
@@ -63,7 +63,7 @@ Internet-Draft                  dns+cbor                    October 2023
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 April 2024.
+   This Internet-Draft will expire on 22 April 2024.
 
 Copyright Notice
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Lenders, et al.           Expires 15 April 2024                 [Page 2]
+Lenders, et al.           Expires 22 April 2024                 [Page 2]
 
 Internet-Draft                  dns+cbor                    October 2023
 
@@ -165,7 +165,7 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 15 April 2024                 [Page 3]
+Lenders, et al.           Expires 22 April 2024                 [Page 3]
 
 Internet-Draft                  dns+cbor                    October 2023
 
@@ -221,7 +221,7 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 15 April 2024                 [Page 4]
+Lenders, et al.           Expires 22 April 2024                 [Page 4]
 
 Internet-Draft                  dns+cbor                    October 2023
 
@@ -277,22 +277,25 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 15 April 2024                 [Page 5]
+Lenders, et al.           Expires 22 April 2024                 [Page 5]
 
 Internet-Draft                  dns+cbor                    October 2023
 
 
    at the end of the name.  With CBOR on the other hand only 1 byte is
    required to define type and length of the text string up until a
-   string length of 23 characters.  Likewise, if the record data is
-   purely a numerical value, it can be expressed as either an unsigned
-   or negative integer.
+   string length of 23 characters.
+
+   There is an argument to be made for more structured formats of other
+   record data representations (e.g.  MX or SOA), but these usually add
+   more overhead.  As such, those record data are to be represented as a
+   byte string.
 
    rr = [
      ? name: domain-name,
      ttl: uint,
      ? type-spec,
-     rdata: int / bstr / domain-name,
+     rdata: bstr / domain-name,
    ]
    type-spec = (
      record-type: uint,
@@ -327,16 +330,15 @@ Internet-Draft                  dns+cbor                    October 2023
    extended RCODE MUST not be elided.  If the RCODE is not elided the
    extended flags MUST not be elided.
 
-   TBD: reverse extended flags to get MSB-defined DO into LSB?
 
 
 
-
-
-Lenders, et al.           Expires 15 April 2024                 [Page 6]
+Lenders, et al.           Expires 22 April 2024                 [Page 6]
 
 Internet-Draft                  dns+cbor                    October 2023
 
+
+   TBD: reverse extended flags to get MSB-defined DO into LSB?
 
    Note that future EDNS versions may require a different format than
    the one described above.
@@ -387,9 +389,7 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-
-
-Lenders, et al.           Expires 15 April 2024                 [Page 7]
+Lenders, et al.           Expires 22 April 2024                 [Page 7]
 
 Internet-Draft                  dns+cbor                    October 2023
 
@@ -445,7 +445,7 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 15 April 2024                 [Page 8]
+Lenders, et al.           Expires 22 April 2024                 [Page 8]
 
 Internet-Draft                  dns+cbor                    October 2023
 
@@ -501,7 +501,7 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 15 April 2024                 [Page 9]
+Lenders, et al.           Expires 22 April 2024                 [Page 9]
 
 Internet-Draft                  dns+cbor                    October 2023
 
@@ -557,7 +557,7 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 15 April 2024                [Page 10]
+Lenders, et al.           Expires 22 April 2024                [Page 10]
 
 Internet-Draft                  dns+cbor                    October 2023
 
@@ -613,7 +613,7 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 15 April 2024                [Page 11]
+Lenders, et al.           Expires 22 April 2024                [Page 11]
 
 Internet-Draft                  dns+cbor                    October 2023
 
@@ -669,7 +669,7 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 15 April 2024                [Page 12]
+Lenders, et al.           Expires 22 April 2024                [Page 12]
 
 Internet-Draft                  dns+cbor                    October 2023
 
@@ -725,7 +725,7 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 15 April 2024                [Page 13]
+Lenders, et al.           Expires 22 April 2024                [Page 13]
 
 Internet-Draft                  dns+cbor                    October 2023
 
@@ -781,7 +781,7 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 15 April 2024                [Page 14]
+Lenders, et al.           Expires 22 April 2024                [Page 14]
 
 Internet-Draft                  dns+cbor                    October 2023
 
@@ -837,7 +837,7 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 15 April 2024                [Page 15]
+Lenders, et al.           Expires 22 April 2024                [Page 15]
 
 Internet-Draft                  dns+cbor                    October 2023
 
@@ -893,7 +893,7 @@ A.2.  DNS Responses
 
 
 
-Lenders, et al.           Expires 15 April 2024                [Page 16]
+Lenders, et al.           Expires 22 April 2024                [Page 16]
 
 Internet-Draft                  dns+cbor                    October 2023
 
@@ -949,7 +949,7 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 15 April 2024                [Page 17]
+Lenders, et al.           Expires 22 April 2024                [Page 17]
 
 Internet-Draft                  dns+cbor                    October 2023
 
@@ -1005,7 +1005,7 @@ Acknowledgments
 
 
 
-Lenders, et al.           Expires 15 April 2024                [Page 18]
+Lenders, et al.           Expires 22 April 2024                [Page 18]
 
 Internet-Draft                  dns+cbor                    October 2023
 
@@ -1061,4 +1061,4 @@ Authors' Addresses
 
 
 
-Lenders, et al.           Expires 15 April 2024                [Page 19]
+Lenders, et al.           Expires 22 April 2024                [Page 19]
