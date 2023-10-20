@@ -192,8 +192,10 @@ additional byte to define the length of the first name component and well as a z
 of the name.
 With CBOR on the other hand only 1 byte is required to define type and length of the text string up
 until a string length of 23 characters.
-Likewise, if the record data is purely a numerical value, it can be expressed as either an unsigned
-or negative integer.
+
+There is an argument to be made for more structured formats of other record data representations
+(e.g. MX or SOA), but these usually add more overhead. As such, those record data are to be
+represented as a byte string.
 
 ~~~ cddl
 rr = [
