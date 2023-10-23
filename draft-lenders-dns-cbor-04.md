@@ -3,7 +3,7 @@ title: "A Concise Binary Object Representation (CBOR) of DNS Messages"
 abbrev: "dns+cbor"
 category: std
 
-docname: draft-lenders-dns-cbor-latest
+docname: draft-lenders-dns-cbor-04
 number:
 date:
 consensus: true
