@@ -574,7 +574,7 @@ types in the "CoAP Content-Formats"
 sub-registry, within the "CoRE Parameters" registry {{-coap}}, corresponding the
 "application/dns+cbor" media type specified in {{media-type}}:
 
-### "application/dns-cbor"
+### "application/dns+cbor"
 
 Media-Type: application/dns+cbor
 
