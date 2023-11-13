@@ -5,12 +5,12 @@
 CBOR                                                       M. S. Lenders
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              C. Bormann
-Expires: 15 April 2024                            Universität Bremen TZI
+Expires: 16 May 2024                              Universität Bremen TZI
                                                            T. C. Schmidt
                                                              HAW Hamburg
                                                              M. Wählisch
                                         TU Dresden & Barkhausen Institut
-                                                         13 October 2023
+                                                        13 November 2023
 
 
      A Concise Binary Object Representation (CBOR) of DNS Messages
@@ -53,9 +53,9 @@ Status of This Memo
 
 
 
-Lenders, et al.           Expires 15 April 2024                 [Page 1]
+Lenders, et al.            Expires 16 May 2024                  [Page 1]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
    Internet-Drafts are draft documents valid for a maximum of six months
@@ -63,7 +63,7 @@ Internet-Draft                  dns+cbor                    October 2023
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 April 2024.
+   This Internet-Draft will expire on 16 May 2024.
 
 Copyright Notice
 
@@ -94,36 +94,40 @@ Table of Contents
      4.1.  Media Type Negotiation  . . . . . . . . . . . . . . . . .  10
      4.2.  DNS Representation in Packed CBOR . . . . . . . . . . . .  10
      4.3.  Compression . . . . . . . . . . . . . . . . . . . . . . .  10
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .  10
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  11
-     6.1.  Media Type Registration . . . . . . . . . . . . . . . . .  11
-       6.1.1.  "application/dns+cbor"  . . . . . . . . . . . . . . .  11
-     6.2.  CoAP Content-Format Registration  . . . . . . . . . . . .  12
-       6.2.1.  "application/dns-cbor"  . . . . . . . . . . . . . . .  12
-       6.2.2.  "application/dns+cbor;packed=1" . . . . . . . . . . .  12
-     6.3.  CBOR Tags Registry  . . . . . . . . . . . . . . . . . . .  12
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
-     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  13
-     7.2.  Informative References  . . . . . . . . . . . . . . . . .  14
-   Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .  15
+   5.  Implementation Status . . . . . . . . . . . . . . . . . . . .  11
+     5.1.  Python decoder/encoder  . . . . . . . . . . . . . . . . .  11
+     5.2.  Embedded decoder/encoder  . . . . . . . . . . . . . . . .  11
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
+     7.1.  Media Type Registration . . . . . . . . . . . . . . . . .  12
+       7.1.1.  "application/dns+cbor"  . . . . . . . . . . . . . . .  12
+     7.2.  CoAP Content-Format Registration  . . . . . . . . . . . .  13
+       7.2.1.  "application/dns-cbor"  . . . . . . . . . . . . . . .  13
+       7.2.2.  "application/dns+cbor;packed=1" . . . . . . . . . . .  13
+     7.3.  CBOR Tags Registry  . . . . . . . . . . . . . . . . . . .  13
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
 
 
 
-Lenders, et al.           Expires 15 April 2024                 [Page 2]
+Lenders, et al.            Expires 16 May 2024                  [Page 2]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
-     A.1.  DNS Queries . . . . . . . . . . . . . . . . . . . . . . .  15
-     A.2.  DNS Responses . . . . . . . . . . . . . . . . . . . . . .  15
-   Appendix B.  Comparison to Wire Format  . . . . . . . . . . . . .  17
-   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  19
-     C.1.  Since draft-lenders-dns-cbor-03 . . . . . . . . . . . . .  19
-     C.2.  Since draft-lenders-dns-cbor-02 . . . . . . . . . . . . .  19
-     C.3.  Since draft-lenders-dns-cbor-01 . . . . . . . . . . . . .  19
-     C.4.  Since draft-lenders-dns-cbor-00 . . . . . . . . . . . . .  19
-   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  19
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  19
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  14
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  15
+   Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .  16
+     A.1.  DNS Queries . . . . . . . . . . . . . . . . . . . . . . .  16
+     A.2.  DNS Responses . . . . . . . . . . . . . . . . . . . . . .  17
+   Appendix B.  Comparison to Wire Format  . . . . . . . . . . . . .  18
+   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  20
+     C.1.  Since draft-lenders-dns-cbor-04 . . . . . . . . . . . . .  20
+     C.2.  Since draft-lenders-dns-cbor-03 . . . . . . . . . . . . .  20
+     C.3.  Since draft-lenders-dns-cbor-02 . . . . . . . . . . . . .  20
+     C.4.  Since draft-lenders-dns-cbor-01 . . . . . . . . . . . . .  20
+     C.5.  Since draft-lenders-dns-cbor-00 . . . . . . . . . . . . .  20
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  20
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  21
 
 1.  Introduction
 
@@ -161,13 +165,9 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-
-
-
-
-Lenders, et al.           Expires 15 April 2024                 [Page 3]
+Lenders, et al.            Expires 16 May 2024                  [Page 3]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -221,9 +221,9 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 15 April 2024                 [Page 4]
+Lenders, et al.            Expires 16 May 2024                  [Page 4]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
    Further special records, e.g., TSIG can be defined in follow-up
@@ -277,22 +277,25 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 15 April 2024                 [Page 5]
+Lenders, et al.            Expires 16 May 2024                  [Page 5]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
    at the end of the name.  With CBOR on the other hand only 1 byte is
    required to define type and length of the text string up until a
-   string length of 23 characters.  Likewise, if the record data is
-   purely a numerical value, it can be expressed as either an unsigned
-   or negative integer.
+   string length of 23 characters.
+
+   There is an argument to be made for more structured formats of other
+   record data representations (e.g.  MX or SOA), but these usually add
+   more overhead.  As such, those record data are to be represented as a
+   byte string.
 
    rr = [
      ? name: domain-name,
      ttl: uint,
      ? type-spec,
-     rdata: int / bstr / domain-name,
+     rdata: bstr / domain-name,
    ]
    type-spec = (
      record-type: uint,
@@ -327,16 +330,15 @@ Internet-Draft                  dns+cbor                    October 2023
    extended RCODE MUST not be elided.  If the RCODE is not elided the
    extended flags MUST not be elided.
 
-   TBD: reverse extended flags to get MSB-defined DO into LSB?
 
 
 
-
-
-Lenders, et al.           Expires 15 April 2024                 [Page 6]
+Lenders, et al.            Expires 16 May 2024                  [Page 6]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
+
+   TBD: reverse extended flags to get MSB-defined DO into LSB?
 
    Note that future EDNS versions may require a different format than
    the one described above.
@@ -387,11 +389,9 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-
-
-Lenders, et al.           Expires 15 April 2024                 [Page 7]
+Lenders, et al.            Expires 16 May 2024                  [Page 7]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
    This specification assumes that the DNS messages are sent over a
@@ -445,9 +445,9 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 15 April 2024                 [Page 8]
+Lenders, et al.            Expires 16 May 2024                  [Page 8]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
 3.4.  DNS Responses
@@ -501,9 +501,9 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 15 April 2024                 [Page 9]
+Lenders, et al.            Expires 16 May 2024                  [Page 9]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
    dns-response = [
@@ -547,30 +547,96 @@ Internet-Draft                  dns+cbor                    October 2023
    compression is applied, is out of scope of this document.  Several
    potential compression algorithms were evaluated in [TBD].
 
-5.  Security Considerations
+
+
+
+
+
+
+
+
+
+
+Lenders, et al.            Expires 16 May 2024                 [Page 10]
+
+Internet-Draft                  dns+cbor                   November 2023
+
+
+5.  Implementation Status
+
+   This section records the status of known implementations of the
+   protocol defined by this specification at the time of posting of this
+   Internet-Draft, and is based on a proposal described in [RFC7942].
+   The description of implementations in this section is intended to
+   assist the IETF in its decision processes in progressing drafts to
+   RFCs.  Please note that the listing of any individual implementation
+   here does not imply endorsement by the IETF.  Furthermore, no effort
+   has been spent to verify the information presented here that was
+   supplied by IETF contributors.  This is not intended as, and must not
+   be construed to be, a catalog of available implementations or their
+   features.  Readers are advised to note that other implementations may
+   exist.
+
+   According to [RFC7942], "this will allow reviewers and working groups
+   to assign due consideration to documents that have the benefit of
+   running code, which may serve as evidence of valuable experimentation
+   and feedback that have made the implemented protocols more mature.
+   It is up to the individual working groups to use this information as
+   they see fit".
+
+5.1.  Python decoder/encoder
+
+   The authors of this document provide a decoder/encoder implementation
+   (https://github.com/netd-tud/cbor4dns) of both the unpacked and
+   packed format specified in this document in Python.
+
+   Level of maturity:  prototype
+
+   Version compability:  draft-lenders-dns-cbor-05
+
+   License:  MIT
+
+   Contact information:  Martine Lenders <martine.lenders@tu-dresden.de>
+
+   Last update of this information:  October 2023
+
+5.2.  Embedded decoder/encoder
+
+   The authors of this document provide a decoder/encoder implementation
+   (https://github.com/RIOT-OS/RIOT/pull/19989) of the unpacked format
+   specified in this document for the RIOT operating system.  It can
+   only encode queries and decode responses.
+
+   Level of maturity:  prototype
+
+   Version compability:  draft-lenders-dns-cbor-05
+
+
+
+Lenders, et al.            Expires 16 May 2024                 [Page 11]
+
+Internet-Draft                  dns+cbor                   November 2023
+
+
+   License:  MIT
+
+   Contact information:  Martine Lenders <martine.lenders@tu-dresden.de>
+
+   Last update of this information:  October 2023
+
+6.  Security Considerations
 
    TODO Security
 
+7.  IANA Considerations
 
-
-
-
-
-
-Lenders, et al.           Expires 15 April 2024                [Page 10]
-
-Internet-Draft                  dns+cbor                    October 2023
-
-
-6.  IANA Considerations
-
-6.1.  Media Type Registration
+7.1.  Media Type Registration
 
    This document registers a media type for the serialization format of
    DNS messages in CBOR.  It follows the procedures specified in
    [RFC6838].
 
-6.1.1.  "application/dns+cbor"
+7.1.1.  "application/dns+cbor"
 
    Type name: application
 
@@ -583,7 +649,7 @@ Internet-Draft                  dns+cbor                    October 2023
    Encoding considerations: Must be encoded as using [RFC8949].  See
    [TBD-this-spec] for details.
 
-   Security considerations: See Section 5 of this draft
+   Security considerations: See Section 6 of this draft
 
    Interoperability considerations: TBD
 
@@ -601,6 +667,13 @@ Internet-Draft                  dns+cbor                    October 2023
 
       File extension(s): dnsc
 
+
+
+Lenders, et al.            Expires 16 May 2024                 [Page 12]
+
+Internet-Draft                  dns+cbor                   November 2023
+
+
       Macintosh file type code(s): none
 
    Person & email address to contact for further information: Martine S.
@@ -610,14 +683,6 @@ Internet-Draft                  dns+cbor                    October 2023
 
    Restrictions on Usage: None?
 
-
-
-
-Lenders, et al.           Expires 15 April 2024                [Page 11]
-
-Internet-Draft                  dns+cbor                    October 2023
-
-
    Author: Martine S.  Lenders m.lenders@fu-berlin.de
    (mailto:m.lenders@fu-berlin.de)
 
@@ -626,14 +691,14 @@ Internet-Draft                  dns+cbor                    October 2023
 
    Provisional registrations?  No
 
-6.2.  CoAP Content-Format Registration
+7.2.  CoAP Content-Format Registration
 
    IANA is requested to assign CoAP Content-Format ID for the new DNS
    message media types in the "CoAP Content-Formats" sub-registry,
    within the "CoRE Parameters" registry [RFC7252], corresponding the
-   "application/dns+cbor" media type specified in Section 6.1:
+   "application/dns+cbor" media type specified in Section 7.1:
 
-6.2.1.  "application/dns-cbor"
+7.2.1.  "application/dns-cbor"
 
    Media-Type: application/dns+cbor
 
@@ -643,7 +708,7 @@ Internet-Draft                  dns+cbor                    October 2023
 
    Reference: [TBD-this-spec]
 
-6.2.2.  "application/dns+cbor;packed=1"
+7.2.2.  "application/dns+cbor;packed=1"
 
    Media-Type: application/dns+cbor;packed=1
 
@@ -653,10 +718,17 @@ Internet-Draft                  dns+cbor                    October 2023
 
    Reference: [TBD-this-spec]
 
-6.3.  CBOR Tags Registry
+7.3.  CBOR Tags Registry
 
    In the registry "CBOR Tags" [IANA.cbor-tags], IANA is requested to
    allocate the tags defined in Table 1.
+
+
+
+Lenders, et al.            Expires 16 May 2024                 [Page 13]
+
+Internet-Draft                  dns+cbor                   November 2023
+
 
       +========+===========+===============+========================+
       |    Tag | Data Item | Semantics     | Reference              |
@@ -667,16 +739,9 @@ Internet-Draft                  dns+cbor                    October 2023
 
                       Table 1: Values for Tag Numbers
 
+8.  References
 
-
-Lenders, et al.           Expires 15 April 2024                [Page 12]
-
-Internet-Draft                  dns+cbor                    October 2023
-
-
-7.  References
-
-7.1.  Normative References
+8.1.  Normative References
 
    [I-D.ietf-cbor-packed]
               Bormann, C., "Packed CBOR", Work in Progress, Internet-
@@ -712,6 +777,15 @@ Internet-Draft                  dns+cbor                    October 2023
               RFC 6838, DOI 10.17487/RFC6838, January 2013,
               <https://www.rfc-editor.org/rfc/rfc6838>.
 
+
+
+
+
+Lenders, et al.            Expires 16 May 2024                 [Page 14]
+
+Internet-Draft                  dns+cbor                   November 2023
+
+
    [RFC6891]  Damas, J., Graff, M., and P. Vixie, "Extension Mechanisms
               for DNS (EDNS(0))", STD 75, RFC 6891,
               DOI 10.17487/RFC6891, April 2013,
@@ -721,14 +795,6 @@ Internet-Draft                  dns+cbor                    October 2023
               Application Protocol (CoAP)", RFC 7252,
               DOI 10.17487/RFC7252, June 2014,
               <https://www.rfc-editor.org/rfc/rfc7252>.
-
-
-
-
-Lenders, et al.           Expires 15 April 2024                [Page 13]
-
-Internet-Draft                  dns+cbor                    October 2023
-
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -745,14 +811,14 @@ Internet-Draft                  dns+cbor                    October 2023
               DOI 10.17487/RFC8949, December 2020,
               <https://www.rfc-editor.org/rfc/rfc8949>.
 
-7.2.  Informative References
+8.2.  Informative References
 
    [I-D.ietf-core-dns-over-coap]
               Lenders, M. S., Amsüss, C., Gündoğan, C., Schmidt, T. C.,
               and M. Wählisch, "DNS over CoAP (DoC)", Work in Progress,
-              Internet-Draft, draft-ietf-core-dns-over-coap-03, 10 July
-              2023, <https://datatracker.ietf.org/doc/html/draft-ietf-
-              core-dns-over-coap-03>.
+              Internet-Draft, draft-ietf-core-dns-over-coap-04, 23
+              October 2023, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-core-dns-over-coap-04>.
 
    [RFC4944]  Montenegro, G., Kushalnagar, N., Hui, J., and D. Culler,
               "Transmission of IPv6 Packets over IEEE 802.15.4
@@ -769,6 +835,18 @@ Internet-Draft                  dns+cbor                    October 2023
               DOI 10.17487/RFC7228, May 2014,
               <https://www.rfc-editor.org/rfc/rfc7228>.
 
+
+
+Lenders, et al.            Expires 16 May 2024                 [Page 15]
+
+Internet-Draft                  dns+cbor                   November 2023
+
+
+   [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
+              Code: The Implementation Status Section", BCP 205,
+              RFC 7942, DOI 10.17487/RFC7942, July 2016,
+              <https://www.rfc-editor.org/rfc/rfc7942>.
+
    [RFC8484]  Hoffman, P. and P. McManus, "DNS Queries over HTTPS
               (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
               <https://www.rfc-editor.org/rfc/rfc8484>.
@@ -778,13 +856,6 @@ Internet-Draft                  dns+cbor                    October 2023
               Compression and Fragmentation", RFC 8724,
               DOI 10.17487/RFC8724, April 2020,
               <https://www.rfc-editor.org/rfc/rfc8724>.
-
-
-
-Lenders, et al.           Expires 15 April 2024                [Page 14]
-
-Internet-Draft                  dns+cbor                    October 2023
-
 
    [RFC8824]  Minaburo, A., Toutain, L., and R. Andreasen, "Static
               Context Header Compression (SCHC) for the Constrained
@@ -815,6 +886,18 @@ A.1.  DNS Queries
 
    [["example.org", 255, 255]]
 
+
+
+
+
+
+
+
+Lenders, et al.            Expires 16 May 2024                 [Page 16]
+
+Internet-Draft                  dns+cbor                   November 2023
+
+
 A.2.  DNS Responses
 
    The responses to the examples provided in Appendix A.1 are shown
@@ -833,15 +916,6 @@ A.2.  DNS Responses
 
    [[["example.org", 300, h'20010db8000000000000000000000001']]]
 
-
-
-
-
-Lenders, et al.           Expires 15 April 2024                [Page 15]
-
-Internet-Draft                  dns+cbor                    October 2023
-
-
    If the query can not be mapped to the response for some reason, a
    response would look like:
 
@@ -857,6 +931,28 @@ Internet-Draft                  dns+cbor                    October 2023
    record type is specified in the question section.
 
    Lastly, a response to ["example.org", 255, 255] could be
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lenders, et al.            Expires 16 May 2024                 [Page 17]
+
+Internet-Draft                  dns+cbor                   November 2023
+
 
    [
      ["example.org", 12, 1],
@@ -891,13 +987,6 @@ Internet-Draft                  dns+cbor                    October 2023
    2001:db8::35 and ns2.example.org at 2001.db8::3535.  Each of the
    transmitted records has a TTL of 3600 seconds.
 
-
-
-Lenders, et al.           Expires 15 April 2024                [Page 16]
-
-Internet-Draft                  dns+cbor                    October 2023
-
-
 Appendix B.  Comparison to Wire Format
 
    Table 2 shows a comparison between the wire format and the
@@ -916,42 +1005,9 @@ Appendix B.  Comparison to Wire Format
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Lenders, et al.           Expires 15 April 2024                [Page 17]
+Lenders, et al.            Expires 16 May 2024                 [Page 18]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
    +===========+==========+=================+=========================+
@@ -1005,14 +1061,23 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 15 April 2024                [Page 18]
+Lenders, et al.            Expires 16 May 2024                 [Page 19]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
 Appendix C.  Change Log
 
-C.1.  Since draft-lenders-dns-cbor-03
+C.1.  Since draft-lenders-dns-cbor-04
+      (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-04)
+
+   *  Add Implementation Status section
+
+   *  Remove int as representation for rdata
+
+   *  Add note on representation of more structured rdata
+
+C.2.  Since draft-lenders-dns-cbor-03
       (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-03)
 
    *  Provide format description for EDNS OPT Pseudo-RRs
@@ -1021,12 +1086,12 @@ C.1.  Since draft-lenders-dns-cbor-03
 
    *  Remove DNS transaction IDs
 
-C.2.  Since draft-lenders-dns-cbor-02
+C.3.  Since draft-lenders-dns-cbor-02
       (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-02)
 
    *  Add Discussion section and note on compression
 
-C.3.  Since draft-lenders-dns-cbor-01
+C.4.  Since draft-lenders-dns-cbor-01
       (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-01)
 
    *  Use MIME type parameter for packed instead of own MIME type
@@ -1036,7 +1101,7 @@ C.3.  Since draft-lenders-dns-cbor-01
 
    *  Clarify fallback to wire-format
 
-C.4.  Since draft-lenders-dns-cbor-00
+C.5.  Since draft-lenders-dns-cbor-00
       (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-00)
 
    *  Add support for DNS transaction IDs
@@ -1049,6 +1114,14 @@ Acknowledgments
 
    TODO acknowledge.
 
+
+
+
+Lenders, et al.            Expires 16 May 2024                 [Page 20]
+
+Internet-Draft                  dns+cbor                   November 2023
+
+
    *  Carsten Bormann
 
 Authors' Addresses
@@ -1058,14 +1131,6 @@ Authors' Addresses
    Helmholtzstr. 10
    D-01069 Dresden
    Germany
-
-
-
-Lenders, et al.           Expires 15 April 2024                [Page 19]
-
-Internet-Draft                  dns+cbor                    October 2023
-
-
    Email: martine.lenders@tu-dresden.de
 
 
@@ -1108,13 +1173,4 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-
-
-
-
-
-
-
-
-
-Lenders, et al.           Expires 15 April 2024                [Page 20]
+Lenders, et al.            Expires 16 May 2024                 [Page 21]
