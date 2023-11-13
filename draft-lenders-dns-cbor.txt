@@ -5,12 +5,12 @@
 CBOR                                                       M. S. Lenders
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              C. Bormann
-Expires: 25 April 2024                            Universität Bremen TZI
+Expires: 16 May 2024                              Universität Bremen TZI
                                                            T. C. Schmidt
                                                              HAW Hamburg
                                                              M. Wählisch
                                         TU Dresden & Barkhausen Institut
-                                                         23 October 2023
+                                                        13 November 2023
 
 
      A Concise Binary Object Representation (CBOR) of DNS Messages
@@ -53,9 +53,9 @@ Status of This Memo
 
 
 
-Lenders, et al.           Expires 25 April 2024                 [Page 1]
+Lenders, et al.            Expires 16 May 2024                  [Page 1]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
    Internet-Drafts are draft documents valid for a maximum of six months
@@ -63,7 +63,7 @@ Internet-Draft                  dns+cbor                    October 2023
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 April 2024.
+   This Internet-Draft will expire on 16 May 2024.
 
 Copyright Notice
 
@@ -103,15 +103,15 @@ Table of Contents
      8.1.  Media Type Registration . . . . . . . . . . . . . . . . .  12
        8.1.1.  "application/dns+cbor"  . . . . . . . . . . . . . . .  12
      8.2.  CoAP Content-Format Registration  . . . . . . . . . . . .  13
-       8.2.1.  "application/dns-cbor"  . . . . . . . . . . . . . . .  13
+       8.2.1.  "application/dns+cbor"  . . . . . . . . . . . . . . .  13
        8.2.2.  "application/dns+cbor;packed=1" . . . . . . . . . . .  13
      8.3.  CBOR Tags Registry  . . . . . . . . . . . . . . . . . . .  13
 
 
 
-Lenders, et al.           Expires 25 April 2024                 [Page 2]
+Lenders, et al.            Expires 16 May 2024                  [Page 2]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
@@ -165,9 +165,9 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 25 April 2024                 [Page 3]
+Lenders, et al.            Expires 16 May 2024                  [Page 3]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -221,9 +221,9 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 25 April 2024                 [Page 4]
+Lenders, et al.            Expires 16 May 2024                  [Page 4]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
    Further special records, e.g., TSIG can be defined in follow-up
@@ -277,9 +277,9 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 25 April 2024                 [Page 5]
+Lenders, et al.            Expires 16 May 2024                  [Page 5]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
    at the end of the name.  With CBOR on the other hand only 1 byte is
@@ -333,9 +333,9 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 25 April 2024                 [Page 6]
+Lenders, et al.            Expires 16 May 2024                  [Page 6]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
    TBD: reverse extended flags to get MSB-defined DO into LSB?
@@ -389,9 +389,9 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 25 April 2024                 [Page 7]
+Lenders, et al.            Expires 16 May 2024                  [Page 7]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
    This specification assumes that the DNS messages are sent over a
@@ -445,9 +445,9 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 25 April 2024                 [Page 8]
+Lenders, et al.            Expires 16 May 2024                  [Page 8]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
 3.4.  DNS Responses
@@ -501,9 +501,9 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 25 April 2024                 [Page 9]
+Lenders, et al.            Expires 16 May 2024                  [Page 9]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
    dns-response = [
@@ -557,9 +557,9 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 25 April 2024                [Page 10]
+Lenders, et al.            Expires 16 May 2024                 [Page 10]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
 6.  Implementation Status
@@ -613,9 +613,9 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 25 April 2024                [Page 11]
+Lenders, et al.            Expires 16 May 2024                 [Page 11]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
    License:  MIT
@@ -669,9 +669,9 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 25 April 2024                [Page 12]
+Lenders, et al.            Expires 16 May 2024                 [Page 12]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
       Macintosh file type code(s): none
@@ -698,7 +698,7 @@ Internet-Draft                  dns+cbor                    October 2023
    within the "CoRE Parameters" registry [RFC7252], corresponding the
    "application/dns+cbor" media type specified in Section 8.1:
 
-8.2.1.  "application/dns-cbor"
+8.2.1.  "application/dns+cbor"
 
    Media-Type: application/dns+cbor
 
@@ -725,9 +725,9 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 25 April 2024                [Page 13]
+Lenders, et al.            Expires 16 May 2024                 [Page 13]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
       +========+===========+===============+========================+
@@ -781,9 +781,9 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 25 April 2024                [Page 14]
+Lenders, et al.            Expires 16 May 2024                 [Page 14]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
    [RFC6891]  Damas, J., Graff, M., and P. Vixie, "Extension Mechanisms
@@ -837,9 +837,9 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 25 April 2024                [Page 15]
+Lenders, et al.            Expires 16 May 2024                 [Page 15]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
    [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
@@ -893,9 +893,9 @@ A.1.  DNS Queries
 
 
 
-Lenders, et al.           Expires 25 April 2024                [Page 16]
+Lenders, et al.            Expires 16 May 2024                 [Page 16]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
 A.2.  DNS Responses
@@ -949,9 +949,9 @@ A.2.  DNS Responses
 
 
 
-Lenders, et al.           Expires 25 April 2024                [Page 17]
+Lenders, et al.            Expires 16 May 2024                 [Page 17]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
    [
@@ -1005,9 +1005,9 @@ B.1.  Since draft-lenders-dns-cbor-04
 
 
 
-Lenders, et al.           Expires 25 April 2024                [Page 18]
+Lenders, et al.            Expires 16 May 2024                 [Page 18]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
 B.2.  Since draft-lenders-dns-cbor-03
@@ -1061,9 +1061,9 @@ Authors' Addresses
 
 
 
-Lenders, et al.           Expires 25 April 2024                [Page 19]
+Lenders, et al.            Expires 16 May 2024                 [Page 19]
 
-Internet-Draft                  dns+cbor                    October 2023
+Internet-Draft                  dns+cbor                   November 2023
 
 
    Carsten Bormann
@@ -1117,4 +1117,4 @@ Internet-Draft                  dns+cbor                    October 2023
 
 
 
-Lenders, et al.           Expires 25 April 2024                [Page 20]
+Lenders, et al.            Expires 16 May 2024                 [Page 20]
