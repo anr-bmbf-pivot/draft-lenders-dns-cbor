@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-11-12T00:11:04.247369+00:00",
+  "timestamp": "2023-11-14T00:10:02.792878+00:00",
   "repo": "anr-bmbf-pivot/draft-lenders-dns-cbor",
   "labels": [
     {
@@ -153,13 +153,13 @@
       "labels": [],
       "body": "In https://mailarchive.ietf.org/arch/msg/cbor/KzRTl9QqtCiyMb4wYG_U542hjV0/ a comparison table was requested. This is a first draft for that.",
       "createdAt": "2023-10-12T14:20:44Z",
-      "updatedAt": "2023-10-13T09:34:10Z",
+      "updatedAt": "2023-11-13T12:19:34Z",
       "baseRepository": "anr-bmbf-pivot/draft-lenders-dns-cbor",
       "baseRefName": "main",
-      "baseRefOid": "6b5f4d12d145c541b6b72cf1e9f2544ec6595bd8",
+      "baseRefOid": "4e12661dd66ce5a172b45687911ff72a4c86d0f0",
       "headRepository": "anr-bmbf-pivot/draft-lenders-dns-cbor",
       "headRefName": "comparison-table",
-      "headRefOid": "83d3c98fae595f92cfe9663506059e948a0d9b54",
+      "headRefOid": "db19982ad2726af9b5a02edddaf7f709defa5172",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
