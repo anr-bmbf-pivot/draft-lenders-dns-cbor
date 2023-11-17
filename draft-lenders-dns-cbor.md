@@ -292,7 +292,7 @@ If the record class is elided, record class `IN` as specified in {{-dns}} is ass
 When a record class is required, the record type MUST also be provided.
 
 If more than one question is supposed to be in the question section, the next question just follows.
-In this case, for every question but the record type MUST be included and it is not optional. This
+In this case, for every question but the last, the record type MUST be included and it is not optional. This
 way it is ensured that the parser can distinguish each question by looking up the name
 first (TBD note: this is especially relevant once the name is split up in components).
 
