@@ -135,6 +135,9 @@ document, domain names remain case-insensitive as specified in {{-dns}}.
 
 The representation of a domain name is defined in {{fig:domain-name}}.
 
+TBD: represent names as components (`(* tstr)`), provide name compression when {{-cbor-packed}} is
+updated for the reference format and table building discussed at IETF 118.
+
 {:cddl: sourcecode-name="dns-cbor.cddl"}
 
 ~~~ cddl
