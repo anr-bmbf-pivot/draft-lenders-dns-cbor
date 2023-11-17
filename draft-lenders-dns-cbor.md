@@ -590,7 +590,7 @@ types in the "CoAP Content-Formats"
 sub-registry, within the "CoRE Parameters" registry {{-coap}}, corresponding the
 "application/dns+cbor" media type specified in {{media-type}}:
 
-### "application/dns+cbor"
+### "application/dns+cbor" {#cf-app-d-c}
 
 Media-Type: application/dns+cbor
 
@@ -707,6 +707,13 @@ This one advertises two local CoAP servers (identified by service name `_coap._u
 
 # Change Log
 
+Since [draft-lenders-dns-cbor-05]
+---------------------------------
+- Fix {{cf-app-d-c}} title
+- Amend for capability to carry more than one question
+- Hint at future of name compression in later draft versions
+- Use canonical name for CBOR-packed
+
 Since [draft-lenders-dns-cbor-04]
 ---------------------------------
 - Add Implementation Status section
@@ -735,6 +742,7 @@ Since [draft-lenders-dns-cbor-00]
 - Name and Address compression utilizing CBOR-packed
 - Minor fixes to CBOR EDN and CDDL
 
+[draft-lenders-dns-cbor-05]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-05
 [draft-lenders-dns-cbor-04]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-04
 [draft-lenders-dns-cbor-03]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-03
 [draft-lenders-dns-cbor-02]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-02
