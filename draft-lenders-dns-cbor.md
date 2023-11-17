@@ -278,7 +278,7 @@ This specification assumes that the DNS messages are sent over a transfer protoc
 queries to their responses, e.g., DNS over HTTPS {{-doh}} or DNS over CoAP {{-doc}}.
 As a consequence, the DNS transaction ID is always elided and the value 0 is assumed.
 
-The question section is encoded as a CBOR array containing up to 3 entries:
+A question within the question section is encoded as a CBOR array containing up to 3 entries:
 
 1. The queried name (as text string, see {{sec:domain-names}}),
 2. An optional record type (as unsigned integer), and
@@ -287,6 +287,11 @@ The question section is encoded as a CBOR array containing up to 3 entries:
 If the record type is elided, record type `AAAA` as specified in {{-aaaa}} is assumed.
 If the record class is elided, record class `IN` as specified in {{-dns}} is assumed.
 When a record class is required, the record type MUST also be provided.
+
+If more than one question is supposed to be in the question section, the next question just follows.
+In this case, for every question but the record type MUST be included and it is not optional. This
+way it is ensured that the parser can distinguish each question by looking up the name
+first (TBD note: this is especially relevant once the name is split up in components).
 
 The remainder of the query is either empty or MUST consist of up to two arrays.
 The first array, if present, encodes the authority section of the query as an array of DNS
@@ -303,9 +308,17 @@ dns-query = [
   ? extra-sections,
 ]
 question-section = [
+  * full-question,
+  ? last-question,
+]
+full-question = (
+  name: domain-name,
+  type-spec,
+)
+last-question = (
   name: domain-name,
   ? type-spec,
-]
+)
 extra-sections = (
   ? authority: [+ dns-rr],
   additional: [+ dns-rr],
