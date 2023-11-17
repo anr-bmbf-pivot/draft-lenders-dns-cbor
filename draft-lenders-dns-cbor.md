@@ -372,9 +372,9 @@ dns-response = [
 ~~~
 {:cddl #fig:dns-response title="DNS Response Definition"}
 
-# Name and Address Compression with Packed CBOR
+# Name and Address Compression with CBOR-packed
 
-If both DNS server and client support packed CBOR {{-cbor-packed}}, it MAY be used for name and
+If both DNS server and client support CBOR-packed {{-cbor-packed}}, it MAY be used for name and
 address compression in DNS responses.
 
 ## Media Type Negotiation
@@ -382,13 +382,13 @@ address compression in DNS responses.
 A DNS client uses media type "application/dns+cbor;packed=1" to negotiate (see, e.g.,
 {{-http-semantics}} or {{-coap}}, Section 5.5.4) with the DNS server if the server supports packed
 CBOR.
-If it does, it MAY request the response to be in packed CBOR (media type
+If it does, it MAY request the response to be in CBOR-packed (media type
 "applicaton/dns+cbor;packed=1").
-The server then SHOULD reply with the response in packed CBOR.
+The server then SHOULD reply with the response in CBOR-packed.
 
-## DNS Representation in Packed CBOR
+## DNS Representation in CBOR-packed
 
-The representation of DNS responses in packed CBOR has the same semantics as for tag TBD113
+The representation of DNS responses in CBOR-packed has the same semantics as for tag TBD113
 ({{-cbor-packed}}, Section 3.1) with the rump being the compressed response.
 The difference to {{-cbor-packed}} is that tag TBD113 is OPTIONAL.
 
@@ -410,8 +410,8 @@ Discussion TBD:
   ==> For occasions were value is the affix (e.g., "example.org" in ANY example in
   {{sec:response-examples}}) use shared item referencing to argument table to safe bytes (no extra
   shared item table, no, e.g., 216(""), just simple(0))
-  - **Example:** Using Basic Packed CBOR ({{-cbor-packed}}, section 3.1):
-    - 130 bytes (Basic Packed CBOR)
+  - **Example:** Using Basic CBOR-packed ({{-cbor-packed}}, section 3.1):
+    - 130 bytes (Basic CBOR-packed)
     - 200 bytes (plain CBOR, see {{sec:response-examples}})
     - 194 bytes (wire-format)
 
