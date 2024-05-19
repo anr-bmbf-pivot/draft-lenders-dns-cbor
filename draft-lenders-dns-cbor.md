@@ -32,8 +32,13 @@ author:
     code: D-01069
     country: Germany
     email: martine.lenders@tu-dresden.de
- -  fullname: Carsten Bormann
-    organization: Universität Bremen TZI
+ -  name: Carsten Bormann
+    org: Universität Bremen TZI
+    street: Postfach 330440
+    city: Bremen
+    code: D-28359
+    country: Germany
+    phone: +49-421-218-63921
     email: cabo@tzi.org
  -  fullname: Thomas C. Schmidt
     organization: HAW Hamburg
@@ -61,7 +66,6 @@ informative:
   RFC4944: 6lowpan
   RFC6282: iphc
   RFC7228: constr-terms
-  RFC7942: impl-status-section
   RFC8484: doh
   RFC8724: schc
   RFC8824: coap-schc
@@ -221,8 +225,9 @@ To distinguish them from normal standard RRs, they are marked with tag TBD141.
 
 Name and record type can be elided as they are always "." and OPT (41), respectively {{-edns}}.
 
-The UDP payload size may be the first element as an unsigned integer in the array but it can be
-elided if it defaults to 512, the maximum allowable size for DNS over UDP {{-edns}}.
+The UDP payload size may be the first element as an unsigned integer in the array.
+It MUST be
+elided if its value is the default value of 512, the maximum allowable size for unextended DNS over UDP (see {{Sections 2.3.4 and 4.2.1 of -dns}}).
 
 The next element is an array of the options, which are represented two elements each, an unsigned
 integer, the option code, followed by a byte string, the option data.
@@ -355,7 +360,7 @@ question section is encoded as specified in {{sec:queries}}.
 
 If the answer section is followed by 1 additional array, it is the additional section (TBD:
 back choice to favor additional section by empirical data). Like the answer section, the additional
-sections is represented as an array of one or more DNS Resource Records (see {{sec:rr}}).
+section is represented as an array of one or more DNS Resource Records (see {{sec:rr}}).
 
 If the answer section is followed by 2 additional arrays, the first is the authority section, and
 the second the additional section (TBD: back choice to favor additional section by empirical data).
@@ -407,7 +412,7 @@ Discussion TBD:
   compression is not necessary.
 - Address and name compression are mostly about affix compression
   (i.e. straight/inverse referencing)<br>
-  ==> For occasions were value is the affix (e.g., "example.org" in ANY example in
+  ==> For occasions where value is the affix (e.g., "example.org" in ANY example in
   {{sec:response-examples}}) use shared item referencing to argument table to safe bytes (no extra
   shared item table, no, e.g., 216(""), just simple(0))
   - **Example:** Using Basic CBOR-packed ({{-cbor-packed}}, section 3.1):
@@ -465,24 +470,7 @@ TBD: Table comparing DNS wire-format, DNS+CBOR, and DNS+CBOR-packed
 
 # Implementation Status
 
-This section records the status of known implementations of the protocol
-defined by this specification at the time of posting of this
-Internet-Draft, and is based on a proposal described in
-{{-impl-status-section}}.  The description of implementations in this
-section is intended to assist the IETF in its decision processes in
-progressing drafts to RFCs.  Please note that the listing of any individual
-implementation here does not imply endorsement by the IETF.  Furthermore,
-no effort has been spent to verify the information presented here that was
-supplied by IETF contributors.  This is not intended as, and must not be
-construed to be, a catalog of available implementations or their features.
-Readers are advised to note that other implementations may exist.
-
-According to {{-impl-status-section}}, "this will allow reviewers and
-working groups to assign due consideration to documents that have the
-benefit of running code, which may serve as evidence of valuable
-experimentation and feedback that have made the implemented protocols more
-mature.  It is up to the individual working groups to use this information
-as they see fit".
+{::boilerplate RFC7942}
 
 ## Python decoder/encoder
 
@@ -493,7 +481,7 @@ specified in this document in Python.
 Level of maturity:
 : prototype
 
-Version compability:
+Version compatibility:
 : draft-lenders-dns-cbor-05
 
 License:
@@ -514,7 +502,7 @@ document for the RIOT operating system. It can only encode queries and decode re
 Level of maturity:
 : prototype
 
-Version compability:
+Version compatibility:
 : draft-lenders-dns-cbor-05
 
 License:
@@ -753,5 +741,3 @@ Since [draft-lenders-dns-cbor-00]
 {:unnumbered}
 
 TODO acknowledge.
-
-- Carsten Bormann
