@@ -225,8 +225,9 @@ To distinguish them from normal standard RRs, they are marked with tag TBD141.
 
 Name and record type can be elided as they are always "." and OPT (41), respectively {{-edns}}.
 
-The UDP payload size may be the first element as an unsigned integer in the array but it can be
-elided if it defaults to 512, the maximum allowable size for DNS over UDP {{-edns}}.
+The UDP payload size may be the first element as an unsigned integer in the array.
+It MUST be
+elided if its value is the default value of 512, the maximum allowable size for unextended DNS over UDP (see {{Sections 2.3.4 and 4.2.1 of -dns}}).
 
 The next element is an array of the options, which are represented two elements each, an unsigned
 integer, the option code, followed by a byte string, the option data.
