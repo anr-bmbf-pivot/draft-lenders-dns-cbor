@@ -32,8 +32,13 @@ author:
     code: D-01069
     country: Germany
     email: martine.lenders@tu-dresden.de
- -  fullname: Carsten Bormann
-    organization: Universität Bremen TZI
+ -  name: Carsten Bormann
+    org: Universität Bremen TZI
+    street: Postfach 330440
+    city: Bremen
+    code: D-28359
+    country: Germany
+    phone: +49-421-218-63921
     email: cabo@tzi.org
  -  fullname: Thomas C. Schmidt
     organization: HAW Hamburg
