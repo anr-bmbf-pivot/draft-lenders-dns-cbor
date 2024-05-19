@@ -121,12 +121,13 @@ Internet-Draft                  dns+cbor                        May 2024
      A.1.  DNS Queries . . . . . . . . . . . . . . . . . . . . . . .  17
      A.2.  DNS Responses . . . . . . . . . . . . . . . . . . . . . .  17
    Appendix B.  Change Log . . . . . . . . . . . . . . . . . . . . .  19
-     B.1.  Since draft-lenders-dns-cbor-05 . . . . . . . . . . . . .  19
-     B.2.  Since draft-lenders-dns-cbor-04 . . . . . . . . . . . . .  19
-     B.3.  Since draft-lenders-dns-cbor-03 . . . . . . . . . . . . .  19
-     B.4.  Since draft-lenders-dns-cbor-02 . . . . . . . . . . . . .  19
-     B.5.  Since draft-lenders-dns-cbor-01 . . . . . . . . . . . . .  19
-     B.6.  Since draft-lenders-dns-cbor-00 . . . . . . . . . . . . .  20
+     B.1.  Since draft-lenders-dns-cbor-06 . . . . . . . . . . . . .  19
+     B.2.  Since draft-lenders-dns-cbor-05 . . . . . . . . . . . . .  19
+     B.3.  Since draft-lenders-dns-cbor-04 . . . . . . . . . . . . .  19
+     B.4.  Since draft-lenders-dns-cbor-03 . . . . . . . . . . . . .  19
+     B.5.  Since draft-lenders-dns-cbor-02 . . . . . . . . . . . . .  19
+     B.6.  Since draft-lenders-dns-cbor-01 . . . . . . . . . . . . .  19
+     B.7.  Since draft-lenders-dns-cbor-00 . . . . . . . . . . . . .  20
    Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  20
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  20
 
@@ -161,7 +162,6 @@ Internet-Draft                  dns+cbor                        May 2024
 
    A DNS query is a message that queries DNS information from an
    upstream DNS resolver.
-
 
 
 
@@ -1012,7 +1012,12 @@ Internet-Draft                  dns+cbor                        May 2024
 
 Appendix B.  Change Log
 
-B.1.  Since draft-lenders-dns-cbor-05
+B.1.  Since draft-lenders-dns-cbor-06
+      (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-06)
+
+   *  Fixes wording and spelling mistakes
+
+B.2.  Since draft-lenders-dns-cbor-05
       (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-05)
 
    *  Fix Section 8.2.1 title
@@ -1023,7 +1028,7 @@ B.1.  Since draft-lenders-dns-cbor-05
 
    *  Use canonical name for CBOR-packed
 
-B.2.  Since draft-lenders-dns-cbor-04
+B.3.  Since draft-lenders-dns-cbor-04
       (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-04)
 
    *  Add Implementation Status section
@@ -1032,7 +1037,7 @@ B.2.  Since draft-lenders-dns-cbor-04
 
    *  Add note on representation of more structured rdata
 
-B.3.  Since draft-lenders-dns-cbor-03
+B.4.  Since draft-lenders-dns-cbor-03
       (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-03)
 
    *  Provide format description for EDNS OPT Pseudo-RRs
@@ -1041,23 +1046,18 @@ B.3.  Since draft-lenders-dns-cbor-03
 
    *  Remove DNS transaction IDs
 
-B.4.  Since draft-lenders-dns-cbor-02
+B.5.  Since draft-lenders-dns-cbor-02
       (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-02)
 
    *  Add Discussion section and note on compression
 
-B.5.  Since draft-lenders-dns-cbor-01
+B.6.  Since draft-lenders-dns-cbor-01
       (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-01)
 
    *  Use MIME type parameter for packed instead of own MIME type
 
    *  Update definitions to accommodate for TID and flags, as well as
       more sections in query
-
-   *  Clarify fallback to wire-format
-
-
-
 
 
 
@@ -1066,7 +1066,9 @@ Lenders, et al.         Expires 20 November 2024               [Page 19]
 Internet-Draft                  dns+cbor                        May 2024
 
 
-B.6.  Since draft-lenders-dns-cbor-00
+   *  Clarify fallback to wire-format
+
+B.7.  Since draft-lenders-dns-cbor-00
       (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-00)
 
    *  Add support for DNS transaction IDs
@@ -1109,8 +1111,6 @@ Authors' Addresses
    D-01069 Dresden
    Germany
    Email: m.waehlisch@tu-dresden.de
-
-
 
 
 
