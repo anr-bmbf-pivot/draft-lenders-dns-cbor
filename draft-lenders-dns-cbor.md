@@ -360,7 +360,7 @@ question section is encoded as specified in {{sec:queries}}.
 
 If the answer section is followed by 1 additional array, it is the additional section (TBD:
 back choice to favor additional section by empirical data). Like the answer section, the additional
-sections is represented as an array of one or more DNS Resource Records (see {{sec:rr}}).
+section is represented as an array of one or more DNS Resource Records (see {{sec:rr}}).
 
 If the answer section is followed by 2 additional arrays, the first is the authority section, and
 the second the additional section (TBD: back choice to favor additional section by empirical data).
@@ -412,7 +412,7 @@ Discussion TBD:
   compression is not necessary.
 - Address and name compression are mostly about affix compression
   (i.e. straight/inverse referencing)<br>
-  ==> For occasions were value is the affix (e.g., "example.org" in ANY example in
+  ==> For occasions where value is the affix (e.g., "example.org" in ANY example in
   {{sec:response-examples}}) use shared item referencing to argument table to safe bytes (no extra
   shared item table, no, e.g., 216(""), just simple(0))
   - **Example:** Using Basic CBOR-packed ({{-cbor-packed}}, section 3.1):
@@ -481,7 +481,7 @@ specified in this document in Python.
 Level of maturity:
 : prototype
 
-Version compability:
+Version compatibility:
 : draft-lenders-dns-cbor-05
 
 License:
@@ -502,7 +502,7 @@ document for the RIOT operating system. It can only encode queries and decode re
 Level of maturity:
 : prototype
 
-Version compability:
+Version compatibility:
 : draft-lenders-dns-cbor-05
 
 License:
@@ -741,5 +741,3 @@ Since [draft-lenders-dns-cbor-00]
 {:unnumbered}
 
 TODO acknowledge.
-
-- Carsten Bormann
