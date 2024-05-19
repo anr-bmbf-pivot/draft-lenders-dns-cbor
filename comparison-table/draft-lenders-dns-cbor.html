@@ -2199,12 +2199,6 @@ preferred in those cases.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
             <td class="text-left" rowspan="1" colspan="1">18 bytes + name length + rdata length (type &gt; 255, class &gt; 255, name length &gt; 255, rdata length &gt; 255)</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">Standard RR with int rdata</td>
-            <td class="text-left" rowspan="1" colspan="1">12 bytes + name length + rdata length</td>
-            <td class="text-left" rowspan="1" colspan="1">5 bytes (name and class elided, type &lt; 24, rdata &lt; 24)</td>
-            <td class="text-left" rowspan="1" colspan="1">27 bytes + name length (type &gt; 255, class &gt; 255, name length &gt; 255, rdata &gt; 2147483648 or rdata &lt; -4294967296)</td>
-          </tr>
-          <tr>
             <td class="text-left" rowspan="1" colspan="1">EDNS Opt Pseudo-RR</td>
             <td class="text-left" rowspan="1" colspan="1">11 bytes + for each option 4 bytes + value length</td>
             <td class="text-left" rowspan="1" colspan="1">2 bytes + for each option 2 bytes + value length (all but options elided, option code and length &lt; 24)</td>

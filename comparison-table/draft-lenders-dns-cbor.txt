@@ -120,13 +120,13 @@ Internet-Draft                  dns+cbor                        May 2024
      A.1.  DNS Queries . . . . . . . . . . . . . . . . . . . . . . .  17
      A.2.  DNS Responses . . . . . . . . . . . . . . . . . . . . . .  17
    Appendix B.  Comparison to Wire Format  . . . . . . . . . . . . .  18
-   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  20
-     C.1.  Since draft-lenders-dns-cbor-05 . . . . . . . . . . . . .  20
+   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  19
+     C.1.  Since draft-lenders-dns-cbor-05 . . . . . . . . . . . . .  19
      C.2.  Since draft-lenders-dns-cbor-04 . . . . . . . . . . . . .  20
      C.3.  Since draft-lenders-dns-cbor-03 . . . . . . . . . . . . .  20
      C.4.  Since draft-lenders-dns-cbor-02 . . . . . . . . . . . . .  20
      C.5.  Since draft-lenders-dns-cbor-01 . . . . . . . . . . . . .  20
-     C.6.  Since draft-lenders-dns-cbor-00 . . . . . . . . . . . . .  21
+     C.6.  Since draft-lenders-dns-cbor-00 . . . . . . . . . . . . .  20
    Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  21
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  21
 
@@ -1040,12 +1040,6 @@ Internet-Draft                  dns+cbor                        May 2024
    |           | length   | compressed*     | length > 255)           |
    |           |          | _TBD_)          |                         |
    +-----------+----------+-----------------+-------------------------+
-   | Standard  | 12 bytes | 5 bytes (name   | 27 bytes + name length  |
-   | RR with   | + name   | and class       | (type > 255, class >    |
-   | int rdata | length + | elided, type <  | 255, name length > 255, |
-   |           | rdata    | 24, rdata < 24) | rdata > 2147483648 or   |
-   |           | length   |                 | rdata < -4294967296)    |
-   +-----------+----------+-----------------+-------------------------+
    | EDNS Opt  | 11 bytes | 2 bytes + for   | 14 bytes + for each     |
    | Pseudo-RR | + for    | each option 2   | option 6 bytes + value  |
    |           | each     | bytes + value   | length (UDP payload     |
@@ -1057,6 +1051,12 @@ Internet-Draft                  dns+cbor                        May 2024
 
         Table 2: Comparison of application/cbor+dns to wire format
 
+Appendix C.  Change Log
+
+C.1.  Since draft-lenders-dns-cbor-05
+      (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-05)
+
+   *  Fix Section 7.2.1 title
 
 
 
@@ -1065,13 +1065,6 @@ Lenders, et al.         Expires 20 November 2024               [Page 19]
 
 Internet-Draft                  dns+cbor                        May 2024
 
-
-Appendix C.  Change Log
-
-C.1.  Since draft-lenders-dns-cbor-05
-      (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-05)
-
-   *  Fix Section 7.2.1 title
 
    *  Amend for capability to carry more than one question
 
@@ -1112,16 +1105,6 @@ C.5.  Since draft-lenders-dns-cbor-01
 
    *  Clarify fallback to wire-format
 
-
-
-
-
-
-Lenders, et al.         Expires 20 November 2024               [Page 20]
-
-Internet-Draft                  dns+cbor                        May 2024
-
-
 C.6.  Since draft-lenders-dns-cbor-00
       (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-00)
 
@@ -1130,6 +1113,14 @@ C.6.  Since draft-lenders-dns-cbor-00
    *  Name and Address compression utilizing CBOR-packed
 
    *  Minor fixes to CBOR EDN and CDDL
+
+
+
+
+Lenders, et al.         Expires 20 November 2024               [Page 20]
+
+Internet-Draft                  dns+cbor                        May 2024
+
 
 Acknowledgments
 
@@ -1165,6 +1156,15 @@ Authors' Addresses
    D-01069 Dresden
    Germany
    Email: m.waehlisch@tu-dresden.de
+
+
+
+
+
+
+
+
+
 
 
 
