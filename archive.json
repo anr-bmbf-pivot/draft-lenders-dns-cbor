@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-05-19T00:11:52.302093+00:00",
+  "timestamp": "2024-05-21T00:11:00.608095+00:00",
   "repo": "anr-bmbf-pivot/draft-lenders-dns-cbor",
   "labels": [
     {
@@ -153,19 +153,61 @@
       "labels": [],
       "body": "In https://mailarchive.ietf.org/arch/msg/cbor/KzRTl9QqtCiyMb4wYG_U542hjV0/ a comparison table was requested. This is a first draft for that.",
       "createdAt": "2023-10-12T14:20:44Z",
-      "updatedAt": "2023-11-13T12:19:34Z",
+      "updatedAt": "2024-05-19T14:03:56Z",
       "baseRepository": "anr-bmbf-pivot/draft-lenders-dns-cbor",
       "baseRefName": "main",
-      "baseRefOid": "4e12661dd66ce5a172b45687911ff72a4c86d0f0",
+      "baseRefOid": "9fe12b3e5430cd3dfa9d8a4abbb312654960228a",
       "headRepository": "anr-bmbf-pivot/draft-lenders-dns-cbor",
       "headRefName": "comparison-table",
-      "headRefOid": "db19982ad2726af9b5a02edddaf7f709defa5172",
+      "headRefOid": "b7066082daf8711da3ceb05e1e7058a82669d933",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 5,
+      "id": "PR_kwDOIM0M7M5v4eY-",
+      "title": "Various changes from cabo for -07",
+      "url": "https://github.com/anr-bmbf-pivot/draft-lenders-dns-cbor/pull/5",
+      "state": "MERGED",
+      "author": "cabo",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-05-19T08:47:45Z",
+      "updatedAt": "2024-05-19T09:29:25Z",
+      "baseRepository": "anr-bmbf-pivot/draft-lenders-dns-cbor",
+      "baseRefName": "main",
+      "baseRefOid": "5454047df2e957cf9c47ae222c980be68d7509a8",
+      "headRepository": "anr-bmbf-pivot/draft-lenders-dns-cbor",
+      "headRefName": "cabo-07",
+      "headRefOid": "964b1bc072385190075b10d0a0c4193322767479",
+      "closedAt": "2024-05-19T09:29:12Z",
+      "mergedAt": "2024-05-19T09:29:12Z",
+      "mergedBy": "miri64",
+      "mergeCommit": {
+        "oid": "9fe12b3e5430cd3dfa9d8a4abbb312654960228a"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOIM0M7M57Fe9F",
+          "commit": {
+            "abbreviatedOid": "964b1bc"
+          },
+          "author": "miri64",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-05-19T09:29:04Z",
+          "updatedAt": "2024-05-19T09:29:04Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
