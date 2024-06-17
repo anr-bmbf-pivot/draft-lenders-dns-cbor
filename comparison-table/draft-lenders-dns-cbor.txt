@@ -1011,7 +1011,7 @@ Internet-Draft                  dns+cbor                       June 2024
 
 
    +========+=============+===============================================+
-   |Item    |     RFC 1035|                  application/                 |
+   |Item    |  Classic DNS|                  application/                 |
    |        |       format|                    dns+cbor                   |
    |        |      [bytes]|                    [bytes]                    |
    |        |             +=============+=============+===================+
