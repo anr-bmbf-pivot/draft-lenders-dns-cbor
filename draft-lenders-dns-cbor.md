@@ -696,7 +696,7 @@ format. Note that the worst case results typically appear only rarely in DNS. Th
 preferred in those cases.
 
 <table anchor="tab-cbor-comparison">
-  <name>Comparison of application/dns+cbor to wire format</name>
+  <name>Comparison of application/dns+cbor to classic DNS format</name>
   <thead>
     <tr>
       <th align="left" rowspan="2">Item</th>
@@ -713,7 +713,7 @@ preferred in those cases.
     <tr>
       <td align="left">Header (ID & Flags)</td>
       <td align="right">4</td>
-      <td align="right">1 (1{{tab-cbor-compression-1}},2)</td>
+      <td align="right">1 (1,2)</td>
       <td align="right">4 (1,3)</td>
       <td align="right">4 (1,3)</td>
     </tr>
