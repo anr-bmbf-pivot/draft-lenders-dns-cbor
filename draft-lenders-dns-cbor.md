@@ -700,7 +700,7 @@ preferred in those cases.
   <thead>
     <tr>
       <th align="left" rowspan="2">Item</th>
-      <th align="right" rowspan="2">RFC 1035 format<br/>[bytes]</th>
+      <th align="right" rowspan="2">Classic DNS format [bytes]</th>
       <th align="center" colspan="3">application/dns+cbor [bytes]</th>
     </tr>
     <tr>
