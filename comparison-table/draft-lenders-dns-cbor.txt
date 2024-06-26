@@ -998,7 +998,7 @@ Appendix B.  Comparison to Wire Format
    application/dns+cbor format.  Note that the worst case results
    typically appear only rarely in DNS.  The DNS wire format is
    preferred in those cases.  A key for which configuration was used in
-   which case can be seen in Table 3
+   which case can be seen in Table 3.
 
 
 
@@ -1039,7 +1039,7 @@ Internet-Draft                  dns+cbor                       June 2024
    |Option  |              |   value len.|              |              |
    +--------+--------------+-------------+--------------+--------------+
 
-     Table 2: Comparison of application/dns+cbor to classic DNS format
+     Table 2: Comparison of application/dns+cbor to classic DNS format.
 
 
 
