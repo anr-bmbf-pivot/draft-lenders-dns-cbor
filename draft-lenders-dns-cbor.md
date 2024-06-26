@@ -693,10 +693,11 @@ This one advertises two local CoAP servers (identified by service name `_coap._u
 
 {{tab-cbor-comparison}} shows a comparison between the wire format and the application/dns+cbor
 format. Note that the worst case results typically appear only rarely in DNS. The DNS wire format is
-preferred in those cases.
+preferred in those cases. A key for which configuration was used in which case can be seen in
+{{tab-cbor-comparison-key}}.
 
 <table anchor="tab-cbor-comparison">
-  <name>Comparison of application/dns+cbor to classic DNS format</name>
+  <name>Comparison of application/dns+cbor to classic DNS format.</name>
   <thead>
     <tr>
       <th align="left" rowspan="2">Item</th>
@@ -713,73 +714,113 @@ preferred in those cases.
     <tr>
       <td align="left">Header (ID & Flags)</td>
       <td align="right">4</td>
-      <td align="right">1 (1,2)</td>
-      <td align="right">4 (1,3)</td>
-      <td align="right">4 (1,3)</td>
+      <td align="right">1</td>
+      <td align="right">4</td>
+      <td align="right">4</td>
     </tr>
     <tr>
       <td align="left">Count fields</td>
       <td align="right">2</td>
-      <td align="right">1 (1)</td>
-      <td align="right">3 (4)</td>
-      <td align="right">3 (4)</td>
+      <td align="right">1</td>
+      <td align="right">3</td>
+      <td align="right">3</td>
     </tr>
     <tr>
       <td align="left">Question section</td>
-      <td align="right">6 + name&nbsp;len.</td>
-      <td align="right">2 + name&nbsp;len. (5,9)</td>
-      <td align="right">7 + name&nbsp;len. (6,10)</td>
-      <td align="right">10 + name&nbsp;len. (6,7,10)</td>
+      <td align="right">6&nbsp;+&nbsp;name&nbsp;len.</td>
+      <td align="right">2&nbsp;+&nbsp;name&nbsp;len.</td>
+      <td align="right">7&nbsp;+&nbsp;name&nbsp;len.</td>
+      <td align="right">10&nbsp;+&nbsp;name&nbsp;len.</td>
     </tr>
     <tr>
       <td align="left">Standard RR</td>
-      <td align="right">12 + name&nbsp;len. + RDATA&nbsp;len.</td>
-      <td align="right">3 + RDATA&nbsp;len. (5,8,11)</td>
-      <td align="right">15 + name&nbsp;len. + RDATA&nbsp;len. (6,10,12)</td>
-      <td align="right">18 + name&nbsp;len. + RDATA&nbsp;len. (6,7,10,12)</td>
+      <td align="right">12&nbsp;+&nbsp;name&nbsp;len. + rdata&nbsp;len.</td>
+      <td align="right">3<br/> +&nbsp;rdata&nbsp;len.</td>
+      <td align="right">15&nbsp;+&nbsp;name&nbsp;len. + rdata&nbsp;len.</td>
+      <td align="right">18&nbsp;+&nbsp;name&nbsp;len. + rdata&nbsp;len.</td>
     </tr>
     <!-- Add when name compression is in <tr>
       <td align="left">Standard RR with name rdata</td>
-      <td align="right">12 + name&nbsp;len. + RDATA&nbsp;len.</td>
+      <td align="right">12 + name&nbsp;len. + rdata&nbsp;len.</td>
+      <td align="right">6 + rdata&nbsp;len.</td>
+      <td align="right">15 + name&nbsp;len. + rdata&nbsp;len.</td>
+      <td align="right">18 + name&nbsp;len. + rdata&nbsp;len.</td>
+    </tr>-->
+    <tr>
+      <td align="left">EDNS Opt Pseudo-RR</td>
+      <td align="right">11 + options</td>
+      <td align="right">2 + options</td>
+      <td align="right">6 + options</td>
+      <td align="right">14 + options</td>
+    </tr>
+    <tr>
+      <td align="left">EDNS Option</td>
+      <td align="right">4 + value&nbsp;len.</td>
+      <td align="right">2 + value&nbsp;len.</td>
+      <td align="right">4 + value&nbsp;len.</td>
+      <td align="right">6 + value&nbsp;len.</td>
+    </tr>
+  </tbody>
+</table>
+
+<table anchor="tab-cbor-comparison-key">
+  <name>Configuration key for <xref target="tab-cbor-comparison" />.</name>
+  <thead>
+    <tr>
+      <th align="left" rowspan="2">Item</th>
+      <th align="center" colspan="3">application/dns+cbor configuration</th>
+    </tr>
+    <tr>
+      <th align="right">best case</th>
+      <th align="right">realistic worst case</th>
+      <th align="right">theoretical worst case</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Header (ID &amp; Flags)</td>
+      <td align="right">Flags elided</td>
+      <td align="right">QR, Opcode, AA, TC, or RD are set</td>
+      <td align="right">QR, Opcode, AA, TC, or RD are set</td>
+    </tr>
+    <tr>
+      <td align="left">Count fields</td>
+      <td align="right">Encoded in CBOR array header</td>
+      <td align="right">Encoded in CBOR array header,<br/>&gt;255 records in section</td>
+      <td align="right">Encoded in CBOR array header,<br/>&gt;255 records in section</td>
+    </tr>
+    <tr>
+      <td align="left">Question section</td>
+      <td align="right">Class, type, and name elided</td>
+      <td align="right">Type &gt; 255,<br/>name len. &gt; 255</td>
+      <td align="right">Type &gt; 255,<br/>Class &gt; 255,<br/>name len. &gt; 255</td>
+    </tr>
+    <tr>
+      <td align="left">Standard RR</td>
+      <td align="right">Class, type, and name elided,<br/>rdata len. &lt; 24</td>
+      <td align="right">Type &gt; 255,<br/>name len. &gt; 255<br/>rdata len. &gt; 255</td>
+      <td align="right">Type &gt; 255,<br/>Class &gt; 255,<br/>name len. &gt; 255<br/>rdata len. &gt; 255</td>
+    </tr>
+    <!-- Add when name compression is in <tr>
+      <td align="left">Standard RR with name rdata</td>
       <td align="right">6 + RDATA&nbsp;len. (5,8,name compressed)</td>
       <td align="right">15 + name&nbsp;len. + RDATA&nbsp;len. (6,10,12)</td>
       <td align="right">18 + name&nbsp;len. + RDATA&nbsp;len. (6,7,10,12)</td>
     </tr>-->
     <tr>
       <td align="left">EDNS Opt Pseudo-RR</td>
-      <td align="right">11 + (4 + value&nbsp;length) for each option</td>
-      <td align="right">2 + (2 + value&nbsp;length) for each option (13,19,21)</td>
-      <td align="right">6 + (4 + value&nbsp;length) for each option (15,18,19,23)</td>
-      <td align="right">14 + (6 + value&nbsp;length) for each option (14,16,17,18,20,23)</td>
+      <td align="right">All EDNS(0) fields elided</td>
+      <td align="right">Rcode &lt; 24,<br/>DO flag set,<br/></td>
+      <td align="right">UDP payload<br/>len. &gt; 255<br/>Rcode &gt; 255<br/>Version &gt; 255<br/>DO flag set</td>
+    </tr>
+    <tr>
+      <td align="left">EDNS Option</td>
+      <td align="right">Code &lt; 24<br/>Length &lt; 24</td>
+      <td align="right">Code &lt; 24<br/>Length &gt; 255</td>
+      <td align="right">Code &gt; 255<br/>Length &gt; 255</td>
     </tr>
   </tbody>
 </table>
-
-Numbers in parenthesis mean the following:
-
-1. Encoded in CBOR array length
-2. Flags elided
-3. QR, Opcode, AA, TC, or RD flags are set
-4. &gt;255 records in the section
-5. Type and class elided
-6. Type > 255
-7. Class > 255
-8. Name elided
-9. Name&nbsp;len. < 24
-10. Name&nbsp;len. > 255
-11. RDATA&nbsp;len. < 24
-12. RDARA&nbsp;len. > 255
-13. All EDNS(0) fields except options elided
-14. UDP payload length > 255
-15. Rcode < 24
-16. Rcode > 255
-17. Version > 255
-18. DO flag set
-19. Option code < 24
-20. Option code > 255
-21. Option length < 24
-22. 24 <= Option length <= 255
-23. Option length > 255
 
 # Change Log
 
