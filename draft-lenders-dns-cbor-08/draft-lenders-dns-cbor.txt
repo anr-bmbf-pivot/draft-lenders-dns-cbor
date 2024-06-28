@@ -1,0 +1,1232 @@
+
+
+
+
+CBOR                                                       M. S. Lenders
+Internet-Draft                                                TU Dresden
+Intended status: Standards Track                              C. Bormann
+Expires: 30 December 2024                         Universität Bremen TZI
+                                                           T. C. Schmidt
+                                                             HAW Hamburg
+                                                             M. Wählisch
+                                        TU Dresden & Barkhausen Institut
+                                                            28 June 2024
+
+
+     A Concise Binary Object Representation (CBOR) of DNS Messages
+                     draft-lenders-dns-cbor-latest
+
+Abstract
+
+   This document specifies a compressed data format of DNS messages
+   using the Concise Binary Object Representation [RFC8949].  The
+   primary purpose is to keep DNS messages small in constrained
+   networks.
+
+About This Document
+
+   This note is to be removed before publishing as an RFC.
+
+   The latest revision of this draft can be found at https://anr-bmbf-
+   pivot.github.io/draft-lenders-dns-cbor/draft-lenders-dns-cbor.html.
+   Status information for this document may be found at
+   https://datatracker.ietf.org/doc/draft-lenders-dns-cbor/.
+
+   Discussion of this document takes place on the CBOR Working Group
+   mailing list (mailto:cbor@ietf.org), which is archived at
+   https://mailarchive.ietf.org/arch/browse/cbor/.  Subscribe at
+   https://www.ietf.org/mailman/listinfo/cbor/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/anr-bmbf-pivot/draft-lenders-dns-cbor.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+
+
+
+Lenders, et al.         Expires 30 December 2024                [Page 1]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 30 December 2024.
+
+Copyright Notice
+
+   Copyright (c) 2024 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
+   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   3.  CBOR Representations (application/dns+cbor) . . . . . . . . .   4
+     3.1.  Domain Name Representation  . . . . . . . . . . . . . . .   4
+     3.2.  DNS Resource Records  . . . . . . . . . . . . . . . . . .   5
+       3.2.1.  Standard RRs  . . . . . . . . . . . . . . . . . . . .   5
+       3.2.2.  EDNS OPT Pseudo-RRs . . . . . . . . . . . . . . . . .   6
+     3.3.  DNS Queries . . . . . . . . . . . . . . . . . . . . . . .   7
+     3.4.  DNS Responses . . . . . . . . . . . . . . . . . . . . . .   9
+   4.  Name and Address Compression with CBOR-packed . . . . . . . .  10
+     4.1.  Media Type Negotiation  . . . . . . . . . . . . . . . . .  10
+     4.2.  DNS Representation in CBOR-packed . . . . . . . . . . . .  11
+     4.3.  Compression . . . . . . . . . . . . . . . . . . . . . . .  11
+   5.  Implementation Status . . . . . . . . . . . . . . . . . . . .  11
+     5.1.  Python decoder/encoder  . . . . . . . . . . . . . . . . .  11
+     5.2.  Embedded decoder/encoder  . . . . . . . . . . . . . . . .  12
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
+     7.1.  Media Type Registration . . . . . . . . . . . . . . . . .  12
+       7.1.1.  "application/dns+cbor"  . . . . . . . . . . . . . . .  12
+     7.2.  CoAP Content-Format Registration  . . . . . . . . . . . .  13
+       7.2.1.  "application/dns+cbor"  . . . . . . . . . . . . . . .  13
+       7.2.2.  "application/dns+cbor;packed=1" . . . . . . . . . . .  14
+     7.3.  CBOR Tags Registry  . . . . . . . . . . . . . . . . . . .  14
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
+
+
+
+Lenders, et al.         Expires 30 December 2024                [Page 2]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  14
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  15
+   Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .  17
+     A.1.  DNS Queries . . . . . . . . . . . . . . . . . . . . . . .  17
+     A.2.  DNS Responses . . . . . . . . . . . . . . . . . . . . . .  17
+   Appendix B.  Comparison to Classic DNS Wire Format  . . . . . . .  18
+   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  20
+     C.1.  Since draft-lenders-dns-cbor-07 . . . . . . . . . . . . .  20
+     C.2.  Since draft-lenders-dns-cbor-06 . . . . . . . . . . . . .  21
+     C.3.  Since draft-lenders-dns-cbor-05 . . . . . . . . . . . . .  21
+     C.4.  Since draft-lenders-dns-cbor-04 . . . . . . . . . . . . .  21
+     C.5.  Since draft-lenders-dns-cbor-03 . . . . . . . . . . . . .  21
+     C.6.  Since draft-lenders-dns-cbor-02 . . . . . . . . . . . . .  21
+     C.7.  Since draft-lenders-dns-cbor-01 . . . . . . . . . . . . .  21
+     C.8.  Since draft-lenders-dns-cbor-00 . . . . . . . . . . . . .  22
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  22
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
+
+1.  Introduction
+
+   In constrained networks [RFC7228], the link layer may restrict the
+   payload sizes to only a few hundreds bytes.  Encrypted DNS
+   resolution, such as DNS over HTTPS (DoH) [RFC8484] or DNS over CoAP
+   (DoC) [I-D.ietf-core-dns-over-coap], may lead to DNS message sizes
+   that exceed this limit, even when implementing header compression
+   such as 6LoWPAN IPHC [RFC6282] or SCHC [RFC8724], [RFC8824].
+
+   Although adoption layers such as 6LoWPAN [RFC4944] or SCHC [RFC8724]
+   offer fragmentation to comply with small MTUs, fragmentation should
+   be avoided in constrained networks, because fragmentation combined
+   with high packet loss multiplies the loss.  As such, a compression
+   format for DNS messages is needed.
+
+   This document specifies a compressed data format for DNS messages.
+   DNS messages are encoded in Concise Binary Object Representation
+   (CBOR) [RFC8949] and, additionally, unnecessary or redundant
+   information is removed.  To use the outcome of this specification in
+   DoH and DoC, this document also specifies a Media Type header for DoH
+   and a Content-Format option for DoC.
+
+2.  Terminology
+
+   CBOR types (unsigned integer, byte string, text string, arrays, etc.)
+   are used as defined in [RFC8949].
+
+   TBD DNS server and client.
+
+
+
+
+
+Lenders, et al.         Expires 30 December 2024                [Page 3]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+   A DNS query is a message that queries DNS information from an
+   upstream DNS resolver.
+
+   The term "constrained networks" is used as defined in [RFC7228].
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+3.  CBOR Representations (application/dns+cbor)
+
+   To keep overhead minimal, a DNS message is represented as CBOR
+   arrays.  All CBOR items used in this specification are of definite
+   length.  CBOR arrays that do not follow the length definitions of
+   this or follow-up specifications, MUST be silently ignored.  It is
+   assumed that DNS query and DNS response are distinguished message
+   types and that the query can be mapped to the response by the
+   transfer protocol of choice.  To define the representation of binary
+   objects we use the Concise Data Definition Language (CDDL) [RFC8610].
+
+   dns-message = dns-query / dns-response
+
+     Figure 1: This document defines both DNS Queries and Responses in
+                                    CDDL
+
+   If, for any reason, a DNS message is not representable in the CBOR
+   format specified in this document, a fallback to the another DNS
+   message format, e.g., the classic DNS wire format, MUST always be
+   possible.
+
+3.1.  Domain Name Representation
+
+   Domain names are represented in their commonly known string format
+   (e.g., "example.org", see Section 2.3.1 in [RFC1035]) and in IDNA
+   encoding [RFC5890] as a text string.  For the purpose of this
+   document, domain names remain case-insensitive as specified in
+   [RFC1035].
+
+   The representation of a domain name is defined in Figure 2.
+
+   TBD: represent names as components ((* tstr)), provide name
+   compression when [I-D.ietf-cbor-packed] is updated for the reference
+   format and table building discussed at IETF 118.
+
+   domain-name = tstr .regexp "([^.]+[.])*[^.]+"
+
+
+
+
+Lenders, et al.         Expires 30 December 2024                [Page 4]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+                      Figure 2: Domain Name Definition
+
+3.2.  DNS Resource Records
+
+   This document specifies the representation of both standard DNS
+   resource records (RRs, see [RFC1035]) and EDNS option pseudo-RRs (see
+   [RFC6891]).  If for any reason, a resource record can not be
+   represented in the given formats, they can be represented in their
+   binary wire-format form, as a byte string.
+
+   Further special records, e.g., TSIG can be defined in follow-up
+   specifications and are out of scope of this document.
+
+   The representation of a DNS resource records is defined in Figure 3.
+
+   dns-rr = rr / #6.141(opt-rr) / bstr
+
+                  Figure 3: DNS Resource Record Definition
+
+3.2.1.  Standard RRs
+
+   Standard DNS resource records are encoded as CBOR arrays containing 2
+   to 5 entries in the following order:
+
+   1.  An optional name (as text string, see Section 3.1),
+
+   2.  A TTL (as unsigned integer),
+
+   3.  An optional record type (as unsigned integer),
+
+   4.  An optional record class (as unsigned integer), and lastly
+
+   5.  A record data entry (as unsigned integer, negative integer, byte
+       string, or text string).
+
+   If the first item of the resource record is a text string, it is its
+   name.  If the name is elided, the name is derived from the question
+   section of the message.  For responses, the question section is
+   either taken from the query (see Section 3.3) or provided with the
+   response see Section 3.4.  The query may be derived from the context
+   of the transfer protocol.
+
+   If the record type is elided, the record type from the question is
+   assumed.  If record class is elided, the record class from the
+   question is assumed.  When a record class is required, the record
+   type MUST also be provided.
+
+
+
+
+
+Lenders, et al.         Expires 30 December 2024                [Page 5]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+   The byte format of the record data as a byte string follows the
+   classic DNS wire format as specified in Section 3.3 [RFC1035] (or
+   other specifications of the respective record type).  Note that this
+   format does not include the RDLENGTH field from [RFC1035] as this
+   value is encoded in the length field of the CBOR byte string.
+
+   If the record data represents a domain name (e.g., for CNAME or PTR
+   records), the record data MAY be represented as a text string as
+   specified in Section 3.1.  This can save 1 byte of data, because the
+   byte representation of DNS names requires both an additional byte to
+   define the length of the first name component and well as a zero byte
+   at the end of the name.  With CBOR on the other hand only 1 byte is
+   required to define type and length of the text string up until a
+   string length of 23 characters.
+
+   There is an argument to be made for more structured formats of other
+   record data representations (e.g.  MX or SOA), but these usually add
+   more overhead.  As such, those record data are to be represented as a
+   byte string.
+
+   rr = [
+     ? name: domain-name,
+     ttl: uint,
+     ? type-spec,
+     rdata: bstr / domain-name,
+   ]
+   type-spec = (
+     record-type: uint,
+     ? record-class: uint,
+   )
+
+             Figure 4: DNS Standard Resource Record Definition
+
+3.2.2.  EDNS OPT Pseudo-RRs
+
+   EDNS OPT Pseudo-RRs are represented as a CBOR array.  To distinguish
+   them from normal standard RRs, they are marked with tag TBD141.
+
+   Name and record type can be elided as they are always "." and OPT
+   (41), respectively [RFC6891].
+
+   The UDP payload size may be the first element as an unsigned integer
+   in the array.  It MUST be elided if its value is the default value of
+   512, the maximum allowable size for unextended DNS over UDP (see
+   Sections 2.3.4 and 4.2.1 of [RFC1035]).
+
+
+
+
+
+
+Lenders, et al.         Expires 30 December 2024                [Page 6]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+   The next element is an array of the options, which are represented
+   two elements each, an unsigned integer, the option code, followed by
+   a byte string, the option data.  Multiple options alternate between
+   unsigned integer and byte string within the array.
+
+   After that, up to three unsigned integers are following.  The first
+   being the extended flags as unsigned integer (implied to be 0 if
+   elided), the second the extended RCODE as an unsigned integer
+   (implied to be 0 if elided), and the third the EDNS version (implied
+   to be 0 if elided).  They are dependent on each of their previous
+   elements.  If the EDNS version is not elided, both extended flags and
+   extended RCODE MUST not be elided.  If the RCODE is not elided the
+   extended flags MUST not be elided.
+
+   TBD: reverse extended flags to get MSB-defined DO into LSB?
+
+   Note that future EDNS versions may require a different format than
+   the one described above.
+
+   opt-rr = [
+     ? udp-payload-size: uint .default 512,
+     options: [* opt],
+     ? opt-rcode-v-flags,
+   ]
+   opt = (
+     ocode: uint,
+     odata: bstr,
+   )
+   opt-rcode-v-flags = (
+     flags: uint .default 0,
+     ? opt-rcode-v,
+   )
+   opt-rcode-v = (
+     rcode: uint .default 0,
+     ? version: uint .default 0,
+   )
+
+                Figure 5: DNS OPT Resource Record Definition
+
+3.3.  DNS Queries
+
+   DNS queries are encoded as CBOR arrays containing up to 5 entries in
+   the following order:
+
+   1.  An optional flag field (as unsigned integer),
+
+   2.  The question section (as array),
+
+
+
+
+Lenders, et al.         Expires 30 December 2024                [Page 7]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+   3.  An optional authority section (as array), and
+
+   4.  An optional additional section (as array)
+
+   If the first item of the query is an array, it is the question
+   section, if it is an unsigned integer, it is as flag field and maps
+   to the header flags in [RFC1035] and the "DNS Header Flags" IANA
+   registry including the QR flag and the Opcode.  It MUST be lesser
+   than 2^16.
+
+   If the flags are elided, the value 0 is assumed.
+
+   This specification assumes that the DNS messages are sent over a
+   transfer protocol that can map the queries to their responses, e.g.,
+   DNS over HTTPS [RFC8484] or DNS over CoAP
+   [I-D.ietf-core-dns-over-coap].  As a consequence, the DNS transaction
+   ID is always elided and the value 0 is assumed.
+
+   A question within the question section is encoded as a CBOR array
+   containing up to 3 entries:
+
+   1.  The queried name (as text string, see Section 3.1),
+
+   2.  An optional record type (as unsigned integer), and
+
+   3.  An optional record class (as unsigned integer)
+
+   If the record type is elided, record type AAAA as specified in
+   [RFC3596] is assumed.  If the record class is elided, record class IN
+   as specified in [RFC1035] is assumed.  When a record class is
+   required, the record type MUST also be provided.
+
+   If more than one question is supposed to be in the question section,
+   the next question just follows.  In this case, for every question but
+   the last, the record type MUST be included, i.e., it is not optional.
+   This way it is ensured that the parser can distinguish each question
+   by looking up the name first (TBD note: this is especially relevant
+   once the name is split up in components).
+
+   The remainder of the query is either empty or MUST consist of up to
+   two arrays.  The first array, if present, encodes the authority
+   section of the query as an array of DNS resource records (see
+   Section 3.2) The second array, if present, encodes the additional
+   section of the query as an array of DNS resource records (see
+   Section 3.2)
+
+   The representation of a DNS query is defined in Figure 6.
+
+
+
+
+Lenders, et al.         Expires 30 December 2024                [Page 8]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+   dns-query = [
+     ? flags: uint .default 0x0000,
+     question-section,
+     ? extra-sections,
+   ]
+   question-section = [
+     * full-question,
+     ? last-question,
+   ]
+   full-question = (
+     name: domain-name,
+     type-spec,
+   )
+   last-question = (
+     name: domain-name,
+     ? type-spec,
+   )
+   extra-sections = (
+     ? authority: [+ dns-rr],
+     additional: [+ dns-rr],
+   )
+
+                       Figure 6: DNS Query Definition
+
+3.4.  DNS Responses
+
+   DNS responses are encoded as a CBOR array containing up to 7 entries.
+
+   1.  An optional flag field (as unsigned integer),
+
+   2.  An optional question section (as array, encoded as described in
+       Section 3.3)
+
+   3.  The answer section (as array),
+
+   4.  An optional authority section (as array), and
+
+   5.  An optional additional section (as array)
+
+   As for queries, the DNS transaction ID is elided and implied to be 0.
+
+   If the CBOR array is a response to a query for which the flags
+   indicate that flags are set in the response, they MUST be set
+   accordingly and thus included in the response.  If the flags are not
+   included, the flags are implied to be 0x8000 (everything unset except
+   for the QR flag).
+
+
+
+
+
+Lenders, et al.         Expires 30 December 2024                [Page 9]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+   If the response includes only 1 array, this is the DNS answer section
+   represented as an array of one or more DNS Resource Records (see
+   Section 3.2).
+
+   If the response includes more than 2 arrays, the first entry may be
+   the question section, identified by not being an array of arrays.  If
+   it is present, it is followed by the answer section.  The question
+   section is encoded as specified in Section 3.3.
+
+   If the answer section is followed by 1 additional array, it is the
+   additional section (TBD: back choice to favor additional section by
+   empirical data).  Like the answer section, the additional section is
+   represented as an array of one or more DNS Resource Records (see
+   Section 3.2).
+
+   If the answer section is followed by 2 additional arrays, the first
+   is the authority section, and the second the additional section (TBD:
+   back choice to favor additional section by empirical data).  The
+   authority section is also represented as an array of one or more DNS
+   Resource Records (see Section 3.2).
+
+   dns-response = [
+     ? flags: uint .default 0x8000,
+     ? question-section,
+     answer-section: [+ dns-rr],
+     ? extra-sections,
+   ]
+
+                     Figure 7: DNS Response Definition
+
+4.  Name and Address Compression with CBOR-packed
+
+   If both DNS server and client support CBOR-packed
+   [I-D.ietf-cbor-packed], it MAY be used for name and address
+   compression in DNS responses.
+
+4.1.  Media Type Negotiation
+
+   A DNS client uses media type "application/dns+cbor;packed=1" to
+   negotiate (see, e.g., [RFC9110] or [RFC7252], Section 5.5.4) with the
+   DNS server if the server supports packed CBOR.  If it does, it MAY
+   request the response to be in CBOR-packed (media type "applicaton/
+   dns+cbor;packed=1").  The server then SHOULD reply with the response
+   in CBOR-packed.
+
+
+
+
+
+
+
+Lenders, et al.         Expires 30 December 2024               [Page 10]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+4.2.  DNS Representation in CBOR-packed
+
+   The representation of DNS responses in CBOR-packed has the same
+   semantics as for tag TBD113 ([I-D.ietf-cbor-packed], Section 3.1)
+   with the rump being the compressed response.  The difference to
+   [I-D.ietf-cbor-packed] is that tag TBD113 is OPTIONAL.
+
+   Packed compression of queries is not specified, as apart from EDNS(0)
+   (see Section 3.2.2), they only consist of one question most of the
+   time.
+
+4.3.  Compression
+
+   How the compressor constructs the packing table, i.e., how the
+   compression is applied, is out of scope of this document.  Several
+   potential compression algorithms were evaluated in [TBD].
+
+5.  Implementation Status
+
+   This section records the status of known implementations of the
+   protocol defined by this specification at the time of posting of this
+   Internet-Draft, and is based on a proposal described in [RFC7942].
+   The description of implementations in this section is intended to
+   assist the IETF in its decision processes in progressing drafts to
+   RFCs.  Please note that the listing of any individual implementation
+   here does not imply endorsement by the IETF.  Furthermore, no effort
+   has been spent to verify the information presented here that was
+   supplied by IETF contributors.  This is not intended as, and must not
+   be construed to be, a catalog of available implementations or their
+   features.  Readers are advised to note that other implementations may
+   exist.
+
+   According to [RFC7942], "this will allow reviewers and working groups
+   to assign due consideration to documents that have the benefit of
+   running code, which may serve as evidence of valuable experimentation
+   and feedback that have made the implemented protocols more mature.
+   It is up to the individual working groups to use this information as
+   they see fit".
+
+5.1.  Python decoder/encoder
+
+   The authors of this document provide a decoder/encoder implementation
+   (https://github.com/netd-tud/cbor4dns) of both the unpacked and
+   packed format specified in this document in Python.
+
+   Level of maturity:  prototype
+
+   Version compatibility:  draft-lenders-dns-cbor-05
+
+
+
+Lenders, et al.         Expires 30 December 2024               [Page 11]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+   License:  MIT
+
+   Contact information:  Martine Lenders <martine.lenders@tu-dresden.de>
+
+   Last update of this information:  October 2023
+
+5.2.  Embedded decoder/encoder
+
+   The authors of this document provide a decoder/encoder implementation
+   (https://github.com/RIOT-OS/RIOT/pull/19989) of the unpacked format
+   specified in this document for the RIOT operating system.  It can
+   only encode queries and decode responses.
+
+   Level of maturity:  prototype
+
+   Version compatibility:  draft-lenders-dns-cbor-05
+
+   License:  MIT
+
+   Contact information:  Martine Lenders <martine.lenders@tu-dresden.de>
+
+   Last update of this information:  October 2023
+
+6.  Security Considerations
+
+   TODO Security
+
+7.  IANA Considerations
+
+7.1.  Media Type Registration
+
+   This document registers a media type for the serialization format of
+   DNS messages in CBOR.  It follows the procedures specified in
+   [RFC6838].
+
+7.1.1.  "application/dns+cbor"
+
+   Type name: application
+
+   Subtype name: dns+cbor
+
+   Required parameters: None
+
+   Optional parameters: packed
+
+   Encoding considerations: Must be encoded as using [RFC8949].  See
+   [TBD-this-spec] for details.
+
+
+
+
+Lenders, et al.         Expires 30 December 2024               [Page 12]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+   Security considerations: See Section 6 of this draft
+
+   Interoperability considerations: TBD
+
+   Published specification: [TBD-this-spec]
+
+   Applications that use this media type: TBD DNS over X systems
+
+   Fragment Identifier Considerations: TBD
+
+   Additional information:
+
+      Deprecated alias names for this type: N/A
+
+      Magic number(s): N/A
+
+      File extension(s): dnsc
+
+      Macintosh file type code(s): none
+
+   Person & email address to contact for further information: Martine S.
+   Lenders m.lenders@fu-berlin.de (mailto:m.lenders@fu-berlin.de)
+
+   Intended usage: COMMON
+
+   Restrictions on Usage: None?
+
+   Author: Martine S.  Lenders m.lenders@fu-berlin.de
+   (mailto:m.lenders@fu-berlin.de)
+
+   Change controller: Martine S.  Lenders m.lenders@fu-berlin.de
+   (mailto:m.lenders@fu-berlin.de)
+
+   Provisional registrations?  No
+
+7.2.  CoAP Content-Format Registration
+
+   IANA is requested to assign CoAP Content-Format ID for the new DNS
+   message media types in the "CoAP Content-Formats" sub-registry,
+   within the "CoRE Parameters" registry [RFC7252], corresponding the
+   "application/dns+cbor" media type specified in Section 7.1:
+
+7.2.1.  "application/dns+cbor"
+
+   Media-Type: application/dns+cbor
+
+   Encoding: -
+
+
+
+
+Lenders, et al.         Expires 30 December 2024               [Page 13]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+   Id: TBD
+
+   Reference: [TBD-this-spec]
+
+7.2.2.  "application/dns+cbor;packed=1"
+
+   Media-Type: application/dns+cbor;packed=1
+
+   Encoding: -
+
+   Id: TBD
+
+   Reference: [TBD-this-spec]
+
+7.3.  CBOR Tags Registry
+
+   In the registry "CBOR Tags" [IANA.cbor-tags], IANA is requested to
+   allocate the tags defined in Table 1.
+
+      +========+===========+===============+========================+
+      |    Tag | Data Item | Semantics     | Reference              |
+      +========+===========+===============+========================+
+      | TBD141 | array     | CBOR EDNS     | draft-lenders-dns-cbor |
+      |        |           | option record |                        |
+      +--------+-----------+---------------+------------------------+
+
+                      Table 1: Values for Tag Numbers
+
+8.  References
+
+8.1.  Normative References
+
+   [I-D.ietf-cbor-packed]
+              Bormann, C. and M. Gütschow, "Packed CBOR", Work in
+              Progress, Internet-Draft, draft-ietf-cbor-packed-12, 2
+              March 2024, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-cbor-packed-12>.
+
+   [IANA.cbor-tags]
+              IANA, "Concise Binary Object Representation (CBOR) Tags",
+              <http://www.iana.org/assignments/cbor-tags>.
+
+   [RFC1035]  Mockapetris, P., "Domain names - implementation and
+              specification", STD 13, RFC 1035, DOI 10.17487/RFC1035,
+              November 1987, <https://www.rfc-editor.org/rfc/rfc1035>.
+
+
+
+
+
+
+Lenders, et al.         Expires 30 December 2024               [Page 14]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC3596]  Thomson, S., Huitema, C., Ksinant, V., and M. Souissi,
+              "DNS Extensions to Support IP Version 6", STD 88,
+              RFC 3596, DOI 10.17487/RFC3596, October 2003,
+              <https://www.rfc-editor.org/rfc/rfc3596>.
+
+   [RFC5890]  Klensin, J., "Internationalized Domain Names for
+              Applications (IDNA): Definitions and Document Framework",
+              RFC 5890, DOI 10.17487/RFC5890, August 2010,
+              <https://www.rfc-editor.org/rfc/rfc5890>.
+
+   [RFC6838]  Freed, N., Klensin, J., and T. Hansen, "Media Type
+              Specifications and Registration Procedures", BCP 13,
+              RFC 6838, DOI 10.17487/RFC6838, January 2013,
+              <https://www.rfc-editor.org/rfc/rfc6838>.
+
+   [RFC6891]  Damas, J., Graff, M., and P. Vixie, "Extension Mechanisms
+              for DNS (EDNS(0))", STD 75, RFC 6891,
+              DOI 10.17487/RFC6891, April 2013,
+              <https://www.rfc-editor.org/rfc/rfc6891>.
+
+   [RFC7252]  Shelby, Z., Hartke, K., and C. Bormann, "The Constrained
+              Application Protocol (CoAP)", RFC 7252,
+              DOI 10.17487/RFC7252, June 2014,
+              <https://www.rfc-editor.org/rfc/rfc7252>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC8610]  Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
+              Definition Language (CDDL): A Notational Convention to
+              Express Concise Binary Object Representation (CBOR) and
+              JSON Data Structures", RFC 8610, DOI 10.17487/RFC8610,
+              June 2019, <https://www.rfc-editor.org/rfc/rfc8610>.
+
+   [RFC8949]  Bormann, C. and P. Hoffman, "Concise Binary Object
+              Representation (CBOR)", STD 94, RFC 8949,
+              DOI 10.17487/RFC8949, December 2020,
+              <https://www.rfc-editor.org/rfc/rfc8949>.
+
+8.2.  Informative References
+
+
+
+
+
+Lenders, et al.         Expires 30 December 2024               [Page 15]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+   [I-D.ietf-core-dns-over-coap]
+              Lenders, M. S., Amsüss, C., Gündoğan, C., Schmidt, T. C.,
+              and M. Wählisch, "DNS over CoAP (DoC)", Work in Progress,
+              Internet-Draft, draft-ietf-core-dns-over-coap-06, 4 March
+              2024, <https://datatracker.ietf.org/doc/html/draft-ietf-
+              core-dns-over-coap-06>.
+
+   [RFC4944]  Montenegro, G., Kushalnagar, N., Hui, J., and D. Culler,
+              "Transmission of IPv6 Packets over IEEE 802.15.4
+              Networks", RFC 4944, DOI 10.17487/RFC4944, September 2007,
+              <https://www.rfc-editor.org/rfc/rfc4944>.
+
+   [RFC6282]  Hui, J., Ed. and P. Thubert, "Compression Format for IPv6
+              Datagrams over IEEE 802.15.4-Based Networks", RFC 6282,
+              DOI 10.17487/RFC6282, September 2011,
+              <https://www.rfc-editor.org/rfc/rfc6282>.
+
+   [RFC7228]  Bormann, C., Ersue, M., and A. Keranen, "Terminology for
+              Constrained-Node Networks", RFC 7228,
+              DOI 10.17487/RFC7228, May 2014,
+              <https://www.rfc-editor.org/rfc/rfc7228>.
+
+   [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
+              Code: The Implementation Status Section", BCP 205,
+              RFC 7942, DOI 10.17487/RFC7942, July 2016,
+              <https://www.rfc-editor.org/rfc/rfc7942>.
+
+   [RFC8484]  Hoffman, P. and P. McManus, "DNS Queries over HTTPS
+              (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
+              <https://www.rfc-editor.org/rfc/rfc8484>.
+
+   [RFC8724]  Minaburo, A., Toutain, L., Gomez, C., Barthel, D., and JC.
+              Zuniga, "SCHC: Generic Framework for Static Context Header
+              Compression and Fragmentation", RFC 8724,
+              DOI 10.17487/RFC8724, April 2020,
+              <https://www.rfc-editor.org/rfc/rfc8724>.
+
+   [RFC8824]  Minaburo, A., Toutain, L., and R. Andreasen, "Static
+              Context Header Compression (SCHC) for the Constrained
+              Application Protocol (CoAP)", RFC 8824,
+              DOI 10.17487/RFC8824, June 2021,
+              <https://www.rfc-editor.org/rfc/rfc8824>.
+
+   [RFC9110]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
+              Ed., "HTTP Semantics", STD 97, RFC 9110,
+              DOI 10.17487/RFC9110, June 2022,
+              <https://www.rfc-editor.org/rfc/rfc9110>.
+
+
+
+
+Lenders, et al.         Expires 30 December 2024               [Page 16]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+Appendix A.  Examples
+
+A.1.  DNS Queries
+
+   A DNS query of the record AAAA in class IN for name "example.org" is
+   represented in CBOR extended diagnostic notation (EDN) (see Section 8
+   in [RFC8949] and Appendix G in [RFC8610]) as follows:
+
+   [["example.org"]]
+
+   A query of an A record for the same name is represented as
+
+   [["example.org", 1]]
+
+   A query of ANY record for that name is represented as
+
+   [["example.org", 255, 255]]
+
+A.2.  DNS Responses
+
+   The responses to the examples provided in Appendix A.1 are shown
+   below.  We use the CBOR extended diagnostic notation (EDN) (see
+   Section 8 in [RFC8949] and Appendix G in [RFC8610]).
+
+   To represent an AAAA record with TTL 300 seconds for the IPv6 address
+   2001:db8::1, a minimal response to ["example.org"] could be
+
+   [[[300, h'20010db8000000000000000000000001']]]
+
+   In this case, the name is derived from the query.
+
+   If the name or the context is required, the following response would
+   also be valid:
+
+   [[["example.org", 300, h'20010db8000000000000000000000001']]]
+
+   If the query can not be mapped to the response for some reason, a
+   response would look like:
+
+   [["example.org"], [[300, h'20010db8000000000000000000000001']]]
+
+   To represent a minimal response of an A record with TTL 3600 seconds
+   for the IPv4 address 192.0.2.1, a minimal response to ["example.org",
+   1] could be
+
+   [[300, h'c0000201']]
+
+
+
+
+
+Lenders, et al.         Expires 30 December 2024               [Page 17]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+   Note that here also the 1 of record type A can be elided, as this
+   record type is specified in the question section.
+
+   Lastly, a response to ["example.org", 255, 255] could be
+
+   [
+     ["example.org", 12, 1],
+     [[3600, "_coap._udp.local"]],
+     [
+       [3600, 2, "ns1.example.org"],
+       [3600, 2, "ns2.example.org"]
+     ],
+     [
+       [
+         "_coap._udp.local", 3600, 28,
+         h'20010db8000000000000000000000001'
+       ],
+       [
+         "_coap._udp.local", 3600, 28,
+         h'20010db8000000000000000000000002'
+       ],
+       [
+         "ns1.example.org", 3600, 28,
+         h'20010db8000000000000000000000035'
+       ],
+       [
+         "ns2.example.org", 3600, 28,
+         h'20010db8000000000000000000003535'
+       ]
+     ]
+   ]
+
+   This one advertises two local CoAP servers (identified by service
+   name _coap._udp.local) at 2001:db8::1 and 2001:db8::2 and two
+   nameservers for the example.org domain, ns1.example.org at
+   2001:db8::35 and ns2.example.org at 2001.db8::3535.  Each of the
+   transmitted records has a TTL of 3600 seconds.
+
+Appendix B.  Comparison to Classic DNS Wire Format
+
+   Table 2 shows a comparison between the classic DNS wire format and
+   the application/dns+cbor format.  Note that the worst case results
+   typically appear only rarely in DNS.  The classic DNS format is
+   preferred in those cases.  A key for which configuration was used in
+   which case can be seen in Table 3.
+
+
+
+
+
+
+Lenders, et al.         Expires 30 December 2024               [Page 18]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+   +========+==============+===========================================+
+   |Item    |   Classic DNS|                application/               |
+   |        |format [bytes]|                  dns+cbor                 |
+   |        |              |                  [bytes]                  |
+   |        |              +=============+==============+==============+
+   |        |              |    best case|     realistic|   theoretical|
+   |        |              |             |    worst case|    worst case|
+   +========+==============+=============+==============+==============+
+   |Header  |             4|            1|             4|             4|
+   |(ID &   |              |             |              |              |
+   |Flags)  |              |             |              |              |
+   +--------+--------------+-------------+--------------+--------------+
+   |Count   |             2|            1|             3|             3|
+   |fields  |              |             |              |              |
+   +--------+--------------+-------------+--------------+--------------+
+   |Question| 6 + name len.|2 + name len.| 7 + name len.|10 + name len.|
+   |section |              |             |              |              |
+   +--------+--------------+-------------+--------------+--------------+
+   |Standard|12 + name len.|            3|15 + name len.|18 + name len.|
+   |RR      |  + rdata len.| + rdata len.|  + rdata len.|  + rdata len.|
+   +--------+--------------+-------------+--------------+--------------+
+   |EDNS Opt|  11 + options|  2 + options|   6 + options|  14 + options|
+   |Pseudo- |              |             |              |              |
+   |RR      |              |             |              |              |
+   +--------+--------------+-------------+--------------+--------------+
+   |EDNS    |4 + value len.|          2 +|4 + value len.|6 + value len.|
+   |Option  |              |   value len.|              |              |
+   +--------+--------------+-------------+--------------+--------------+
+
+     Table 2: Comparison of application/dns+cbor to classic DNS format.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lenders, et al.         Expires 30 December 2024               [Page 19]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+   +===========+======================================================+
+   | Item      |          application/dns+cbor configuration          |
+   |           +=================+=================+==================+
+   |           |       best case | realistic worst |      theoretical |
+   |           |                 |            case |       worst case |
+   +===========+=================+=================+==================+
+   | Header    |    Flags elided | QR, Opcode, AA, |  QR, Opcode, AA, |
+   | (ID &     |                 |   TC, or RD are |    TC, or RD are |
+   | Flags)    |                 |             set |              set |
+   +-----------+-----------------+-----------------+------------------+
+   | Count     | Encoded in CBOR | Encoded in CBOR |  Encoded in CBOR |
+   | fields    |    array header |   array header, |    array header, |
+   |           |                 | >255 records in |  >255 records in |
+   |           |                 |         section |          section |
+   +-----------+-----------------+-----------------+------------------+
+   | Question  |    Class, type, |     Type > 255, |      Type > 255, |
+   | section   | and name elided | name len. > 255 |     Class > 255, |
+   |           |                 |                 |  name len. > 255 |
+   +-----------+-----------------+-----------------+------------------+
+   | Standard  |    Class, type, |     Type > 255, |      Type > 255, |
+   | RR        |        and name | name len. > 255 |     Class > 255, |
+   |           |         elided, |    rdata len. > |  name len. > 255 |
+   |           | rdata len. < 24 |             255 | rdata len. > 255 |
+   +-----------+-----------------+-----------------+------------------+
+   | EDNS Opt  |     All EDNS(0) |     Rcode < 24, |      UDP payload |
+   | Pseudo-RR |   fields elided |    DO flag set, |       len. > 255 |
+   |           |                 |                 |      Rcode > 255 |
+   |           |                 |                 |    Version > 255 |
+   |           |                 |                 |      DO flag set |
+   +-----------+-----------------+-----------------+------------------+
+   | EDNS      |       Code < 24 |       Code < 24 |       Code > 255 |
+   | Option    |     Length < 24 |    Length > 255 |     Length > 255 |
+   +-----------+-----------------+-----------------+------------------+
+
+                 Table 3: Configuration key for Table 2 .
+
+Appendix C.  Change Log
+
+C.1.  Since draft-lenders-dns-cbor-07
+      (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-07)
+
+   *  Add Appendix B with comparison to classic DNS wire format
+
+   *  "wire format" -> "classic DNS wire format"
+
+
+
+
+
+
+
+Lenders, et al.         Expires 30 December 2024               [Page 20]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+C.2.  Since draft-lenders-dns-cbor-06
+      (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-06)
+
+   *  Fixes wording and spelling mistakes
+
+C.3.  Since draft-lenders-dns-cbor-05
+      (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-05)
+
+   *  Fix Section 7.2.1 title
+
+   *  Amend for capability to carry more than one question
+
+   *  Hint at future of name compression in later draft versions
+
+   *  Use canonical name for CBOR-packed
+
+C.4.  Since draft-lenders-dns-cbor-04
+      (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-04)
+
+   *  Add Implementation Status section
+
+   *  Remove int as representation for rdata
+
+   *  Add note on representation of more structured rdata
+
+C.5.  Since draft-lenders-dns-cbor-03
+      (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-03)
+
+   *  Provide format description for EDNS OPT Pseudo-RRs
+
+   *  Simplify CDDL to more idiomatic style
+
+   *  Remove DNS transaction IDs
+
+C.6.  Since draft-lenders-dns-cbor-02
+      (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-02)
+
+   *  Add Discussion section and note on compression
+
+C.7.  Since draft-lenders-dns-cbor-01
+      (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-01)
+
+   *  Use MIME type parameter for packed instead of own MIME type
+
+   *  Update definitions to accommodate for TID and flags, as well as
+      more sections in query
+
+   *  Clarify fallback to wire-format
+
+
+
+Lenders, et al.         Expires 30 December 2024               [Page 21]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+C.8.  Since draft-lenders-dns-cbor-00
+      (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-00)
+
+   *  Add support for DNS transaction IDs
+
+   *  Name and Address compression utilizing CBOR-packed
+
+   *  Minor fixes to CBOR EDN and CDDL
+
+Acknowledgments
+
+   TODO acknowledge.
+
+Authors' Addresses
+
+   Martine Sophie Lenders
+   TUD Dresden University of Technology
+   Helmholtzstr. 10
+   D-01069 Dresden
+   Germany
+   Email: martine.lenders@tu-dresden.de
+
+
+   Carsten Bormann
+   Universität Bremen TZI
+   Postfach 330440
+   D-28359 Bremen
+   Germany
+   Phone: +49-421-218-63921
+   Email: cabo@tzi.org
+
+
+   Thomas C. Schmidt
+   HAW Hamburg
+   Email: t.schmidt@haw-hamburg.de
+
+
+   Matthias Wählisch
+   TUD Dresden University of Technology & Barkhausen Institut
+   Helmholtzstr. 10
+   D-01069 Dresden
+   Germany
+   Email: m.waehlisch@tu-dresden.de
+
+
+
+
+
+
+
+
+Lenders, et al.         Expires 30 December 2024               [Page 22]
