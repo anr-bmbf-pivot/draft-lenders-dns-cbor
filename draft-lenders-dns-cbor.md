@@ -187,10 +187,10 @@ If the record type is elided, the record type from the question is assumed.
 If record class is elided, the record class from the question is assumed.
 When a record class is required, the record type MUST also be provided.
 
-The byte format of the record data as a byte string follows the wire format as specified in Section
-3.3 {{-dns}} (or other specifications of the respective record type).  Note that this format does
-not include the RDLENGTH field from {{-dns}} as this value is encoded in the length field of the
-CBOR byte string.
+The byte format of the record data as a byte string follows the classic DNS wire format as specified
+in Section 3.3 {{-dns}} (or other specifications of the respective record type).
+Note that this format does not include the RDLENGTH field from {{-dns}} as this value is encoded in
+the length field of the CBOR byte string.
 
 If the record data represents a domain name (e.g., for CNAME or PTR records), the record data MAY be
 represented as a text string as specified in {{sec:domain-names}}.
@@ -418,7 +418,7 @@ Discussion TBD:
   - **Example:** Using Basic CBOR-packed ({{-cbor-packed}}, section 3.1):
     - 130 bytes (Basic CBOR-packed)
     - 200 bytes (plain CBOR, see {{sec:response-examples}})
-    - 194 bytes (wire-format)
+    - 194 bytes (classic DNS format)
 
     >     113(
     >       [
@@ -689,12 +689,12 @@ This one advertises two local CoAP servers (identified by service name `_coap._u
 2001:db8::35 and ns2.example.org at 2001.db8::3535. Each of the transmitted records has a TTL of
 3600 seconds.
 
-# Comparison to Wire Format
+# Comparison to Classic DNS Wire Format
 
-{{tab-cbor-comparison}} shows a comparison between the wire format and the application/dns+cbor
-format. Note that the worst case results typically appear only rarely in DNS. The DNS wire format is
-preferred in those cases. A key for which configuration was used in which case can be seen in
-{{tab-cbor-comparison-key}}.
+{{tab-cbor-comparison}} shows a comparison between the classic DNS wire format and the
+application/dns+cbor format. Note that the worst case results typically appear only rarely in DNS.
+The classic DNS format is preferred in those cases. A key for which configuration was used in which
+case can be seen in {{tab-cbor-comparison-key}}.
 
 <table anchor="tab-cbor-comparison">
   <name>Comparison of application/dns+cbor to classic DNS format.</name>
