@@ -21,17 +21,17 @@ The primary purpose is to keep DNS messages small in constrained networks.
 <meta content="draft-lenders-dns-cbor-latest" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.21.0
-    Python 3.11.9
+    Python 3.12.3
     ConfigArgParse 1.7
     google-i18n-address 3.1.0
     intervaltree 3.1.0
-    Jinja2 3.1.2
-    lxml 4.9.3
-    platformdirs 4.2.1
+    Jinja2 3.1.4
+    lxml 4.9.4
+    platformdirs 4.2.2
     pycountry 22.3.5
     PyYAML 6.0.1
     requests 2.31.0
-    setuptools 68.2.2
+    setuptools 69.5.1
     six 1.16.0
     wcwidth 0.2.13
 -->
@@ -1032,11 +1032,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">dns+cbor</td>
-<td class="right">May 2024</td>
+<td class="right">June 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lenders, et al.</td>
-<td class="center">Expires 20 November 2024</td>
+<td class="center">Expires 30 December 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1049,12 +1049,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-lenders-dns-cbor-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-05-19" class="published">19 May 2024</time>
+<time datetime="2024-06-28" class="published">28 June 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-11-20">20 November 2024</time></dd>
+<dd class="expires"><time datetime="2024-12-30">30 December 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1118,7 +1118,7 @@ The primary purpose is to keep DNS messages small in constrained networks.<a hre
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 20 November 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 30 December 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1193,102 +1193,102 @@ The primary purpose is to keep DNS messages small in constrained networks.<a hre
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-comparison-to-wire-format" class="internal xref">Comparison to wire format</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-implementation-status" class="internal xref">Implementation Status</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-implementation-status" class="internal xref">Implementation Status</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
-                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-python-decoder-encoder" class="internal xref">Python decoder/encoder</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-python-decoder-encoder" class="internal xref">Python decoder/encoder</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
-                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-embedded-decoder-encoder" class="internal xref">Embedded decoder/encoder</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-embedded-decoder-encoder" class="internal xref">Embedded decoder/encoder</a></p>
 </li>
             </ul>
 </li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+</li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-media-type-registration" class="internal xref">Media Type Registration</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.1">
+                    <p id="section-toc.1-1.7.2.1.2.1.1"><a href="#section-7.1.1" class="auto internal xref">7.1.1</a>.  <a href="#name-application-dnscbor" class="internal xref">"application/dns+cbor"</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-coap-content-format-registr" class="internal xref">CoAP Content-Format Registration</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.1">
+                    <p id="section-toc.1-1.7.2.2.2.1.1"><a href="#section-7.2.1" class="auto internal xref">7.2.1</a>.  <a href="#name-application-dnscbor-2" class="internal xref">"application/dns+cbor"</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.2">
+                    <p id="section-toc.1-1.7.2.2.2.2.1"><a href="#section-7.2.2" class="auto internal xref">7.2.2</a>.  <a href="#name-application-dnscborpacked1" class="internal xref">"application/dns+cbor;packed=1"</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
+                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-cbor-tags-registry" class="internal xref">CBOR Tags Registry</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-references" class="internal xref">References</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
-                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-media-type-registration" class="internal xref">Media Type Registration</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1.2.1">
-                    <p id="section-toc.1-1.8.2.1.2.1.1"><a href="#section-8.1.1" class="auto internal xref">8.1.1</a>.  <a href="#name-application-dnscbor" class="internal xref">"application/dns+cbor"</a></p>
-</li>
-                </ul>
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
-                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-coap-content-format-registr" class="internal xref">CoAP Content-Format Registration</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2.2.1">
-                    <p id="section-toc.1-1.8.2.2.2.1.1"><a href="#section-8.2.1" class="auto internal xref">8.2.1</a>.  <a href="#name-application-dnscbor-2" class="internal xref">"application/dns+cbor"</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2.2.2">
-                    <p id="section-toc.1-1.8.2.2.2.2.1"><a href="#section-8.2.2" class="auto internal xref">8.2.2</a>.  <a href="#name-application-dnscborpacked1" class="internal xref">"application/dns+cbor;packed=1"</a></p>
-</li>
-                </ul>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3">
-                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="auto internal xref">8.3</a>.  <a href="#name-cbor-tags-registry" class="internal xref">CBOR Tags Registry</a></p>
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-references" class="internal xref">References</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-examples" class="internal xref">Examples</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
-                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="auto internal xref">9.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+                <p id="section-toc.1-1.9.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-dns-queries-2" class="internal xref">DNS Queries</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2">
-                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="auto internal xref">9.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+                <p id="section-toc.1-1.9.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-dns-responses-2" class="internal xref">DNS Responses</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-examples" class="internal xref">Examples</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1">
-                <p id="section-toc.1-1.10.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-dns-queries-2" class="internal xref">DNS Queries</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.2">
-                <p id="section-toc.1-1.10.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-dns-responses-2" class="internal xref">DNS Responses</a></p>
-</li>
-            </ul>
+            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-comparison-to-wire-format" class="internal xref">Comparison to Wire Format</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-change-log" class="internal xref">Change Log</a></p>
+            <p id="section-toc.1-1.11.1"><a href="#appendix-C" class="auto internal xref">Appendix C</a>.  <a href="#name-change-log" class="internal xref">Change Log</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1">
-                <p id="section-toc.1-1.11.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-since-draft-lenders-dns-cbo" class="internal xref">Since draft-lenders-dns-cbor-06</a></p>
+                <p id="section-toc.1-1.11.2.1.1"><a href="#appendix-C.1" class="auto internal xref">C.1</a>.  <a href="#name-since-draft-lenders-dns-cbo" class="internal xref">Since draft-lenders-dns-cbor-06</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2">
-                <p id="section-toc.1-1.11.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-since-draft-lenders-dns-cbor" class="internal xref">Since draft-lenders-dns-cbor-05</a></p>
+                <p id="section-toc.1-1.11.2.2.1"><a href="#appendix-C.2" class="auto internal xref">C.2</a>.  <a href="#name-since-draft-lenders-dns-cbor" class="internal xref">Since draft-lenders-dns-cbor-05</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.3">
-                <p id="section-toc.1-1.11.2.3.1"><a href="#appendix-B.3" class="auto internal xref">B.3</a>.  <a href="#name-since-draft-lenders-dns-cbor-" class="internal xref">Since draft-lenders-dns-cbor-04</a></p>
+                <p id="section-toc.1-1.11.2.3.1"><a href="#appendix-C.3" class="auto internal xref">C.3</a>.  <a href="#name-since-draft-lenders-dns-cbor-" class="internal xref">Since draft-lenders-dns-cbor-04</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.4">
-                <p id="section-toc.1-1.11.2.4.1"><a href="#appendix-B.4" class="auto internal xref">B.4</a>.  <a href="#name-since-draft-lenders-dns-cbor-0" class="internal xref">Since draft-lenders-dns-cbor-03</a></p>
+                <p id="section-toc.1-1.11.2.4.1"><a href="#appendix-C.4" class="auto internal xref">C.4</a>.  <a href="#name-since-draft-lenders-dns-cbor-0" class="internal xref">Since draft-lenders-dns-cbor-03</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.5">
-                <p id="section-toc.1-1.11.2.5.1"><a href="#appendix-B.5" class="auto internal xref">B.5</a>.  <a href="#name-since-draft-lenders-dns-cbor-02" class="internal xref">Since draft-lenders-dns-cbor-02</a></p>
+                <p id="section-toc.1-1.11.2.5.1"><a href="#appendix-C.5" class="auto internal xref">C.5</a>.  <a href="#name-since-draft-lenders-dns-cbor-02" class="internal xref">Since draft-lenders-dns-cbor-02</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.6">
-                <p id="section-toc.1-1.11.2.6.1"><a href="#appendix-B.6" class="auto internal xref">B.6</a>.  <a href="#name-since-draft-lenders-dns-cbor-01" class="internal xref">Since draft-lenders-dns-cbor-01</a></p>
+                <p id="section-toc.1-1.11.2.6.1"><a href="#appendix-C.6" class="auto internal xref">C.6</a>.  <a href="#name-since-draft-lenders-dns-cbor-01" class="internal xref">Since draft-lenders-dns-cbor-01</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.7">
-                <p id="section-toc.1-1.11.2.7.1"><a href="#appendix-B.7" class="auto internal xref">B.7</a>.  <a href="#name-since-draft-lenders-dns-cbor-00" class="internal xref">Since draft-lenders-dns-cbor-00</a></p>
+                <p id="section-toc.1-1.11.2.7.1"><a href="#appendix-C.7" class="auto internal xref">C.7</a>.  <a href="#name-since-draft-lenders-dns-cbor-00" class="internal xref">Since draft-lenders-dns-cbor-00</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.12.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.13.1"><a href="#appendix-E" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1713,20 +1713,12 @@ scope of this document. Several potential compression algorithms were evaluated 
 </div>
 </section>
 </div>
-<div id="comparison-to-wire-format">
-<section id="section-5">
-      <h2 id="name-comparison-to-wire-format">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-comparison-to-wire-format" class="section-name selfRef">Comparison to wire format</a>
-      </h2>
-<p id="section-5-1">TBD: Table comparing DNS wire-format, DNS+CBOR, and DNS+CBOR-packed<a href="#section-5-1" class="pilcrow">¶</a></p>
-</section>
-</div>
 <div id="implementation-status">
-<section id="section-6">
+<section id="section-5">
       <h2 id="name-implementation-status">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-implementation-status" class="section-name selfRef">Implementation Status</a>
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-implementation-status" class="section-name selfRef">Implementation Status</a>
       </h2>
-<p id="section-6-1">This section records the status of known implementations of the
+<p id="section-5-1">This section records the status of known implementations of the
 protocol defined by this specification at the time of posting of
 this Internet-Draft, and is based on a proposal described in
 <span>[<a href="#RFC7942" class="cite xref">RFC7942</a>]</span>.  The description of implementations in this section is
@@ -1737,82 +1729,82 @@ IETF.  Furthermore, no effort has been spent to verify the
 information presented here that was supplied by IETF contributors.
 This is not intended as, and must not be construed to be, a
 catalog of available implementations or their features.  Readers
-are advised to note that other implementations may exist.<a href="#section-6-1" class="pilcrow">¶</a></p>
-<p id="section-6-2">According to <span>[<a href="#RFC7942" class="cite xref">RFC7942</a>]</span>, "this will allow reviewers and working
+are advised to note that other implementations may exist.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">According to <span>[<a href="#RFC7942" class="cite xref">RFC7942</a>]</span>, "this will allow reviewers and working
 groups to assign due consideration to documents that have the
 benefit of running code, which may serve as evidence of valuable
 experimentation and feedback that have made the implemented
 protocols more mature.  It is up to the individual working groups
-to use this information as they see fit".<a href="#section-6-2" class="pilcrow">¶</a></p>
+to use this information as they see fit".<a href="#section-5-2" class="pilcrow">¶</a></p>
 <div id="python-decoderencoder">
-<section id="section-6.1">
+<section id="section-5.1">
         <h3 id="name-python-decoder-encoder">
-<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-python-decoder-encoder" class="section-name selfRef">Python decoder/encoder</a>
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-python-decoder-encoder" class="section-name selfRef">Python decoder/encoder</a>
         </h3>
-<p id="section-6.1-1">The authors of this document provide a <a href="https://github.com/netd-tud/cbor4dns">decoder/encoder
+<p id="section-5.1-1">The authors of this document provide a <a href="https://github.com/netd-tud/cbor4dns">decoder/encoder
 implementation</a> of both the unpacked and packed format
-specified in this document in Python.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-6.1-2">
-          <dt id="section-6.1-2.1">Level of maturity:</dt>
-          <dd style="margin-left: 1.5em" id="section-6.1-2.2">
-            <p id="section-6.1-2.2.1">prototype<a href="#section-6.1-2.2.1" class="pilcrow">¶</a></p>
+specified in this document in Python.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-5.1-2">
+          <dt id="section-5.1-2.1">Level of maturity:</dt>
+          <dd style="margin-left: 1.5em" id="section-5.1-2.2">
+            <p id="section-5.1-2.2.1">prototype<a href="#section-5.1-2.2.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.1-2.3">Version compatibility:</dt>
-          <dd style="margin-left: 1.5em" id="section-6.1-2.4">
-            <p id="section-6.1-2.4.1">draft-lenders-dns-cbor-05<a href="#section-6.1-2.4.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1-2.3">Version compatibility:</dt>
+          <dd style="margin-left: 1.5em" id="section-5.1-2.4">
+            <p id="section-5.1-2.4.1">draft-lenders-dns-cbor-05<a href="#section-5.1-2.4.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.1-2.5">License:</dt>
-          <dd style="margin-left: 1.5em" id="section-6.1-2.6">
-            <p id="section-6.1-2.6.1">MIT<a href="#section-6.1-2.6.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1-2.5">License:</dt>
+          <dd style="margin-left: 1.5em" id="section-5.1-2.6">
+            <p id="section-5.1-2.6.1">MIT<a href="#section-5.1-2.6.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.1-2.7">Contact information:</dt>
-          <dd style="margin-left: 1.5em" id="section-6.1-2.8">
-            <p id="section-6.1-2.8.1"><code>Martine Lenders &lt;martine.lenders@tu-dresden.de&gt;</code><a href="#section-6.1-2.8.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1-2.7">Contact information:</dt>
+          <dd style="margin-left: 1.5em" id="section-5.1-2.8">
+            <p id="section-5.1-2.8.1"><code>Martine Lenders &lt;martine.lenders@tu-dresden.de&gt;</code><a href="#section-5.1-2.8.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.1-2.9">Last update of this information:</dt>
-          <dd style="margin-left: 1.5em" id="section-6.1-2.10">
-            <p id="section-6.1-2.10.1">October 2023<a href="#section-6.1-2.10.1" class="pilcrow">¶</a></p>
+<dt id="section-5.1-2.9">Last update of this information:</dt>
+          <dd style="margin-left: 1.5em" id="section-5.1-2.10">
+            <p id="section-5.1-2.10.1">October 2023<a href="#section-5.1-2.10.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="embedded-decoderencoder">
-<section id="section-6.2">
+<section id="section-5.2">
         <h3 id="name-embedded-decoder-encoder">
-<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-embedded-decoder-encoder" class="section-name selfRef">Embedded decoder/encoder</a>
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-embedded-decoder-encoder" class="section-name selfRef">Embedded decoder/encoder</a>
         </h3>
-<p id="section-6.2-1">The authors of this document provide a <a href="https://github.com/RIOT-OS/RIOT/pull/19989">decoder/encoder
+<p id="section-5.2-1">The authors of this document provide a <a href="https://github.com/RIOT-OS/RIOT/pull/19989">decoder/encoder
 implementation</a> of the unpacked format specified in this
-document for the RIOT operating system. It can only encode queries and decode responses.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-6.2-2">
-          <dt id="section-6.2-2.1">Level of maturity:</dt>
-          <dd style="margin-left: 1.5em" id="section-6.2-2.2">
-            <p id="section-6.2-2.2.1">prototype<a href="#section-6.2-2.2.1" class="pilcrow">¶</a></p>
+document for the RIOT operating system. It can only encode queries and decode responses.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-5.2-2">
+          <dt id="section-5.2-2.1">Level of maturity:</dt>
+          <dd style="margin-left: 1.5em" id="section-5.2-2.2">
+            <p id="section-5.2-2.2.1">prototype<a href="#section-5.2-2.2.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.2-2.3">Version compatibility:</dt>
-          <dd style="margin-left: 1.5em" id="section-6.2-2.4">
-            <p id="section-6.2-2.4.1">draft-lenders-dns-cbor-05<a href="#section-6.2-2.4.1" class="pilcrow">¶</a></p>
+<dt id="section-5.2-2.3">Version compatibility:</dt>
+          <dd style="margin-left: 1.5em" id="section-5.2-2.4">
+            <p id="section-5.2-2.4.1">draft-lenders-dns-cbor-05<a href="#section-5.2-2.4.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.2-2.5">License:</dt>
-          <dd style="margin-left: 1.5em" id="section-6.2-2.6">
-            <p id="section-6.2-2.6.1">MIT<a href="#section-6.2-2.6.1" class="pilcrow">¶</a></p>
+<dt id="section-5.2-2.5">License:</dt>
+          <dd style="margin-left: 1.5em" id="section-5.2-2.6">
+            <p id="section-5.2-2.6.1">MIT<a href="#section-5.2-2.6.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.2-2.7">Contact information:</dt>
-          <dd style="margin-left: 1.5em" id="section-6.2-2.8">
-            <p id="section-6.2-2.8.1"><code>Martine Lenders &lt;martine.lenders@tu-dresden.de&gt;</code><a href="#section-6.2-2.8.1" class="pilcrow">¶</a></p>
+<dt id="section-5.2-2.7">Contact information:</dt>
+          <dd style="margin-left: 1.5em" id="section-5.2-2.8">
+            <p id="section-5.2-2.8.1"><code>Martine Lenders &lt;martine.lenders@tu-dresden.de&gt;</code><a href="#section-5.2-2.8.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-6.2-2.9">Last update of this information:</dt>
-          <dd style="margin-left: 1.5em" id="section-6.2-2.10">
-            <p id="section-6.2-2.10.1">October 2023<a href="#section-6.2-2.10.1" class="pilcrow">¶</a></p>
+<dt id="section-5.2-2.9">Last update of this information:</dt>
+          <dd style="margin-left: 1.5em" id="section-5.2-2.10">
+            <p id="section-5.2-2.10.1">October 2023<a href="#section-5.2-2.10.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
@@ -1821,96 +1813,96 @@ document for the RIOT operating system. It can only encode queries and decode re
 </section>
 </div>
 <div id="security-considerations">
-<section id="section-7">
+<section id="section-6">
       <h2 id="name-security-considerations">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-7-1">TODO Security<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-6-1">TODO Security<a href="#section-6-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
-<section id="section-8">
+<section id="section-7">
       <h2 id="name-iana-considerations">
-<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
 <div id="media-type">
-<section id="section-8.1">
+<section id="section-7.1">
         <h3 id="name-media-type-registration">
-<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-media-type-registration" class="section-name selfRef">Media Type Registration</a>
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-media-type-registration" class="section-name selfRef">Media Type Registration</a>
         </h3>
-<p id="section-8.1-1">This document registers a media type for the serialization format of DNS messages in CBOR. It
-follows the procedures specified in <span>[<a href="#RFC6838" class="cite xref">RFC6838</a>]</span>.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+<p id="section-7.1-1">This document registers a media type for the serialization format of DNS messages in CBOR. It
+follows the procedures specified in <span>[<a href="#RFC6838" class="cite xref">RFC6838</a>]</span>.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
 <div id="applicationdnscbor">
-<section id="section-8.1.1">
+<section id="section-7.1.1">
           <h4 id="name-application-dnscbor">
-<a href="#section-8.1.1" class="section-number selfRef">8.1.1. </a><a href="#name-application-dnscbor" class="section-name selfRef">"application/dns+cbor"</a>
+<a href="#section-7.1.1" class="section-number selfRef">7.1.1. </a><a href="#name-application-dnscbor" class="section-name selfRef">"application/dns+cbor"</a>
           </h4>
-<p id="section-8.1.1-1">Type name: application<a href="#section-8.1.1-1" class="pilcrow">¶</a></p>
-<p id="section-8.1.1-2">Subtype name: dns+cbor<a href="#section-8.1.1-2" class="pilcrow">¶</a></p>
-<p id="section-8.1.1-3">Required parameters: None<a href="#section-8.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-8.1.1-4">Optional parameters: packed<a href="#section-8.1.1-4" class="pilcrow">¶</a></p>
-<p id="section-8.1.1-5">Encoding considerations: Must be encoded as using <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>. See [TBD-this-spec] for details.<a href="#section-8.1.1-5" class="pilcrow">¶</a></p>
-<p id="section-8.1.1-6">Security considerations: See <a href="#security-considerations" class="auto internal xref">Section 7</a> of this draft<a href="#section-8.1.1-6" class="pilcrow">¶</a></p>
-<p id="section-8.1.1-7">Interoperability considerations: TBD<a href="#section-8.1.1-7" class="pilcrow">¶</a></p>
-<p id="section-8.1.1-8">Published specification: [TBD-this-spec]<a href="#section-8.1.1-8" class="pilcrow">¶</a></p>
-<p id="section-8.1.1-9">Applications that use this media type: TBD DNS over X systems<a href="#section-8.1.1-9" class="pilcrow">¶</a></p>
-<p id="section-8.1.1-10">Fragment Identifier Considerations: TBD<a href="#section-8.1.1-10" class="pilcrow">¶</a></p>
-<p id="section-8.1.1-11">Additional information:<a href="#section-8.1.1-11" class="pilcrow">¶</a></p>
-<p id="section-8.1.1-12">   Deprecated alias names for this type: N/A<a href="#section-8.1.1-12" class="pilcrow">¶</a></p>
-<p id="section-8.1.1-13">   Magic number(s): N/A<a href="#section-8.1.1-13" class="pilcrow">¶</a></p>
-<p id="section-8.1.1-14">   File extension(s): dnsc<a href="#section-8.1.1-14" class="pilcrow">¶</a></p>
-<p id="section-8.1.1-15">   Macintosh file type code(s): none<a href="#section-8.1.1-15" class="pilcrow">¶</a></p>
-<p id="section-8.1.1-16">Person &amp; email address to contact for further information:
-   Martine S. Lenders <a href="mailto:m.lenders@fu-berlin.de">m.lenders@fu-berlin.de</a><a href="#section-8.1.1-16" class="pilcrow">¶</a></p>
-<p id="section-8.1.1-17">Intended usage: COMMON<a href="#section-8.1.1-17" class="pilcrow">¶</a></p>
-<p id="section-8.1.1-18">Restrictions on Usage: None?<a href="#section-8.1.1-18" class="pilcrow">¶</a></p>
-<p id="section-8.1.1-19">Author: Martine S. Lenders <a href="mailto:m.lenders@fu-berlin.de">m.lenders@fu-berlin.de</a><a href="#section-8.1.1-19" class="pilcrow">¶</a></p>
-<p id="section-8.1.1-20">Change controller: Martine S. Lenders <a href="mailto:m.lenders@fu-berlin.de">m.lenders@fu-berlin.de</a><a href="#section-8.1.1-20" class="pilcrow">¶</a></p>
-<p id="section-8.1.1-21">Provisional registrations? No<a href="#section-8.1.1-21" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-1">Type name: application<a href="#section-7.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-2">Subtype name: dns+cbor<a href="#section-7.1.1-2" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-3">Required parameters: None<a href="#section-7.1.1-3" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-4">Optional parameters: packed<a href="#section-7.1.1-4" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-5">Encoding considerations: Must be encoded as using <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>. See [TBD-this-spec] for details.<a href="#section-7.1.1-5" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-6">Security considerations: See <a href="#security-considerations" class="auto internal xref">Section 6</a> of this draft<a href="#section-7.1.1-6" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-7">Interoperability considerations: TBD<a href="#section-7.1.1-7" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-8">Published specification: [TBD-this-spec]<a href="#section-7.1.1-8" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-9">Applications that use this media type: TBD DNS over X systems<a href="#section-7.1.1-9" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-10">Fragment Identifier Considerations: TBD<a href="#section-7.1.1-10" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-11">Additional information:<a href="#section-7.1.1-11" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-12">   Deprecated alias names for this type: N/A<a href="#section-7.1.1-12" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-13">   Magic number(s): N/A<a href="#section-7.1.1-13" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-14">   File extension(s): dnsc<a href="#section-7.1.1-14" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-15">   Macintosh file type code(s): none<a href="#section-7.1.1-15" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-16">Person &amp; email address to contact for further information:
+   Martine S. Lenders <a href="mailto:m.lenders@fu-berlin.de">m.lenders@fu-berlin.de</a><a href="#section-7.1.1-16" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-17">Intended usage: COMMON<a href="#section-7.1.1-17" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-18">Restrictions on Usage: None?<a href="#section-7.1.1-18" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-19">Author: Martine S. Lenders <a href="mailto:m.lenders@fu-berlin.de">m.lenders@fu-berlin.de</a><a href="#section-7.1.1-19" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-20">Change controller: Martine S. Lenders <a href="mailto:m.lenders@fu-berlin.de">m.lenders@fu-berlin.de</a><a href="#section-7.1.1-20" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-21">Provisional registrations? No<a href="#section-7.1.1-21" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="coap-content-format-registration">
-<section id="section-8.2">
+<section id="section-7.2">
         <h3 id="name-coap-content-format-registr">
-<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-coap-content-format-registr" class="section-name selfRef">CoAP Content-Format Registration</a>
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-coap-content-format-registr" class="section-name selfRef">CoAP Content-Format Registration</a>
         </h3>
-<p id="section-8.2-1">IANA is requested to assign CoAP Content-Format ID for the new DNS message media
+<p id="section-7.2-1">IANA is requested to assign CoAP Content-Format ID for the new DNS message media
 types in the "CoAP Content-Formats"
 sub-registry, within the "CoRE Parameters" registry <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, corresponding the
-"application/dns+cbor" media type specified in <a href="#media-type" class="auto internal xref">Section 8.1</a>:<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+"application/dns+cbor" media type specified in <a href="#media-type" class="auto internal xref">Section 7.1</a>:<a href="#section-7.2-1" class="pilcrow">¶</a></p>
 <div id="cf-app-d-c">
-<section id="section-8.2.1">
+<section id="section-7.2.1">
           <h4 id="name-application-dnscbor-2">
-<a href="#section-8.2.1" class="section-number selfRef">8.2.1. </a><a href="#name-application-dnscbor-2" class="section-name selfRef">"application/dns+cbor"</a>
+<a href="#section-7.2.1" class="section-number selfRef">7.2.1. </a><a href="#name-application-dnscbor-2" class="section-name selfRef">"application/dns+cbor"</a>
           </h4>
-<p id="section-8.2.1-1">Media-Type: application/dns+cbor<a href="#section-8.2.1-1" class="pilcrow">¶</a></p>
-<p id="section-8.2.1-2">Encoding: -<a href="#section-8.2.1-2" class="pilcrow">¶</a></p>
-<p id="section-8.2.1-3">Id: TBD<a href="#section-8.2.1-3" class="pilcrow">¶</a></p>
-<p id="section-8.2.1-4">Reference: [TBD-this-spec]<a href="#section-8.2.1-4" class="pilcrow">¶</a></p>
+<p id="section-7.2.1-1">Media-Type: application/dns+cbor<a href="#section-7.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-7.2.1-2">Encoding: -<a href="#section-7.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-7.2.1-3">Id: TBD<a href="#section-7.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-7.2.1-4">Reference: [TBD-this-spec]<a href="#section-7.2.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="applicationdnscborpacked1">
-<section id="section-8.2.2">
+<section id="section-7.2.2">
           <h4 id="name-application-dnscborpacked1">
-<a href="#section-8.2.2" class="section-number selfRef">8.2.2. </a><a href="#name-application-dnscborpacked1" class="section-name selfRef">"application/dns+cbor;packed=1"</a>
+<a href="#section-7.2.2" class="section-number selfRef">7.2.2. </a><a href="#name-application-dnscborpacked1" class="section-name selfRef">"application/dns+cbor;packed=1"</a>
           </h4>
-<p id="section-8.2.2-1">Media-Type: application/dns+cbor;packed=1<a href="#section-8.2.2-1" class="pilcrow">¶</a></p>
-<p id="section-8.2.2-2">Encoding: -<a href="#section-8.2.2-2" class="pilcrow">¶</a></p>
-<p id="section-8.2.2-3">Id: TBD<a href="#section-8.2.2-3" class="pilcrow">¶</a></p>
-<p id="section-8.2.2-4">Reference: [TBD-this-spec]<a href="#section-8.2.2-4" class="pilcrow">¶</a></p>
+<p id="section-7.2.2-1">Media-Type: application/dns+cbor;packed=1<a href="#section-7.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.2.2-2">Encoding: -<a href="#section-7.2.2-2" class="pilcrow">¶</a></p>
+<p id="section-7.2.2-3">Id: TBD<a href="#section-7.2.2-3" class="pilcrow">¶</a></p>
+<p id="section-7.2.2-4">Reference: [TBD-this-spec]<a href="#section-7.2.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="cbor-tags-registry">
-<section id="section-8.3">
+<section id="section-7.3">
         <h3 id="name-cbor-tags-registry">
-<a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-cbor-tags-registry" class="section-name selfRef">CBOR Tags Registry</a>
+<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-cbor-tags-registry" class="section-name selfRef">CBOR Tags Registry</a>
         </h3>
-<p id="section-8.3-1">In the registry "<a href="http://www.iana.org/assignments/cbor-tags#cbor-tags" class="relref">CBOR Tags</a>" <span>[<a href="#IANA.cbor-tags" class="cite xref">IANA.cbor-tags</a>]</span>,
-IANA is requested to allocate the tags defined in <a href="#tab-tag-values" class="auto internal xref">Table 1</a>.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.3-1">In the registry "<a href="http://www.iana.org/assignments/cbor-tags#cbor-tags" class="relref">CBOR Tags</a>" <span>[<a href="#IANA.cbor-tags" class="cite xref">IANA.cbor-tags</a>]</span>,
+IANA is requested to allocate the tags defined in <a href="#tab-tag-values" class="auto internal xref">Table 1</a>.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
 <span id="name-values-for-tag-numbers"></span><div id="tab-tag-values">
 <table class="center" id="table-1">
           <caption>
@@ -1939,14 +1931,14 @@ IANA is requested to allocate the tags defined in <a href="#tab-tag-values" clas
 </div>
 </section>
 </div>
-<section id="section-9">
+<section id="section-8">
       <h2 id="name-references">
-<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-references" class="section-name selfRef">References</a>
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
 <div id="sec-normative-references">
-<section id="section-9.1">
+<section id="section-8.1">
         <h3 id="name-normative-references">
-<a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
 <dt id="I-D.ietf-cbor-packed">[I-D.ietf-cbor-packed]</dt>
@@ -2001,9 +1993,9 @@ IANA is requested to allocate the tags defined in <a href="#tab-tag-values" clas
 </section>
 </div>
 <div id="sec-informative-references">
-<section id="section-9.2">
+<section id="section-8.2">
         <h3 id="name-informative-references">
-<a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
 <dt id="I-D.ietf-core-dns-over-coap">[I-D.ietf-core-dns-over-coap]</dt>
@@ -2156,124 +2148,278 @@ type is specified in the question section.<a href="#appendix-A.2-11" class="pilc
 </div>
 </section>
 </div>
-<div id="change-log">
+<div id="comparison-to-wire-format">
 <section id="appendix-B">
+      <h2 id="name-comparison-to-wire-format">
+<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-comparison-to-wire-format" class="section-name selfRef">Comparison to Wire Format</a>
+      </h2>
+<p id="appendix-B-1"><a href="#tab-cbor-comparison" class="auto internal xref">Table 2</a> shows a comparison between the wire format and the application/dns+cbor
+format. Note that the worst case results typically appear only rarely in DNS. The DNS wire format is
+preferred in those cases. A key for which configuration was used in which case can be seen in
+<a href="#tab-cbor-comparison-key" class="auto internal xref">Table 3</a>.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<span id="name-comparison-of-application-d"></span><div id="tab-cbor-comparison">
+<table class="center" id="table-2">
+        <caption>
+<a href="#table-2" class="selfRef">Table 2</a>:
+<a href="#name-comparison-of-application-d" class="selfRef">Comparison of application/dns+cbor to classic DNS format.</a>
+        </caption>
+<thead>
+          <tr>
+            <th class="text-left" rowspan="2" colspan="1">Item</th>
+            <th class="text-right" rowspan="2" colspan="1">Classic DNS format [bytes]</th>
+            <th class="text-center" rowspan="1" colspan="3">application/dns+cbor [bytes]</th>
+          </tr>
+          <tr>
+            <th class="text-right" rowspan="1" colspan="1">best case</th>
+            <th class="text-right" rowspan="1" colspan="1">realistic worst case</th>
+            <th class="text-right" rowspan="1" colspan="1">theoretical worst case</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">Header (ID &amp; Flags)</td>
+            <td class="text-right" rowspan="1" colspan="1">4</td>
+            <td class="text-right" rowspan="1" colspan="1">1</td>
+            <td class="text-right" rowspan="1" colspan="1">4</td>
+            <td class="text-right" rowspan="1" colspan="1">4</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">Count fields</td>
+            <td class="text-right" rowspan="1" colspan="1">2</td>
+            <td class="text-right" rowspan="1" colspan="1">1</td>
+            <td class="text-right" rowspan="1" colspan="1">3</td>
+            <td class="text-right" rowspan="1" colspan="1">3</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">Question section</td>
+            <td class="text-right" rowspan="1" colspan="1">6 + name len.</td>
+            <td class="text-right" rowspan="1" colspan="1">2 + name len.</td>
+            <td class="text-right" rowspan="1" colspan="1">7 + name len.</td>
+            <td class="text-right" rowspan="1" colspan="1">10 + name len.</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">Standard RR</td>
+            <td class="text-right" rowspan="1" colspan="1">12 + name len. + rdata len.</td>
+            <td class="text-right" rowspan="1" colspan="1">3        <br>
+ + rdata len.</td>
+            <td class="text-right" rowspan="1" colspan="1">15 + name len. + rdata len.</td>
+            <td class="text-right" rowspan="1" colspan="1">18 + name len. + rdata len.</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">EDNS Opt Pseudo-RR</td>
+            <td class="text-right" rowspan="1" colspan="1">11 + options</td>
+            <td class="text-right" rowspan="1" colspan="1">2 + options</td>
+            <td class="text-right" rowspan="1" colspan="1">6 + options</td>
+            <td class="text-right" rowspan="1" colspan="1">14 + options</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">EDNS Option</td>
+            <td class="text-right" rowspan="1" colspan="1">4 + value len.</td>
+            <td class="text-right" rowspan="1" colspan="1">2 + value len.</td>
+            <td class="text-right" rowspan="1" colspan="1">4 + value len.</td>
+            <td class="text-right" rowspan="1" colspan="1">6 + value len.</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+<span id="name-configuration-key-for"></span><div id="tab-cbor-comparison-key">
+<table class="center" id="table-3">
+        <caption>
+<a href="#table-3" class="selfRef">Table 3</a>:
+<a href="#name-configuration-key-for" class="selfRef">Configuration key for     <span class="cite xref">Table 2</span>
+.</a>
+        </caption>
+<thead>
+          <tr>
+            <th class="text-left" rowspan="2" colspan="1">Item</th>
+            <th class="text-center" rowspan="1" colspan="3">application/dns+cbor configuration</th>
+          </tr>
+          <tr>
+            <th class="text-right" rowspan="1" colspan="1">best case</th>
+            <th class="text-right" rowspan="1" colspan="1">realistic worst case</th>
+            <th class="text-right" rowspan="1" colspan="1">theoretical worst case</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">Header (ID &amp; Flags)</td>
+            <td class="text-right" rowspan="1" colspan="1">Flags elided</td>
+            <td class="text-right" rowspan="1" colspan="1">QR, Opcode, AA, TC, or RD are set</td>
+            <td class="text-right" rowspan="1" colspan="1">QR, Opcode, AA, TC, or RD are set</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">Count fields</td>
+            <td class="text-right" rowspan="1" colspan="1">Encoded in CBOR array header</td>
+            <td class="text-right" rowspan="1" colspan="1">Encoded in CBOR array header,        <br>
+&gt;255 records in section</td>
+            <td class="text-right" rowspan="1" colspan="1">Encoded in CBOR array header,        <br>
+&gt;255 records in section</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">Question section</td>
+            <td class="text-right" rowspan="1" colspan="1">Class, type, and name elided</td>
+            <td class="text-right" rowspan="1" colspan="1">Type &gt; 255,        <br>
+name len. &gt; 255</td>
+            <td class="text-right" rowspan="1" colspan="1">Type &gt; 255,        <br>
+Class &gt; 255,        <br>
+name len. &gt; 255</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">Standard RR</td>
+            <td class="text-right" rowspan="1" colspan="1">Class, type, and name elided,        <br>
+rdata len. &lt; 24</td>
+            <td class="text-right" rowspan="1" colspan="1">Type &gt; 255,        <br>
+name len. &gt; 255        <br>
+rdata len. &gt; 255</td>
+            <td class="text-right" rowspan="1" colspan="1">Type &gt; 255,        <br>
+Class &gt; 255,        <br>
+name len. &gt; 255        <br>
+rdata len. &gt; 255</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">EDNS Opt Pseudo-RR</td>
+            <td class="text-right" rowspan="1" colspan="1">All EDNS(0) fields elided</td>
+            <td class="text-right" rowspan="1" colspan="1">Rcode &lt; 24,        <br>
+DO flag set,        <br>
+            </td>
+            <td class="text-right" rowspan="1" colspan="1">UDP payload        <br>
+len. &gt; 255        <br>
+Rcode &gt; 255        <br>
+Version &gt; 255        <br>
+DO flag set</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">EDNS Option</td>
+            <td class="text-right" rowspan="1" colspan="1">Code &lt; 24        <br>
+Length &lt; 24</td>
+            <td class="text-right" rowspan="1" colspan="1">Code &lt; 24        <br>
+Length &gt; 255</td>
+            <td class="text-right" rowspan="1" colspan="1">Code &gt; 255        <br>
+Length &gt; 255</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+</section>
+</div>
+<div id="change-log">
+<section id="appendix-C">
       <h2 id="name-change-log">
-<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-change-log" class="section-name selfRef">Change Log</a>
+<a href="#appendix-C" class="section-number selfRef">Appendix C. </a><a href="#name-change-log" class="section-name selfRef">Change Log</a>
       </h2>
 <div id="since-draft-lenders-dns-cbor-06">
-<section id="appendix-B.1">
+<section id="appendix-C.1">
         <h3 id="name-since-draft-lenders-dns-cbo">
-<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-since-draft-lenders-dns-cbo" class="section-name selfRef">Since <a href="https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-06">draft-lenders-dns-cbor-06</a></a>
+<a href="#appendix-C.1" class="section-number selfRef">C.1. </a><a href="#name-since-draft-lenders-dns-cbo" class="section-name selfRef">Since <a href="https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-06">draft-lenders-dns-cbor-06</a></a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.1-1.1">
-            <p id="appendix-B.1-1.1.1">Fixes wording and spelling mistakes<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-C.1-1.1">
+            <p id="appendix-C.1-1.1.1">Fixes wording and spelling mistakes<a href="#appendix-C.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="since-draft-lenders-dns-cbor-05">
-<section id="appendix-B.2">
+<section id="appendix-C.2">
         <h3 id="name-since-draft-lenders-dns-cbor">
-<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-since-draft-lenders-dns-cbor" class="section-name selfRef">Since <a href="https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-05">draft-lenders-dns-cbor-05</a></a>
+<a href="#appendix-C.2" class="section-number selfRef">C.2. </a><a href="#name-since-draft-lenders-dns-cbor" class="section-name selfRef">Since <a href="https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-05">draft-lenders-dns-cbor-05</a></a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.2-1.1">
-            <p id="appendix-B.2-1.1.1">Fix <a href="#cf-app-d-c" class="auto internal xref">Section 8.2.1</a> title<a href="#appendix-B.2-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-C.2-1.1">
+            <p id="appendix-C.2-1.1.1">Fix <a href="#cf-app-d-c" class="auto internal xref">Section 7.2.1</a> title<a href="#appendix-C.2-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.2">
-            <p id="appendix-B.2-1.2.1">Amend for capability to carry more than one question<a href="#appendix-B.2-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-C.2-1.2">
+            <p id="appendix-C.2-1.2.1">Amend for capability to carry more than one question<a href="#appendix-C.2-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.3">
-            <p id="appendix-B.2-1.3.1">Hint at future of name compression in later draft versions<a href="#appendix-B.2-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-C.2-1.3">
+            <p id="appendix-C.2-1.3.1">Hint at future of name compression in later draft versions<a href="#appendix-C.2-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.4">
-            <p id="appendix-B.2-1.4.1">Use canonical name for CBOR-packed<a href="#appendix-B.2-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-C.2-1.4">
+            <p id="appendix-C.2-1.4.1">Use canonical name for CBOR-packed<a href="#appendix-C.2-1.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="since-draft-lenders-dns-cbor-04">
-<section id="appendix-B.3">
+<section id="appendix-C.3">
         <h3 id="name-since-draft-lenders-dns-cbor-">
-<a href="#appendix-B.3" class="section-number selfRef">B.3. </a><a href="#name-since-draft-lenders-dns-cbor-" class="section-name selfRef">Since <a href="https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-04">draft-lenders-dns-cbor-04</a></a>
+<a href="#appendix-C.3" class="section-number selfRef">C.3. </a><a href="#name-since-draft-lenders-dns-cbor-" class="section-name selfRef">Since <a href="https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-04">draft-lenders-dns-cbor-04</a></a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.3-1.1">
-            <p id="appendix-B.3-1.1.1">Add Implementation Status section<a href="#appendix-B.3-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-C.3-1.1">
+            <p id="appendix-C.3-1.1.1">Add Implementation Status section<a href="#appendix-C.3-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.3-1.2">
-            <p id="appendix-B.3-1.2.1">Remove int as representation for rdata<a href="#appendix-B.3-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-C.3-1.2">
+            <p id="appendix-C.3-1.2.1">Remove int as representation for rdata<a href="#appendix-C.3-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.3-1.3">
-            <p id="appendix-B.3-1.3.1">Add note on representation of more structured rdata<a href="#appendix-B.3-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-C.3-1.3">
+            <p id="appendix-C.3-1.3.1">Add note on representation of more structured rdata<a href="#appendix-C.3-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="since-draft-lenders-dns-cbor-03">
-<section id="appendix-B.4">
+<section id="appendix-C.4">
         <h3 id="name-since-draft-lenders-dns-cbor-0">
-<a href="#appendix-B.4" class="section-number selfRef">B.4. </a><a href="#name-since-draft-lenders-dns-cbor-0" class="section-name selfRef">Since <a href="https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-03">draft-lenders-dns-cbor-03</a></a>
+<a href="#appendix-C.4" class="section-number selfRef">C.4. </a><a href="#name-since-draft-lenders-dns-cbor-0" class="section-name selfRef">Since <a href="https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-03">draft-lenders-dns-cbor-03</a></a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.4-1.1">
-            <p id="appendix-B.4-1.1.1">Provide format description for EDNS OPT Pseudo-RRs<a href="#appendix-B.4-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-C.4-1.1">
+            <p id="appendix-C.4-1.1.1">Provide format description for EDNS OPT Pseudo-RRs<a href="#appendix-C.4-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.4-1.2">
-            <p id="appendix-B.4-1.2.1">Simplify CDDL to more idiomatic style<a href="#appendix-B.4-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-C.4-1.2">
+            <p id="appendix-C.4-1.2.1">Simplify CDDL to more idiomatic style<a href="#appendix-C.4-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.4-1.3">
-            <p id="appendix-B.4-1.3.1">Remove DNS transaction IDs<a href="#appendix-B.4-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-C.4-1.3">
+            <p id="appendix-C.4-1.3.1">Remove DNS transaction IDs<a href="#appendix-C.4-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="since-draft-lenders-dns-cbor-02">
-<section id="appendix-B.5">
+<section id="appendix-C.5">
         <h3 id="name-since-draft-lenders-dns-cbor-02">
-<a href="#appendix-B.5" class="section-number selfRef">B.5. </a><a href="#name-since-draft-lenders-dns-cbor-02" class="section-name selfRef">Since <a href="https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-02">draft-lenders-dns-cbor-02</a></a>
+<a href="#appendix-C.5" class="section-number selfRef">C.5. </a><a href="#name-since-draft-lenders-dns-cbor-02" class="section-name selfRef">Since <a href="https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-02">draft-lenders-dns-cbor-02</a></a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.5-1.1">
-            <p id="appendix-B.5-1.1.1">Add Discussion section and note on compression<a href="#appendix-B.5-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-C.5-1.1">
+            <p id="appendix-C.5-1.1.1">Add Discussion section and note on compression<a href="#appendix-C.5-1.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="since-draft-lenders-dns-cbor-01">
-<section id="appendix-B.6">
+<section id="appendix-C.6">
         <h3 id="name-since-draft-lenders-dns-cbor-01">
-<a href="#appendix-B.6" class="section-number selfRef">B.6. </a><a href="#name-since-draft-lenders-dns-cbor-01" class="section-name selfRef">Since <a href="https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-01">draft-lenders-dns-cbor-01</a></a>
+<a href="#appendix-C.6" class="section-number selfRef">C.6. </a><a href="#name-since-draft-lenders-dns-cbor-01" class="section-name selfRef">Since <a href="https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-01">draft-lenders-dns-cbor-01</a></a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.6-1.1">
-            <p id="appendix-B.6-1.1.1">Use MIME type parameter for packed instead of own MIME type<a href="#appendix-B.6-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-C.6-1.1">
+            <p id="appendix-C.6-1.1.1">Use MIME type parameter for packed instead of own MIME type<a href="#appendix-C.6-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.6-1.2">
-            <p id="appendix-B.6-1.2.1">Update definitions to accommodate for TID and flags, as well as more sections in query<a href="#appendix-B.6-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-C.6-1.2">
+            <p id="appendix-C.6-1.2.1">Update definitions to accommodate for TID and flags, as well as more sections in query<a href="#appendix-C.6-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.6-1.3">
-            <p id="appendix-B.6-1.3.1">Clarify fallback to wire-format<a href="#appendix-B.6-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-C.6-1.3">
+            <p id="appendix-C.6-1.3.1">Clarify fallback to wire-format<a href="#appendix-C.6-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="since-draft-lenders-dns-cbor-00">
-<section id="appendix-B.7">
+<section id="appendix-C.7">
         <h3 id="name-since-draft-lenders-dns-cbor-00">
-<a href="#appendix-B.7" class="section-number selfRef">B.7. </a><a href="#name-since-draft-lenders-dns-cbor-00" class="section-name selfRef">Since <a href="https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-00">draft-lenders-dns-cbor-00</a></a>
+<a href="#appendix-C.7" class="section-number selfRef">C.7. </a><a href="#name-since-draft-lenders-dns-cbor-00" class="section-name selfRef">Since <a href="https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-00">draft-lenders-dns-cbor-00</a></a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.7-1.1">
-            <p id="appendix-B.7-1.1.1">Add support for DNS transaction IDs<a href="#appendix-B.7-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-C.7-1.1">
+            <p id="appendix-C.7-1.1.1">Add support for DNS transaction IDs<a href="#appendix-C.7-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.7-1.2">
-            <p id="appendix-B.7-1.2.1">Name and Address compression utilizing CBOR-packed<a href="#appendix-B.7-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-C.7-1.2">
+            <p id="appendix-C.7-1.2.1">Name and Address compression utilizing CBOR-packed<a href="#appendix-C.7-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.7-1.3">
-            <p id="appendix-B.7-1.3.1">Minor fixes to CBOR EDN and CDDL<a href="#appendix-B.7-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-C.7-1.3">
+            <p id="appendix-C.7-1.3.1">Minor fixes to CBOR EDN and CDDL<a href="#appendix-C.7-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -2281,15 +2427,15 @@ type is specified in the question section.<a href="#appendix-A.2-11" class="pilc
 </section>
 </div>
 <div id="acknowledgments">
-<section id="appendix-C">
+<section id="appendix-D">
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-C-1">TODO acknowledge.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+<p id="appendix-D-1">TODO acknowledge.<a href="#appendix-D-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
-<section id="appendix-D">
+<section id="appendix-E">
       <h2 id="name-authors-addresses">
 <a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
