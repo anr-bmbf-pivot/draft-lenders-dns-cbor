@@ -689,7 +689,7 @@ This one advertises two local CoAP servers (identified by service name `_coap._u
 2001:db8::35 and ns2.example.org at 2001.db8::3535. Each of the transmitted records has a TTL of
 3600 seconds.
 
-# Comparison to Classic DNS Wire Format
+# Comparison to Classic DNS Wire Format {#sec:comparison-to-classic-dns}
 
 {{tab-cbor-comparison}} shows a comparison between the classic DNS wire format and the
 application/dns+cbor format. Note that the worst case results typically appear only rarely in DNS.
@@ -824,6 +824,11 @@ case can be seen in {{tab-cbor-comparison-key}}.
 
 # Change Log
 
+Since [draft-lenders-dns-cbor-07]
+---------------------------------
+- Add {{sec:comparison-to-classic-dns}} with comparison to classic DNS wire format
+- "wire format" -> "classic DNS wire format"
+
 Since [draft-lenders-dns-cbor-06]
 ---------------------------------
 - Fixes wording and spelling mistakes
@@ -863,6 +868,7 @@ Since [draft-lenders-dns-cbor-00]
 - Name and Address compression utilizing CBOR-packed
 - Minor fixes to CBOR EDN and CDDL
 
+[draft-lenders-dns-cbor-07]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-07
 [draft-lenders-dns-cbor-06]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-06
 [draft-lenders-dns-cbor-05]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-05
 [draft-lenders-dns-cbor-04]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-04
