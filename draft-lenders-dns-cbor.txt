@@ -119,15 +119,16 @@ Internet-Draft                  dns+cbor                       June 2024
    Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .  17
      A.1.  DNS Queries . . . . . . . . . . . . . . . . . . . . . . .  17
      A.2.  DNS Responses . . . . . . . . . . . . . . . . . . . . . .  17
-   Appendix B.  Comparison to Wire Format  . . . . . . . . . . . . .  18
+   Appendix B.  Comparison to Classic DNS Wire Format  . . . . . . .  18
    Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  20
-     C.1.  Since draft-lenders-dns-cbor-06 . . . . . . . . . . . . .  20
-     C.2.  Since draft-lenders-dns-cbor-05 . . . . . . . . . . . . .  20
-     C.3.  Since draft-lenders-dns-cbor-04 . . . . . . . . . . . . .  21
-     C.4.  Since draft-lenders-dns-cbor-03 . . . . . . . . . . . . .  21
-     C.5.  Since draft-lenders-dns-cbor-02 . . . . . . . . . . . . .  21
-     C.6.  Since draft-lenders-dns-cbor-01 . . . . . . . . . . . . .  21
-     C.7.  Since draft-lenders-dns-cbor-00 . . . . . . . . . . . . .  21
+     C.1.  Since draft-lenders-dns-cbor-07 . . . . . . . . . . . . .  20
+     C.2.  Since draft-lenders-dns-cbor-06 . . . . . . . . . . . . .  21
+     C.3.  Since draft-lenders-dns-cbor-05 . . . . . . . . . . . . .  21
+     C.4.  Since draft-lenders-dns-cbor-04 . . . . . . . . . . . . .  21
+     C.5.  Since draft-lenders-dns-cbor-03 . . . . . . . . . . . . .  21
+     C.6.  Since draft-lenders-dns-cbor-02 . . . . . . . . . . . . .  21
+     C.7.  Since draft-lenders-dns-cbor-01 . . . . . . . . . . . . .  21
+     C.8.  Since draft-lenders-dns-cbor-00 . . . . . . . . . . . . .  22
    Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  22
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
 
@@ -160,8 +161,7 @@ Internet-Draft                  dns+cbor                       June 2024
 
    TBD DNS server and client.
 
-   A DNS query is a message that queries DNS information from an
-   upstream DNS resolver.
+
 
 
 
@@ -169,6 +169,9 @@ Lenders, et al.         Expires 30 December 2024                [Page 3]
 
 Internet-Draft                  dns+cbor                       June 2024
 
+
+   A DNS query is a message that queries DNS information from an
+   upstream DNS resolver.
 
    The term "constrained networks" is used as defined in [RFC7228].
 
@@ -215,9 +218,6 @@ Internet-Draft                  dns+cbor                       June 2024
 
    domain-name = tstr .regexp "([^.]+[.])*[^.]+"
 
-                      Figure 2: Domain Name Definition
-
-
 
 
 
@@ -225,6 +225,8 @@ Lenders, et al.         Expires 30 December 2024                [Page 4]
 
 Internet-Draft                  dns+cbor                       June 2024
 
+
+                      Figure 2: Domain Name Definition
 
 3.2.  DNS Resource Records
 
@@ -275,18 +277,16 @@ Internet-Draft                  dns+cbor                       June 2024
 
 
 
-
-
 Lenders, et al.         Expires 30 December 2024                [Page 5]
 
 Internet-Draft                  dns+cbor                       June 2024
 
 
-   The byte format of the record data as a byte string follows the wire
-   format as specified in Section 3.3 [RFC1035] (or other specifications
-   of the respective record type).  Note that this format does not
-   include the RDLENGTH field from [RFC1035] as this value is encoded in
-   the length field of the CBOR byte string.
+   The byte format of the record data as a byte string follows the
+   classic DNS wire format as specified in Section 3.3 [RFC1035] (or
+   other specifications of the respective record type).  Note that this
+   format does not include the RDLENGTH field from [RFC1035] as this
+   value is encoded in the length field of the CBOR byte string.
 
    If the record data represents a domain name (e.g., for CNAME or PTR
    records), the record data MAY be represented as a text string as
@@ -992,11 +992,11 @@ Internet-Draft                  dns+cbor                       June 2024
    2001:db8::35 and ns2.example.org at 2001.db8::3535.  Each of the
    transmitted records has a TTL of 3600 seconds.
 
-Appendix B.  Comparison to Wire Format
+Appendix B.  Comparison to Classic DNS Wire Format
 
-   Table 2 shows a comparison between the wire format and the
-   application/dns+cbor format.  Note that the worst case results
-   typically appear only rarely in DNS.  The DNS wire format is
+   Table 2 shows a comparison between the classic DNS wire format and
+   the application/dns+cbor format.  Note that the worst case results
+   typically appear only rarely in DNS.  The classic DNS format is
    preferred in those cases.  A key for which configuration was used in
    which case can be seen in Table 3.
 
@@ -1104,15 +1104,15 @@ Internet-Draft                  dns+cbor                       June 2024
 
 Appendix C.  Change Log
 
-C.1.  Since draft-lenders-dns-cbor-06
-      (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-06)
+C.1.  Since draft-lenders-dns-cbor-07
+      (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-07)
 
-   *  Fixes wording and spelling mistakes
+   *  Add Appendix B with comparison to classic DNS wire format
 
-C.2.  Since draft-lenders-dns-cbor-05
-      (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-05)
+   *  "wire format" -> "classic DNS wire format"
 
-   *  Fix Section 7.2.1 title
+
+
 
 
 
@@ -1122,13 +1122,23 @@ Lenders, et al.         Expires 30 December 2024               [Page 20]
 Internet-Draft                  dns+cbor                       June 2024
 
 
+C.2.  Since draft-lenders-dns-cbor-06
+      (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-06)
+
+   *  Fixes wording and spelling mistakes
+
+C.3.  Since draft-lenders-dns-cbor-05
+      (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-05)
+
+   *  Fix Section 7.2.1 title
+
    *  Amend for capability to carry more than one question
 
    *  Hint at future of name compression in later draft versions
 
    *  Use canonical name for CBOR-packed
 
-C.3.  Since draft-lenders-dns-cbor-04
+C.4.  Since draft-lenders-dns-cbor-04
       (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-04)
 
    *  Add Implementation Status section
@@ -1137,7 +1147,7 @@ C.3.  Since draft-lenders-dns-cbor-04
 
    *  Add note on representation of more structured rdata
 
-C.4.  Since draft-lenders-dns-cbor-03
+C.5.  Since draft-lenders-dns-cbor-03
       (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-03)
 
    *  Provide format description for EDNS OPT Pseudo-RRs
@@ -1146,12 +1156,12 @@ C.4.  Since draft-lenders-dns-cbor-03
 
    *  Remove DNS transaction IDs
 
-C.5.  Since draft-lenders-dns-cbor-02
+C.6.  Since draft-lenders-dns-cbor-02
       (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-02)
 
    *  Add Discussion section and note on compression
 
-C.6.  Since draft-lenders-dns-cbor-01
+C.7.  Since draft-lenders-dns-cbor-01
       (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-01)
 
    *  Use MIME type parameter for packed instead of own MIME type
@@ -1161,7 +1171,14 @@ C.6.  Since draft-lenders-dns-cbor-01
 
    *  Clarify fallback to wire-format
 
-C.7.  Since draft-lenders-dns-cbor-00
+
+
+Lenders, et al.         Expires 30 December 2024               [Page 21]
+
+Internet-Draft                  dns+cbor                       June 2024
+
+
+C.8.  Since draft-lenders-dns-cbor-00
       (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-00)
 
    *  Add support for DNS transaction IDs
@@ -1169,14 +1186,6 @@ C.7.  Since draft-lenders-dns-cbor-00
    *  Name and Address compression utilizing CBOR-packed
 
    *  Minor fixes to CBOR EDN and CDDL
-
-
-
-
-Lenders, et al.         Expires 30 December 2024               [Page 21]
-
-Internet-Draft                  dns+cbor                       June 2024
-
 
 Acknowledgments
 
@@ -1212,15 +1221,6 @@ Authors' Addresses
    D-01069 Dresden
    Germany
    Email: m.waehlisch@tu-dresden.de
-
-
-
-
-
-
-
-
-
 
 
 
