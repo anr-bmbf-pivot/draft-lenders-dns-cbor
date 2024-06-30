@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-06-27T00:11:23.207649+00:00",
+  "timestamp": "2024-06-30T00:12:29.756878+00:00",
   "repo": "anr-bmbf-pivot/draft-lenders-dns-cbor",
   "labels": [
     {
@@ -146,24 +146,26 @@
       "id": "PR_kwDOIM0M7M5co-6G",
       "title": "Create comparison table",
       "url": "https://github.com/anr-bmbf-pivot/draft-lenders-dns-cbor/pull/4",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "miri64",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "In https://mailarchive.ietf.org/arch/msg/cbor/KzRTl9QqtCiyMb4wYG_U542hjV0/ a comparison table was requested. This is a first draft for that.",
       "createdAt": "2023-10-12T14:20:44Z",
-      "updatedAt": "2024-06-26T16:16:40Z",
+      "updatedAt": "2024-06-28T12:26:21Z",
       "baseRepository": "anr-bmbf-pivot/draft-lenders-dns-cbor",
       "baseRefName": "main",
       "baseRefOid": "69b762130904ca9448679640a46f26f5d3c0781a",
       "headRepository": "anr-bmbf-pivot/draft-lenders-dns-cbor",
       "headRefName": "comparison-table",
       "headRefOid": "e2f6053399243ac2a99b83e7c35f727cecef427d",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-06-28T12:26:14Z",
+      "mergedAt": "2024-06-28T12:26:14Z",
+      "mergedBy": "miri64",
+      "mergeCommit": {
+        "oid": "b1a8e7557d6f1037094bec82f2baead42f227cd9"
+      },
       "comments": [
         {
           "author": "miri64",
