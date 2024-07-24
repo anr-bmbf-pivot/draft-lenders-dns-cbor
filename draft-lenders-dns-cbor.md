@@ -70,6 +70,7 @@ informative:
   RFC8724: schc
   RFC8824: coap-schc
   RFC9110: http-semantics
+  RFC9619: qdcount-1
   I-D.ietf-core-dns-over-coap: doc
 
 
@@ -296,7 +297,10 @@ If the record type is elided, record type `AAAA` as specified in {{-aaaa}} is as
 If the record class is elided, record class `IN` as specified in {{-dns}} is assumed.
 When a record class is required, the record type MUST also be provided.
 
-If more than one question is supposed to be in the question section, the next question just follows.
+There is usually only one question {{-qdcount-1}}, which is why the question section is a flat
+array and not nested to safe overhead from the additional CBOR array header.
+In the rare cases when there is more than one question is supposed to be in the question section,
+the next question just follows.
 In this case, for every question but the last, the record type MUST be included, i.e., it is not
 optional. This way it is ensured that the parser can distinguish each question by looking up the
 name first (TBD note: this is especially relevant once the name is split up in components).
