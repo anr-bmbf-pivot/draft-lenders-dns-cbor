@@ -273,8 +273,9 @@ DNS queries are encoded as CBOR arrays containing up to 5 entries in the followi
 
 1. An optional flag field (as unsigned integer),
 2. The question section (as array),
-3. An optional authority section (as array), and
-4. An optional additional section (as array)
+3. An optional answer section (as array),
+4. An optional authority section (as array), and
+5. An optional additional section (as array)
 
 If the first item of the query is an array, it is the question section, if it is an unsigned
 integer, it is as flag field and maps to the header flags in {{-dns}} and the "DNS Header Flags"
@@ -305,11 +306,14 @@ In this case, for every question but the last, the record type MUST be included,
 optional. This way it is ensured that the parser can distinguish each question by looking up the
 name first (TBD note: this is especially relevant once the name is split up in components).
 
-The remainder of the query is either empty or MUST consist of up to two arrays.
-The first array, if present, encodes the authority section of the query as an array of DNS
-resource records (see {{sec:rr}})
-The second array, if present, encodes the additional section of the query as an array of DNS
-resource records (see {{sec:rr}})
+The remainder of the query is either empty or MUST consist of up to three extra arrays.
+
+If only one additional array is in the query, it encodes the additional section of the query as an array of DNS resource records (see {{sec:rr}}).
+If only two additional arrays are in the query, they encode, in that order, the authority and additional sections of the query each as an array of DNS resource records (see {{sec:rr}}).
+If three additional arrays are in the query, they encode, in that order, the answer section, the authority, and additional sections of the query each as an array of DNS resource records (see {{sec:rr}}).
+
+As such, the highest precedence in elision is given to the answer section, as it only occurs with mDNS to signify Known Answers {{?RFC6762}}.
+The lowest precedence is given to the additional section, as it may contain EDNS OPT Pseudo-RRs, which are common in queries (see {{sec:edns}}).
 
 The representation of a DNS query is defined in {{fig:dns-query}}.
 
@@ -317,7 +321,7 @@ The representation of a DNS query is defined in {{fig:dns-query}}.
 dns-query = [
   ? flags: uint .default 0x0000,
   question-section,
-  ? extra-sections,
+  ? query-extra-sections,
 ]
 question-section = [
   * full-question,
@@ -331,6 +335,11 @@ last-question = (
   name: domain-name,
   ? type-spec,
 )
+query-extra-sections = (
+  ? answer-section,
+  extra-sections,
+)
+answer-section = [+ dns-rr]
 extra-sections = (
   ? authority: [+ dns-rr],
   additional: [+ dns-rr],
@@ -375,7 +384,7 @@ The authority section is also represented as an array of one or more DNS Resourc
 dns-response = [
   ? flags: uint .default 0x8000,
   ? question-section,
-  answer-section: [+ dns-rr],
+  answer-section,
   ? extra-sections,
 ]
 ~~~
