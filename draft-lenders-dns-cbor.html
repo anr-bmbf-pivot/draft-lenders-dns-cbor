@@ -1035,7 +1035,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lenders, et al.</td>
-<td class="center">Expires 22 March 2025</td>
+<td class="center">Expires 24 March 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1048,12 +1048,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-lenders-dns-cbor-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-09-18" class="published">18 September 2024</time>
+<time datetime="2024-09-20" class="published">20 September 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-03-22">22 March 2025</time></dd>
+<dd class="expires"><time datetime="2025-03-24">24 March 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1117,7 +1117,7 @@ The primary purpose is to keep DNS messages small in constrained networks.<a hre
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 22 March 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 24 March 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1362,17 +1362,21 @@ always be possible.<a href="#section-3-3" class="pilcrow">¶</a></p>
         <h3 id="name-domain-name-representation">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-domain-name-representation" class="section-name selfRef">Domain Name Representation</a>
         </h3>
-<p id="section-3.1-1">Domain names are represented in their commonly known string format (e.g., "example.org", see Section
-2.3.1 in <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span>) and in IDNA encoding <span>[<a href="#RFC5890" class="cite xref">RFC5890</a>]</span> as a text string. For the purpose of this
-document, domain names remain case-insensitive as specified in <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span>.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">Domain names are represented by a sequence of 1 or more (unicode) text string, e.g., "example.org" would be represented as "example", "org".
+The root domain "." is represented as an empty string "".
+The absence of any label means the name is elided.
+For the purpose of this document, domain names remain case-insensitive as specified in <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span>.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2">The representation of a domain name is defined in <a href="#fig_domain-name" class="auto internal xref">Figure 2</a>.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.1-3">TBD: represent names as components (<code>(* tstr)</code>), provide name compression when <span>[<a href="#I-D.ietf-cbor-packed" class="cite xref">I-D.ietf-cbor-packed</a>]</span> is
-updated for the reference format and table building discussed at IETF 118.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.1-3">This sequence of text strings is supposed to be embedded into a surrounding array, usually the query
+or resource record.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
 <span id="name-domain-name-definition"></span><div id="fig_domain-name">
 <figure id="figure-2">
           <div class="lang-cddl sourcecode" id="section-3.1-4.1">
 <pre>
-domain-name = tstr .regexp "([^.]+[.])*[^.]+"
+domain-name = (+ label)
+label = (
+  tstr .regexp "([^.]+[.])*[^.]+"
+)
 </pre>
 </div>
 <figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
@@ -1409,7 +1413,7 @@ dns-rr = rr / #6.141(opt-rr) / bstr
           <h4 id="name-standard-rrs">
 <a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-standard-rrs" class="section-name selfRef">Standard RRs</a>
           </h4>
-<p id="section-3.2.1-1">Standard DNS resource records are encoded as CBOR arrays containing 2 to 5 entries in the following
+<p id="section-3.2.1-1">Standard DNS resource records are encoded as CBOR arrays containing 2 or more entries in the following
 order:<a href="#section-3.2.1-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-3.2.1-2">
 <li id="section-3.2.1-2.1">
@@ -1425,10 +1429,11 @@ order:<a href="#section-3.2.1-1" class="pilcrow">¶</a></p>
               <p id="section-3.2.1-2.4.1">An optional record class (as unsigned integer), and lastly<a href="#section-3.2.1-2.4.1" class="pilcrow">¶</a></p>
 </li>
             <li id="section-3.2.1-2.5">
-              <p id="section-3.2.1-2.5.1">A record data entry (as unsigned integer, negative integer, byte string, or text string).<a href="#section-3.2.1-2.5.1" class="pilcrow">¶</a></p>
+              <p id="section-3.2.1-2.5.1">A record data entry (as byte string, domain name, or array for dedicated record data representation).<a href="#section-3.2.1-2.5.1" class="pilcrow">¶</a></p>
 </li>
           </ol>
-<p id="section-3.2.1-3">If the first item of the resource record is a text string, it is its name.
+<p id="section-3.2.1-3">If the first item of the resource record is a text string, it is the first label of a domain name
+(see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>).
 If the name is elided, the name is derived from the question section of the message.
 For responses, the question section is either taken from the query (see <a href="#sec_queries" class="auto internal xref">Section 3.3</a>) or provided
 with the response see <a href="#sec_responses" class="auto internal xref">Section 3.4</a>.
@@ -1441,34 +1446,207 @@ in Section 3.3 <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span> (
 Note that this format does not include the RDLENGTH field from <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span> as this value is encoded in
 the length field of the CBOR byte string.<a href="#section-3.2.1-5" class="pilcrow">¶</a></p>
 <p id="section-3.2.1-6">If the record data represents a domain name (e.g., for CNAME or PTR records), the record data <span class="bcp14">MAY</span> be
-represented as a text string as specified in <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>.
+represented as as specified in <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>.
 This can save 1 byte of data, because the byte representation of DNS names requires both an
-additional byte to define the length of the first name component and well as a zero byte at the end
+additional byte to define the length of the first name component as well as a zero byte at the end
 of the name.
-With CBOR on the other hand only 1 byte is required to define type and length of the text string up
-until a string length of 23 characters.<a href="#section-3.2.1-6" class="pilcrow">¶</a></p>
-<p id="section-3.2.1-7">There is an argument to be made for more structured formats of other record data representations
-(e.g. MX or SOA), but these usually add more overhead. As such, those record data are to be
-represented as a byte string.<a href="#section-3.2.1-7" class="pilcrow">¶</a></p>
+With CBOR on the other hand only 1 byte is required to define type and length of each text string
+representing a label up until a string length of 23 characters.<a href="#section-3.2.1-6" class="pilcrow">¶</a></p>
+<p id="section-3.2.1-7">Depending on the record type, the record data may also be expressed as an array.
+Some initial array types are specified below.
+Future specifications can extend the definition for rdata-array in <a href="#fig_dns-standard-rr" class="auto internal xref">Figure 4</a>.
+Any additional type in rdata-array <span class="bcp14">MUST</span> be an array.<a href="#section-3.2.1-7" class="pilcrow">¶</a></p>
 <span id="name-dns-standard-resource-recor"></span><div id="fig_dns-standard-rr">
 <figure id="figure-4">
             <div class="lang-cddl sourcecode" id="section-3.2.1-8.1">
 <pre>
 rr = [
-  ? name: domain-name,
+  ? domain-name,
   ttl: uint,
   ? type-spec,
-  rdata: bstr / domain-name,
+  rdata: bstr / rdata-array,
+] / [
+  ? domain-name,
+  ttl: uint,
+  ? type-spec,
+  domain-name  ; rdata
 ]
 type-spec = (
   record-type: uint,
   ? record-class: uint,
 )
+rdata-array = soa / mx / srv / svcb  ; MUST be an array
 </pre>
 </div>
 <figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
 <a href="#name-dns-standard-resource-recor" class="selfRef">DNS Standard Resource Record Definition</a>
             </figcaption></figure>
+</div>
+<div id="soa-record-data">
+<section id="section-3.2.1.1">
+            <h5 id="name-soa-record-data">
+<a href="#section-3.2.1.1" class="section-number selfRef">3.2.1.1. </a><a href="#name-soa-record-data" class="section-name selfRef">SOA Record Data</a>
+            </h5>
+<p id="section-3.2.1.1-1">The record data of RRs with record-type = 6 (SOA) <span class="bcp14">MAY</span> be expressed as an array with at least 7 entries representing the 7 parts of the SOA resource record defined in <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span> in the following order:<a href="#section-3.2.1.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2.1.1-2.1">
+                <p id="section-3.2.1.1-2.1.1">MNAME as a domain name (see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>),<a href="#section-3.2.1.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.2.1.1-2.2">
+                <p id="section-3.2.1.1-2.2.1">SERIAL as an unsigned integer,<a href="#section-3.2.1.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.2.1.1-2.3">
+                <p id="section-3.2.1.1-2.3.1">REFRESH as an unsigned integer,<a href="#section-3.2.1.1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.2.1.1-2.4">
+                <p id="section-3.2.1.1-2.4.1">RETRY as an unsigned integer,<a href="#section-3.2.1.1-2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.2.1.1-2.5">
+                <p id="section-3.2.1.1-2.5.1">EXPIRE as an unsigned integer,<a href="#section-3.2.1.1-2.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.2.1.1-2.6">
+                <p id="section-3.2.1.1-2.6.1">MINIMUM as an unsigned integer, and<a href="#section-3.2.1.1-2.6.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.2.1.1-2.7">
+                <p id="section-3.2.1.1-2.7.1">RNAME as a domain name (see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>).<a href="#section-3.2.1.1-2.7.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+<p id="section-3.2.1.1-3">MNAME and RNAME are put to the beginning and end of the array, respectively, to keep their labels apart.<a href="#section-3.2.1.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.2.1.1-4">TBD: make some parts optional?<a href="#section-3.2.1.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.2.1.1-5">The definition for MX record data can be seen in <a href="#fig_dns-rdata-soa" class="auto internal xref">Figure 5</a>.<a href="#section-3.2.1.1-5" class="pilcrow">¶</a></p>
+<span id="name-soa-resource-record-data-de"></span><div id="fig_dns-rdata-soa">
+<figure id="figure-5">
+              <div class="lang-cddl sourcecode" id="section-3.2.1.1-6.1">
+<pre>
+soa = [
+  domain-name,  ; mname
+  serial: uint,
+  refresh: uint,
+  retry: uint,
+  expire: uint,
+  minimum: uint,
+  domain-name,  ; rname
+]
+</pre>
+</div>
+<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
+<a href="#name-soa-resource-record-data-de" class="selfRef">SOA Resource Record Data Definition</a>
+              </figcaption></figure>
+</div>
+</section>
+</div>
+<div id="mx-record-data">
+<section id="section-3.2.1.2">
+            <h5 id="name-mx-record-data">
+<a href="#section-3.2.1.2" class="section-number selfRef">3.2.1.2. </a><a href="#name-mx-record-data" class="section-name selfRef">MX Record Data</a>
+            </h5>
+<p id="section-3.2.1.2-1">The record data of RRs with record-type = 15 (MX) <span class="bcp14">MAY</span> be expressed as an array with at least 2 entries representing the 2 parts of the MX resource record defined in <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span> in the following order:<a href="#section-3.2.1.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2.1.2-2.1">
+                <p id="section-3.2.1.2-2.1.1">PREFERENCE as an unsigned integer and<a href="#section-3.2.1.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.2.1.2-2.2">
+                <p id="section-3.2.1.2-2.2.1">EXCHANGE as a domain name (see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>).<a href="#section-3.2.1.2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+<p id="section-3.2.1.2-3">TBD: make some parts optional?<a href="#section-3.2.1.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.2.1.2-4">The definition for MX record data can be seen in <a href="#fig_dns-rdata-mx" class="auto internal xref">Figure 6</a>.<a href="#section-3.2.1.2-4" class="pilcrow">¶</a></p>
+<span id="name-mx-resource-record-data-def"></span><div id="fig_dns-rdata-mx">
+<figure id="figure-6">
+              <div class="lang-cddl sourcecode" id="section-3.2.1.2-5.1">
+<pre>
+mx = [
+  preference: uint,
+  domain-name,  ; exchange
+]
+</pre>
+</div>
+<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<a href="#name-mx-resource-record-data-def" class="selfRef">MX Resource Record Data Definition</a>
+              </figcaption></figure>
+</div>
+</section>
+</div>
+<div id="srv-record-data">
+<section id="section-3.2.1.3">
+            <h5 id="name-srv-record-data">
+<a href="#section-3.2.1.3" class="section-number selfRef">3.2.1.3. </a><a href="#name-srv-record-data" class="section-name selfRef">SRV Record Data</a>
+            </h5>
+<p id="section-3.2.1.3-1">The record data of RRs with record-type = 33 (SRV) <span class="bcp14">MAY</span> be expressed as an array with at least 4 entries representing the 4 parts of the MX resource record defined in <span>[<a href="#RFC2782" class="cite xref">RFC2782</a>]</span> in the following order:<a href="#section-3.2.1.3-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2.1.3-2.1">
+                <p id="section-3.2.1.3-2.1.1">Priority as an unsigned integer,<a href="#section-3.2.1.3-2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.2.1.3-2.2">
+                <p id="section-3.2.1.3-2.2.1">Weight as an unsigned integer,<a href="#section-3.2.1.3-2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.2.1.3-2.3">
+                <p id="section-3.2.1.3-2.3.1">Port as an unsigned integer,<a href="#section-3.2.1.3-2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.2.1.3-2.4">
+                <p id="section-3.2.1.3-2.4.1">Target as a domain name (see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>).<a href="#section-3.2.1.3-2.4.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+<p id="section-3.2.1.3-3">TBD: make some parts optional?<a href="#section-3.2.1.3-3" class="pilcrow">¶</a></p>
+<p id="section-3.2.1.3-4">The definition for MX record data can be seen in <a href="#fig_dns-rdata-mx" class="auto internal xref">Figure 6</a>.<a href="#section-3.2.1.3-4" class="pilcrow">¶</a></p>
+<span id="name-srv-resource-record-data-de"></span><div id="fig_dns-rdata-srv">
+<figure id="figure-7">
+              <div class="lang-cddl sourcecode" id="section-3.2.1.3-5.1">
+<pre>
+srv = [
+  priority: uint,
+  weight: uint,
+  port: uint,
+  domain-name,  ; target
+]
+</pre>
+</div>
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<a href="#name-srv-resource-record-data-de" class="selfRef">SRV Resource Record Data Definition</a>
+              </figcaption></figure>
+</div>
+</section>
+</div>
+<div id="svcb-and-https-record-data">
+<section id="section-3.2.1.4">
+            <h5 id="name-svcb-and-https-record-data">
+<a href="#section-3.2.1.4" class="section-number selfRef">3.2.1.4. </a><a href="#name-svcb-and-https-record-data" class="section-name selfRef">SVCB and HTTPS Record Data</a>
+            </h5>
+<p id="section-3.2.1.4-1">The record data of RRs with record-type = 64 (SVCB) and record-type = 65 (HTTPS) <span class="bcp14">MAY</span> be expressed as an array with at least 3 entries representing the 3 parts of the MX resource record defined in <span>[<a href="#RFC2782" class="cite xref">RFC2782</a>]</span> in the following order:<a href="#section-3.2.1.4-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2.1.4-2.1">
+                <p id="section-3.2.1.4-2.1.1">SvcPriority as an unsigned integer,<a href="#section-3.2.1.4-2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.2.1.4-2.2">
+                <p id="section-3.2.1.4-2.2.1">TargetName as a domain name (see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>), and<a href="#section-3.2.1.4-2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.2.1.4-2.3">
+                <p id="section-3.2.1.4-2.3.1">SvcParams as an array of alternating pairs of SvcParamKey (as unsigned integer) and SvcParamValue
+(as byte string).<a href="#section-3.2.1.4-2.3.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+<p id="section-3.2.1.4-3">TBD: make some parts optional?<a href="#section-3.2.1.4-3" class="pilcrow">¶</a></p>
+<span id="name-svcb-and-https-resource-rec"></span><div id="fig_dns-rdata-svcb">
+<figure id="figure-8">
+              <div class="lang-cddl sourcecode" id="section-3.2.1.4-4.1">
+<pre>
+svcb = [
+  svc-priority: uint,
+  domain-name,  ; target name
+  svc-params: [ *svc-param-pair ],
+]
+
+svc-param-pair = (
+  svc-param-key: uint,
+  svc-param-value: bstr,
+)
+</pre>
+</div>
+<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
+<a href="#name-svcb-and-https-resource-rec" class="selfRef">SVCB and HTTPS Resource Record Data Definition</a>
+              </figcaption></figure>
+</div>
+</section>
 </div>
 </section>
 </div>
@@ -1496,7 +1674,7 @@ If the RCODE is not elided the extended flags <span class="bcp14">MUST</span> no
 <p id="section-3.2.2-6">TBD: reverse extended flags to get MSB-defined DO into LSB?<a href="#section-3.2.2-6" class="pilcrow">¶</a></p>
 <p id="section-3.2.2-7">Note that future EDNS versions may require a different format than the one described above.<a href="#section-3.2.2-7" class="pilcrow">¶</a></p>
 <span id="name-dns-opt-resource-record-def"></span><div id="fig_dns-opt-rr">
-<figure id="figure-5">
+<figure id="figure-9">
             <div class="lang-cddl sourcecode" id="section-3.2.2-8.1">
 <pre>
 opt-rr = [
@@ -1518,7 +1696,7 @@ opt-rcode-v = (
 )
 </pre>
 </div>
-<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
+<figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
 <a href="#name-dns-opt-resource-record-def" class="selfRef">DNS OPT Resource Record Definition</a>
             </figcaption></figure>
 </div>
@@ -1540,10 +1718,13 @@ opt-rcode-v = (
             <p id="section-3.3-2.2.1">The question section (as array),<a href="#section-3.3-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li id="section-3.3-2.3">
-            <p id="section-3.3-2.3.1">An optional authority section (as array), and<a href="#section-3.3-2.3.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-2.3.1">An optional answer section (as array),<a href="#section-3.3-2.3.1" class="pilcrow">¶</a></p>
 </li>
           <li id="section-3.3-2.4">
-            <p id="section-3.3-2.4.1">An optional additional section (as array)<a href="#section-3.3-2.4.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-2.4.1">An optional authority section (as array), and<a href="#section-3.3-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-3.3-2.5">
+            <p id="section-3.3-2.5.1">An optional additional section (as array)<a href="#section-3.3-2.5.1" class="pilcrow">¶</a></p>
 </li>
         </ol>
 <p id="section-3.3-3">If the first item of the query is an array, it is the question section, if it is an unsigned
@@ -1554,10 +1735,10 @@ It <span class="bcp14">MUST</span> be lesser than 2^16.<a href="#section-3.3-3" 
 <p id="section-3.3-5">This specification assumes that the DNS messages are sent over a transfer protocol that can map the
 queries to their responses, e.g., DNS over HTTPS <span>[<a href="#RFC8484" class="cite xref">RFC8484</a>]</span> or DNS over CoAP <span>[<a href="#I-D.ietf-core-dns-over-coap" class="cite xref">I-D.ietf-core-dns-over-coap</a>]</span>.
 As a consequence, the DNS transaction ID is always elided and the value 0 is assumed.<a href="#section-3.3-5" class="pilcrow">¶</a></p>
-<p id="section-3.3-6">A question within the question section is encoded as a CBOR array containing up to 3 entries:<a href="#section-3.3-6" class="pilcrow">¶</a></p>
+<p id="section-3.3-6">A question within the question section is encoded as a CBOR array containing the following entries:<a href="#section-3.3-6" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-3.3-7">
 <li id="section-3.3-7.1">
-            <p id="section-3.3-7.1.1">The queried name (as text string, see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>),<a href="#section-3.3-7.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-7.1.1">The queried name (as domain name, see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>) which <span class="bcp14">MUST</span> not be elided,<a href="#section-3.3-7.1.1" class="pilcrow">¶</a></p>
 </li>
           <li id="section-3.3-7.2">
             <p id="section-3.3-7.2.1">An optional record type (as unsigned integer), and<a href="#section-3.3-7.2.1" class="pilcrow">¶</a></p>
@@ -1575,41 +1756,47 @@ In the rare cases when there is more than one question is supposed to be in the 
 the next question just follows.
 In this case, for every question but the last, the record type <span class="bcp14">MUST</span> be included, i.e., it is not
 optional. This way it is ensured that the parser can distinguish each question by looking up the
-name first (TBD note: this is especially relevant once the name is split up in components).<a href="#section-3.3-9" class="pilcrow">¶</a></p>
-<p id="section-3.3-10">The remainder of the query is either empty or <span class="bcp14">MUST</span> consist of up to two arrays.
-The first array, if present, encodes the authority section of the query as an array of DNS
-resource records (see <a href="#sec_rr" class="auto internal xref">Section 3.2</a>)
-The second array, if present, encodes the additional section of the query as an array of DNS
-resource records (see <a href="#sec_rr" class="auto internal xref">Section 3.2</a>)<a href="#section-3.3-10" class="pilcrow">¶</a></p>
-<p id="section-3.3-11">The representation of a DNS query is defined in <a href="#fig_dns-query" class="auto internal xref">Figure 6</a>.<a href="#section-3.3-11" class="pilcrow">¶</a></p>
+name first.<a href="#section-3.3-9" class="pilcrow">¶</a></p>
+<p id="section-3.3-10">The remainder of the query is either empty or <span class="bcp14">MUST</span> consist of up to three extra arrays.<a href="#section-3.3-10" class="pilcrow">¶</a></p>
+<p id="section-3.3-11">If only one additional array is in the query, it encodes the additional section of the query as an array of DNS resource records (see <a href="#sec_rr" class="auto internal xref">Section 3.2</a>).
+If only two additional arrays are in the query, they encode, in that order, the authority and additional sections of the query each as an array of DNS resource records (see <a href="#sec_rr" class="auto internal xref">Section 3.2</a>).
+If three additional arrays are in the query, they encode, in that order, the answer section, the authority, and additional sections of the query each as an array of DNS resource records (see <a href="#sec_rr" class="auto internal xref">Section 3.2</a>).<a href="#section-3.3-11" class="pilcrow">¶</a></p>
+<p id="section-3.3-12">As such, the highest precedence in elision is given to the answer section, as it only occurs with mDNS to signify Known Answers <span>[<a href="#RFC6762" class="cite xref">RFC6762</a>]</span>.
+The lowest precedence is given to the additional section, as it may contain EDNS OPT Pseudo-RRs, which are common in queries (see <a href="#sec_edns" class="auto internal xref">Section 3.2.2</a>).<a href="#section-3.3-12" class="pilcrow">¶</a></p>
+<p id="section-3.3-13">The representation of a DNS query is defined in <a href="#fig_dns-query" class="auto internal xref">Figure 10</a>.<a href="#section-3.3-13" class="pilcrow">¶</a></p>
 <span id="name-dns-query-definition"></span><div id="fig_dns-query">
-<figure id="figure-6">
-          <div class="lang-cddl sourcecode" id="section-3.3-12.1">
+<figure id="figure-10">
+          <div class="lang-cddl sourcecode" id="section-3.3-14.1">
 <pre>
 dns-query = [
   ? flags: uint .default 0x0000,
   question-section,
-  ? extra-sections,
+  ? query-extra-sections,
 ]
 question-section = [
   * full-question,
   ? last-question,
 ]
 full-question = (
-  name: domain-name,
+  domain-name,
   type-spec,
 )
 last-question = (
-  name: domain-name,
+  domain-name,
   ? type-spec,
 )
+query-extra-sections = (
+  ? answer-section,
+  extra-sections,
+)
+answer-section = [+ dns-rr]
 extra-sections = (
   ? authority: [+ dns-rr],
   additional: [+ dns-rr],
 )
 </pre>
 </div>
-<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
 <a href="#name-dns-query-definition" class="selfRef">DNS Query Definition</a>
           </figcaption></figure>
 </div>
@@ -1656,18 +1843,18 @@ the second the additional section (TBD: back choice to favor additional section 
 The authority section is also represented as an array of one or more DNS Resource Records (see
 <a href="#sec_rr" class="auto internal xref">Section 3.2</a>).<a href="#section-3.4-8" class="pilcrow">¶</a></p>
 <span id="name-dns-response-definition"></span><div id="fig_dns-response">
-<figure id="figure-7">
+<figure id="figure-11">
           <div class="lang-cddl sourcecode" id="section-3.4-9.1">
 <pre>
 dns-response = [
   ? flags: uint .default 0x8000,
   ? question-section,
-  answer-section: [+ dns-rr],
+  answer-section,
   ? extra-sections,
 ]
 </pre>
 </div>
-<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
 <a href="#name-dns-response-definition" class="selfRef">DNS Response Definition</a>
           </figcaption></figure>
 </div>
@@ -1963,13 +2150,13 @@ IANA is requested to allocate the tags defined in <a href="#tab-tag-values" clas
         <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC2782">[RFC2782]</dt>
+        <dd>
+<span class="refAuthor">Gulbrandsen, A.</span>, <span class="refAuthor">Vixie, P.</span>, and <span class="refAuthor">L. Esibov</span>, <span class="refTitle">"A DNS RR for specifying the location of services (DNS SRV)"</span>, <span class="seriesInfo">RFC 2782</span>, <span class="seriesInfo">DOI 10.17487/RFC2782</span>, <time datetime="2000-02" class="refDate">February 2000</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2782">https://www.rfc-editor.org/rfc/rfc2782</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC3596">[RFC3596]</dt>
         <dd>
 <span class="refAuthor">Thomson, S.</span>, <span class="refAuthor">Huitema, C.</span>, <span class="refAuthor">Ksinant, V.</span>, and <span class="refAuthor">M. Souissi</span>, <span class="refTitle">"DNS Extensions to Support IP Version 6"</span>, <span class="seriesInfo">STD 88</span>, <span class="seriesInfo">RFC 3596</span>, <span class="seriesInfo">DOI 10.17487/RFC3596</span>, <time datetime="2003-10" class="refDate">October 2003</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc3596">https://www.rfc-editor.org/rfc/rfc3596</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC5890">[RFC5890]</dt>
-        <dd>
-<span class="refAuthor">Klensin, J.</span>, <span class="refTitle">"Internationalized Domain Names for Applications (IDNA): Definitions and Document Framework"</span>, <span class="seriesInfo">RFC 5890</span>, <span class="seriesInfo">DOI 10.17487/RFC5890</span>, <time datetime="2010-08" class="refDate">August 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5890">https://www.rfc-editor.org/rfc/rfc5890</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC6838">[RFC6838]</dt>
         <dd>
@@ -2015,6 +2202,10 @@ IANA is requested to allocate the tags defined in <a href="#tab-tag-values" clas
 <dt id="RFC6282">[RFC6282]</dt>
         <dd>
 <span class="refAuthor">Hui, J., Ed.</span> and <span class="refAuthor">P. Thubert</span>, <span class="refTitle">"Compression Format for IPv6 Datagrams over IEEE 802.15.4-Based Networks"</span>, <span class="seriesInfo">RFC 6282</span>, <span class="seriesInfo">DOI 10.17487/RFC6282</span>, <time datetime="2011-09" class="refDate">September 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6282">https://www.rfc-editor.org/rfc/rfc6282</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6762">[RFC6762]</dt>
+        <dd>
+<span class="refAuthor">Cheshire, S.</span> and <span class="refAuthor">M. Krochmal</span>, <span class="refTitle">"Multicast DNS"</span>, <span class="seriesInfo">RFC 6762</span>, <span class="seriesInfo">DOI 10.17487/RFC6762</span>, <time datetime="2013-02" class="refDate">February 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6762">https://www.rfc-editor.org/rfc/rfc6762</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC7228">[RFC7228]</dt>
         <dd>
