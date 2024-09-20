@@ -204,16 +204,20 @@ of the name.
 With CBOR on the other hand only 1 byte is required to define type and length of each text string
 representing a label up until a string length of 23 characters.
 
-There is an argument to be made for more structured formats of other record data representations
-(e.g. MX or SOA), but these usually add more overhead. As such, those record data are to be
-represented as a byte string.
+Depending on the record type, the record data may also be expressed as an array.
+Some initial array types are specified below.
+Future specifications can extend the definition for rdata-array in {{fig:dns-standard-rr}}.
+Any additional type in rdata-array MUST be an array.
+These extensions mainly serve to expose names to name compression (see {{sec:name-compression}}).
+There is an argument to be made for more structured formats of other record data representations (e.g. DNSKEY or RRSIG), but structuring such records as an array usually add more overhead than just transfering the byte representation.
+As such, structured record data that do not contain a name are always to be represented as a byte string.
 
 ~~~ cddl
 rr = [
   ? domain-name,
   ttl: uint,
   ? type-spec,
-  rdata: bstr,
+  rdata: bstr / rdata-array,
 ] / [
   ? domain-name,
   ttl: uint,
@@ -224,8 +228,107 @@ type-spec = (
   record-type: uint,
   ? record-class: uint,
 )
+rdata-array = soa / mx / srv / svcb  ; MUST be an array
 ~~~
 {:cddl #fig:dns-standard-rr title="DNS Standard Resource Record Definition"}
+
+#### SOA Record Data
+
+The record data of RRs with record-type = 6 (SOA) MAY be expressed as an array with at least 7 entries representing the 7 parts of the SOA resource record defined in {{-dns}} in the following order:
+
+- MNAME as a domain name (see {{sec:domain-names}}),
+- SERIAL as an unsigned integer,
+- REFRESH as an unsigned integer,
+- RETRY as an unsigned integer,
+- EXPIRE as an unsigned integer,
+- MINIMUM as an unsigned integer, and
+- RNAME as a domain name (see {{sec:domain-names}}).
+
+MNAME and RNAME are put to the beginning and end of the array, respectively, to keep their labels apart.
+
+TBD: make some parts optional?
+
+The definition for MX record data can be seen in {{fig:dns-rdata-soa}}.
+
+~~~ cddl
+soa = [
+  domain-name,  ; mname
+  serial: uint,
+  refresh: uint,
+  retry: uint,
+  expire: uint,
+  minimum: uint,
+  domain-name,  ; rname
+]
+~~~
+{:cddl #fig:dns-rdata-soa title="SOA Resource Record Data Definition"}
+
+#### MX Record Data
+
+The record data of RRs with record-type = 15 (MX) MAY be expressed as an array with at least 2 entries representing the 2 parts of the MX resource record defined in {{-dns}} in the following order:
+
+- PREFERENCE as an unsigned integer and
+- EXCHANGE as a domain name (see {{sec:domain-names}}).
+
+TBD: make some parts optional?
+
+The definition for MX record data can be seen in {{fig:dns-rdata-mx}}.
+
+~~~ cddl
+mx = [
+  preference: uint,
+  domain-name,  ; exchange
+]
+~~~
+{:cddl #fig:dns-rdata-mx title="MX Resource Record Data Definition"}
+
+#### SRV Record Data
+
+The record data of RRs with record-type = 33 (SRV) MAY be expressed as an array with at least 4 entries representing the 4 parts of the MX resource record defined in {{!RFC2782}} in the following order:
+
+- Priority as an unsigned integer,
+- Weight as an unsigned integer,
+- Port as an unsigned integer,
+- Target as a domain name (see {{sec:domain-names}}).
+
+TBD: make some parts optional?
+
+The definition for MX record data can be seen in {{fig:dns-rdata-mx}}.
+
+~~~ cddl
+srv = [
+  priority: uint,
+  weight: uint,
+  port: uint,
+  domain-name,  ; target
+]
+~~~
+{:cddl #fig:dns-rdata-srv title="SRV Resource Record Data Definition"}
+
+#### SVCB and HTTPS Record Data
+
+The record data of RRs with record-type = 64 (SVCB) and record-type = 65 (HTTPS) MAY be expressed as an array with at least 3 entries representing the 3 parts of the MX resource record defined in {{!RFC2782}} in the following order:
+
+- SvcPriority as an unsigned integer,
+- TargetName as a domain name (see {{sec:domain-names}}), and
+- SvcParams as an array of alternating pairs of SvcParamKey (as unsigned integer) and SvcParamValue
+  (as byte string).
+
+TBD: make some parts optional?
+
+~~~ cddl
+svcb = [
+  svc-priority: uint,
+  domain-name,  ; target name
+  svc-params: [ *svc-param-pair ],
+]
+
+svc-param-pair = (
+  svc-param-key: uint,
+  svc-param-value: bstr,
+)
+~~~
+{:cddl #fig:dns-rdata-svcb title="SVCB and HTTPS Resource Record Data Definition"}
 
 ### EDNS OPT Pseudo-RRs {#sec:edns}
 
