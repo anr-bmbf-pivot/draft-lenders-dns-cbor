@@ -134,19 +134,21 @@ always be possible.
 
 ## Domain Name Representation {#sec:domain-names}
 
-Domain names are represented in their commonly known string format (e.g., "example.org", see Section
-2.3.1 in {{-dns}}) and in IDNA encoding {{!RFC5890}} as a text string. For the purpose of this
-document, domain names remain case-insensitive as specified in {{-dns}}.
+Domain names are represented by a sequence of 1 or more (unicode) text string, e.g., "example.org" would be represented as "example", "org".
+The root domain "." is represented as an empty string "".
+The absence of any label means the name is elided.
+For the purpose of this document, domain names remain case-insensitive as specified in {{-dns}}.
 
 The representation of a domain name is defined in {{fig:domain-name}}.
 
-TBD: represent names as components (`(* tstr)`), provide name compression when {{-cbor-packed}} is
-updated for the reference format and table building discussed at IETF 118.
+This sequence of text strings is supposed to be embedded into a surrounding array, usually the query
+or resource record.
 
 {:cddl: sourcecode-name="dns-cbor.cddl"}
 
 ~~~ cddl
-domain-name = tstr .regexp "([^.]+[.])*[^.]+"
+domain-name = (+ label)
+label = tstr
 ~~~
 {:cddl #fig:domain-name title="Domain Name Definition"}
 
@@ -169,16 +171,17 @@ dns-rr = rr / #6.141(opt-rr) / bstr
 
 ### Standard RRs
 
-Standard DNS resource records are encoded as CBOR arrays containing 2 to 5 entries in the following
+Standard DNS resource records are encoded as CBOR arrays containing 2 or more entries in the following
 order:
 
 1. An optional name (as text string, see {{sec:domain-names}}),
 2. A TTL (as unsigned integer),
 3. An optional record type (as unsigned integer),
 4. An optional record class (as unsigned integer), and lastly
-5. A record data entry (as unsigned integer, negative integer, byte string, or text string).
+5. A record data entry (as byte string, domain name, or array for dedicated record data representation).
 
-If the first item of the resource record is a text string, it is its name.
+If the first item of the resource record is a text string, it is the first label of a domain name
+(see {{sec:domain-names}}).
 If the name is elided, the name is derived from the question section of the message.
 For responses, the question section is either taken from the query (see {{sec:queries}}) or provided
 with the response see {{sec:responses}}.
@@ -194,12 +197,12 @@ Note that this format does not include the RDLENGTH field from {{-dns}} as this 
 the length field of the CBOR byte string.
 
 If the record data represents a domain name (e.g., for CNAME or PTR records), the record data MAY be
-represented as a text string as specified in {{sec:domain-names}}.
+represented as as specified in {{sec:domain-names}}.
 This can save 1 byte of data, because the byte representation of DNS names requires both an
-additional byte to define the length of the first name component and well as a zero byte at the end
+additional byte to define the length of the first name component as well as a zero byte at the end
 of the name.
-With CBOR on the other hand only 1 byte is required to define type and length of the text string up
-until a string length of 23 characters.
+With CBOR on the other hand only 1 byte is required to define type and length of each text string
+representing a label up until a string length of 23 characters.
 
 There is an argument to be made for more structured formats of other record data representations
 (e.g. MX or SOA), but these usually add more overhead. As such, those record data are to be
@@ -207,10 +210,15 @@ represented as a byte string.
 
 ~~~ cddl
 rr = [
-  ? name: domain-name,
+  ? domain-name,
   ttl: uint,
   ? type-spec,
-  rdata: bstr / domain-name,
+  rdata: bstr,
+] / [
+  ? domain-name,
+  ttl: uint,
+  ? type-spec,
+  domain-name  ; rdata
 ]
 type-spec = (
   record-type: uint,
@@ -288,9 +296,9 @@ This specification assumes that the DNS messages are sent over a transfer protoc
 queries to their responses, e.g., DNS over HTTPS {{-doh}} or DNS over CoAP {{-doc}}.
 As a consequence, the DNS transaction ID is always elided and the value 0 is assumed.
 
-A question within the question section is encoded as a CBOR array containing up to 3 entries:
+A question within the question section is encoded as a CBOR array containing the following entries:
 
-1. The queried name (as text string, see {{sec:domain-names}}),
+1. The queried name (as domain name, see {{sec:domain-names}}) which MUST not be elided,
 2. An optional record type (as unsigned integer), and
 3. An optional record class (as unsigned integer)
 
@@ -304,7 +312,7 @@ In the rare cases when there is more than one question is supposed to be in the 
 the next question just follows.
 In this case, for every question but the last, the record type MUST be included, i.e., it is not
 optional. This way it is ensured that the parser can distinguish each question by looking up the
-name first (TBD note: this is especially relevant once the name is split up in components).
+name first.
 
 The remainder of the query is either empty or MUST consist of up to three extra arrays.
 
@@ -328,11 +336,11 @@ question-section = [
   ? last-question,
 ]
 full-question = (
-  name: domain-name,
+  domain-name,
   type-spec,
 )
 last-question = (
-  name: domain-name,
+  domain-name,
   ? type-spec,
 )
 query-extra-sections = (
