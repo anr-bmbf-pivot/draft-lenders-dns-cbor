@@ -210,6 +210,8 @@ dns-rr = rr / #6.141(opt-rr) / bstr
 
 ### Standard RRs
 
+TBD: RRsets instead of single RRs?
+
 Standard DNS resource records are encoded as CBOR arrays containing 2 or more entries in the following
 order:
 
