@@ -521,12 +521,13 @@ Internet-Draft                  dns+cbor                  September 2024
 
    If the TargetName is present can be determined by checkinf if the
    record data array has a text string after the SvcPriority, i.e., if
-   the SvcPriority is elided the array would start with a text string.
-   If there is no text string after the SvcPriority, the TargetName is
-   elided and defaults to the sequence of text strings "" (i.e. the root
-   domain "." in the common name representation defined in Section 2.3.1
-   of [RFC1035], see Section 3.1), see Section 2.5 of [RFC9460].  If
-   there is a text string after the SvcPriority, the TargetName is not
+   the SvcPriority is elided the array would start with a text string or
+   tag TBDt.  If there is no text string or tag TBDt after the
+   SvcPriority, the TargetName is elided and defaults to the sequence of
+   text strings "" (i.e. the root domain "." in the common name
+   representation defined in Section 2.3.1 of [RFC1035], see
+   Section 3.1), see Section 2.5 of [RFC9460].  If there is a text
+   string or tag TBDt after the SvcPriority, the TargetName is not
    elided and in the form specified in Section 3.1.
 
    The definition for SVCB and HTTPS record data can be seen in
@@ -552,7 +553,6 @@ Internet-Draft                  dns+cbor                  September 2024
 
    Name and record type can be elided as they are always "." and OPT
    (41), respectively [RFC6891].
-
 
 
 
