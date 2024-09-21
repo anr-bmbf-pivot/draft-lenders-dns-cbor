@@ -287,8 +287,6 @@ The record data of RRs with record-type = 6 (SOA) MAY be expressed as an array w
 
 MNAME and RNAME are put to the beginning and end of the array, respectively, to keep their labels apart.
 
-TBD: make some parts optional?
-
 The definition for MX record data can be seen in {{fig:dns-rdata-soa}}.
 
 ~~~ cddl
@@ -311,8 +309,6 @@ The record data of RRs with record-type = 15 (MX) MAY be expressed as an array w
 - PREFERENCE as an unsigned integer and
 - EXCHANGE as a domain name (see {{sec:domain-names}}).
 
-TBD: make some parts optional?
-
 The definition for MX record data can be seen in {{fig:dns-rdata-mx}}.
 
 ~~~ cddl
@@ -325,21 +321,24 @@ mx = [
 
 #### SRV Record Data
 
-The record data of RRs with record-type = 33 (SRV) MAY be expressed as an array with at least 4 entries representing the 4 parts of the MX resource record defined in {{!RFC2782}} in the following order:
+The record data of RRs with record-type = 33 (SRV) MAY be expressed as an array with at least 3 entries representing the parts of the SRV resource record defined in {{!RFC2782}} in the following order:
 
 - Priority as an unsigned integer,
-- Weight as an unsigned integer,
+- an optional Weight as an unsigned integer,
 - Port as an unsigned integer,
 - Target as a domain name (see {{sec:domain-names}}).
 
-TBD: make some parts optional?
+If the weight is present or not can be determined by the number of unsigned integers before the Target.
+2 unsigned integers before the Target mean the weight was elided and defaults to 0.
+3 unsigned integers before the Target mean the weight is in the second position of the record data array.
+The default of 0 was picked, as this is a value domain administrators should pick if there isn't any server selection to do {{!RFC2782}}.
 
-The definition for MX record data can be seen in {{fig:dns-rdata-mx}}.
+The definition for SRV record data can be seen in {{fig:dns-rdata-srv}}.
 
 ~~~ cddl
 srv = [
   priority: uint,
-  weight: uint,
+  ? weight: uint .default 0,
   port: uint,
   domain-name,  ; target
 ]
@@ -348,19 +347,27 @@ srv = [
 
 #### SVCB and HTTPS Record Data
 
-The record data of RRs with record-type = 64 (SVCB) and record-type = 65 (HTTPS) MAY be expressed as an array with at least 3 entries representing the 3 parts of the MX resource record defined in {{!RFC2782}} in the following order:
+The record data of RRs with record-type = 64 (SVCB) and record-type = 65 (HTTPS) MAY be expressed as an array with at least 3 entries representing the 3 parts of the SVCB/HTTPS resource record defined in {{!RFC9460}} in the following order:
 
-- SvcPriority as an unsigned integer,
-- TargetName as a domain name (see {{sec:domain-names}}), and
+- An optional SvcPriority as an unsigned integer,
+- An optional TargetName as a domain name (see {{sec:domain-names}}), and
 - SvcParams as an array of alternating pairs of SvcParamKey (as unsigned integer) and SvcParamValue
   (as byte string).
 
-TBD: make some parts optional?
+If the SvcPriority is present can be determined by checking if the record data array starts with an unsigned integer or not.
+If the array does not start with an unsigned integer, the SvcPriority is elided and defaults to 0, i.e., the record is in AliasMode (see {{Section 2.4.2 of RFC9460}}).
+If the array starts with a unsigned integer, it is the SvcPriority and the record is in ServiceMode (see {{Section 2.4.3 of RFC9460}}).
+
+If the TargetName is present can be determined by checkinf if the record data array has a text string after the SvcPriority, i.e., if the SvcPriority is elided the array would start with a text string or tag TBDt.
+If there is no text string or tag TBDt after the SvcPriority, the TargetName is elided and defaults to the sequence of text strings "" (i.e. the root domain "." in the common name representation defined in {{Section 2.3.1 of -dns}}, see {{sec:domain-names}}), see {{Section 2.5 of RFC9460}}.
+If there is a text string or tag TBDt after the SvcPriority, the TargetName is not elided and in the form specified in {{sec:domain-names}}.
+
+The definition for SVCB and HTTPS record data can be seen in {{fig:dns-rdata-svcb}}.
 
 ~~~ cddl
 svcb = [
-  svc-priority: uint,
-  domain-name,  ; target name
+  ? svc-priority: uint .default 0,
+  ? domain-name,  ; target name
   svc-params: [ *svc-param-pair ],
 ]
 
