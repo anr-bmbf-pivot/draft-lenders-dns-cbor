@@ -147,10 +147,49 @@ or resource record.
 {:cddl: sourcecode-name="dns-cbor.cddl"}
 
 ~~~ cddl
-domain-name = (+ label)
+domain-name = (
+  + label,
+  ? #6.TBDt(uint),
+)
 label = tstr
 ~~~
 {:cddl #fig:domain-name title="Domain Name Definition"}
+
+### Name Compression {#sec:name-compression}
+
+For name compression, a tag TBDt encapsulating an unsigned integer _i_ can be appended to the sequence of text strings.
+To extend the name, the unsigned integer _i_ points to the _i_-th text string (counted depth first) in the overall DNS message.
+That string and all strings or another tag TBDt following the _i_-th string are appended to the domain.
+If another tag TBDt is encountered it is resolved in the same way.
+Strings following a tag TBDt MUST NOT be appended to the domain name.
+To prevent circular references, the DNS name suffix extension algorithm should error whenever a string is
+encountered more than once during the extension of a name.
+Decompression stops when any other type than a text string or any other tag than tag TBDt are
+encountered.
+The pseudo-code for this DNS name suffix extension algorithm can be seen in {{fig:decode-name}}.
+
+~~~
+function decode_name(cbor_pointer: cbor_major_type) -> array
+{
+  name: array = []
+  visited: set = []
+  while (typeof(cbor_pointer) in [tstr, tag]):
+    if typeof(cbor_pointer) == tag:
+      if tag_number(cbor_pointer) != TBDt:
+        break
+      i: uint = tag_value(cbor_pointer)
+      cbor_pointer = go to i-th string (depth first) in CBOR object
+      if cbor_pointer in visited:
+        return ERROR("Circular reference")
+    # cbor_pointer should be of type tstr at this point
+    name.append(cbor_pointer)
+    visited.add(cbor_pointer)
+  return name
+}
+~~~
+{: #fig:decode-name title="Name Suffix Extension Algorithm"}
+
+The tag TBDt is included in the definition in {{fig:domain-name}}.
 
 ## DNS Resource Records {#sec:rr}
 
@@ -501,10 +540,12 @@ dns-response = [
 ~~~
 {:cddl #fig:dns-response title="DNS Response Definition"}
 
-# Name and Address Compression with CBOR-packed
+# Further Compression with CBOR-packed
 
-If both DNS server and client support CBOR-packed {{-cbor-packed}}, it MAY be used for name and
-address compression in DNS responses.
+If both DNS server and client support CBOR-packed {{-cbor-packed}}, it MAY be used for further
+compression in DNS responses.
+Especially IPv6 addresses in, e.g., AAAA resource records can benefit from straight referencing to
+compress common address prefixes.
 
 ## Media Type Negotiation
 
@@ -723,8 +764,9 @@ Reference: \[TBD-this-spec\]
 In the registry "{{cbor-tags (CBOR Tags)<IANA.cbor-tags}}" {{IANA.cbor-tags}},
 IANA is requested to allocate the tags defined in {{tab-tag-values}}.
 
-|                    Tag | Data Item   | Semantics               | Reference              |
-|                 TBD141 | array       | CBOR EDNS option record | draft-lenders-dns-cbor |
+|    Tag | Data Item        | Semantics                     | Reference              |
+|   TBDt | unsigned integer | DNS name suffix extension     | draft-lenders-dns-cbor |
+| TBD141 | array            | CBOR EDNS option record       | draft-lenders-dns-cbor |
 {: #tab-tag-values cols='r l l' title="Values for Tag Numbers"}
 
 --- back
