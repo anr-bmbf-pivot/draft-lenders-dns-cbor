@@ -301,6 +301,8 @@ Internet-Draft                  dns+cbor                  September 2024
 
 3.2.1.  Standard RRs
 
+   TBD: RRsets instead of single RRs?
+
    Standard DNS resource records are encoded as CBOR arrays containing 2
    or more entries in the following order:
 
@@ -331,8 +333,6 @@ Internet-Draft                  dns+cbor                  September 2024
 
 
 
-
-
 Lenders, et al.           Expires 25 March 2025                 [Page 6]
 
 Internet-Draft                  dns+cbor                  September 2024
@@ -356,7 +356,14 @@ Internet-Draft                  dns+cbor                  September 2024
    Depending on the record type, the record data may also be expressed
    as an array.  Some initial array types are specified below.  Future
    specifications can extend the definition for rdata-array in Figure 5.
-   Any additional type in rdata-array MUST be an array.
+   Any additional type in rdata-array MUST be an array.  These
+   extensions mainly serve to expose names to name compression (see
+   Section 3.1.1).  There is an argument to be made for more structured
+   formats of other record data representations (e.g.  DNSKEY or RRSIG),
+   but structuring such records as an array usually add more overhead
+   than just transfering the byte representation.  As such, structured
+   record data that do not contain a name are always to be represented
+   as a byte string.
 
    rr = [
      ? domain-name,
@@ -377,6 +384,16 @@ Internet-Draft                  dns+cbor                  September 2024
 
              Figure 5: DNS Standard Resource Record Definition
 
+
+
+
+
+
+Lenders, et al.           Expires 25 March 2025                 [Page 7]
+
+Internet-Draft                  dns+cbor                  September 2024
+
+
 3.2.1.1.  SOA Record Data
 
    The record data of RRs with record-type = 6 (SOA) MAY be expressed as
@@ -386,13 +403,6 @@ Internet-Draft                  dns+cbor                  September 2024
    *  MNAME as a domain name (see Section 3.1),
 
    *  SERIAL as an unsigned integer,
-
-
-
-Lenders, et al.           Expires 25 March 2025                 [Page 7]
-
-Internet-Draft                  dns+cbor                  September 2024
-
 
    *  REFRESH as an unsigned integer,
 
@@ -433,6 +443,13 @@ Internet-Draft                  dns+cbor                  September 2024
 
    *  EXCHANGE as a domain name (see Section 3.1).
 
+
+
+Lenders, et al.           Expires 25 March 2025                 [Page 8]
+
+Internet-Draft                  dns+cbor                  September 2024
+
+
    TBD: make some parts optional?
 
    The definition for MX record data can be seen in Figure 7.
@@ -441,14 +458,6 @@ Internet-Draft                  dns+cbor                  September 2024
      preference: uint,
      domain-name,  ; exchange
    ]
-
-
-
-
-Lenders, et al.           Expires 25 March 2025                 [Page 8]
-
-Internet-Draft                  dns+cbor                  September 2024
-
 
                 Figure 7: MX Resource Record Data Definition
 
@@ -490,21 +499,17 @@ Internet-Draft                  dns+cbor                  September 2024
 
    *  TargetName as a domain name (see Section 3.1), and
 
-   *  SvcParams as an array of alternating pairs of SvcParamKey (as
-      unsigned integer) and SvcParamValue (as byte string).
-
-   TBD: make some parts optional?
-
-
-
-
-
 
 
 Lenders, et al.           Expires 25 March 2025                 [Page 9]
 
 Internet-Draft                  dns+cbor                  September 2024
 
+
+   *  SvcParams as an array of alternating pairs of SvcParamKey (as
+      unsigned integer) and SvcParamValue (as byte string).
+
+   TBD: make some parts optional?
 
    svcb = [
      svc-priority: uint,
@@ -548,11 +553,6 @@ Internet-Draft                  dns+cbor                  September 2024
 
    TBD: reverse extended flags to get MSB-defined DO into LSB?
 
-   Note that future EDNS versions may require a different format than
-   the one described above.
-
-
-
 
 
 
@@ -561,6 +561,9 @@ Lenders, et al.           Expires 25 March 2025                [Page 10]
 
 Internet-Draft                  dns+cbor                  September 2024
 
+
+   Note that future EDNS versions may require a different format than
+   the one described above.
 
    opt-rr = [
      ? udp-payload-size: uint .default 512,
@@ -605,11 +608,8 @@ Internet-Draft                  dns+cbor                  September 2024
 
    If the flags are elided, the value 0 is assumed.
 
-   This specification assumes that the DNS messages are sent over a
-   transfer protocol that can map the queries to their responses, e.g.,
-   DNS over HTTPS [RFC8484] or DNS over CoAP
-   [I-D.ietf-core-dns-over-coap].  As a consequence, the DNS transaction
-   ID is always elided and the value 0 is assumed.
+
+
 
 
 
@@ -617,6 +617,12 @@ Lenders, et al.           Expires 25 March 2025                [Page 11]
 
 Internet-Draft                  dns+cbor                  September 2024
 
+
+   This specification assumes that the DNS messages are sent over a
+   transfer protocol that can map the queries to their responses, e.g.,
+   DNS over HTTPS [RFC8484] or DNS over CoAP
+   [I-D.ietf-core-dns-over-coap].  As a consequence, the DNS transaction
+   ID is always elided and the value 0 is assumed.
 
    A question within the question section is encoded as a CBOR array
    containing the following entries:
@@ -660,12 +666,6 @@ Internet-Draft                  dns+cbor                  September 2024
    as it may contain EDNS OPT Pseudo-RRs, which are common in queries
    (see Section 3.2.2).
 
-   The representation of a DNS query is defined in Figure 11.
-
-
-
-
-
 
 
 
@@ -673,6 +673,8 @@ Lenders, et al.           Expires 25 March 2025                [Page 12]
 
 Internet-Draft                  dns+cbor                  September 2024
 
+
+   The representation of a DNS query is defined in Figure 11.
 
    dns-query = [
      ? flags: uint .default 0x0000,
@@ -719,8 +721,6 @@ Internet-Draft                  dns+cbor                  September 2024
    5.  An optional additional section (as array)
 
    As for queries, the DNS transaction ID is elided and implied to be 0.
-
-
 
 
 
