@@ -1567,11 +1567,10 @@ rdata-array = soa / mx / srv / svcb  ; MUST be an array
 </li>
             </ul>
 <p id="section-3.2.1.1-3">MNAME and RNAME are put to the beginning and end of the array, respectively, to keep their labels apart.<a href="#section-3.2.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-3.2.1.1-4">TBD: make some parts optional?<a href="#section-3.2.1.1-4" class="pilcrow">¶</a></p>
-<p id="section-3.2.1.1-5">The definition for MX record data can be seen in <a href="#fig_dns-rdata-soa" class="auto internal xref">Figure 6</a>.<a href="#section-3.2.1.1-5" class="pilcrow">¶</a></p>
+<p id="section-3.2.1.1-4">The definition for MX record data can be seen in <a href="#fig_dns-rdata-soa" class="auto internal xref">Figure 6</a>.<a href="#section-3.2.1.1-4" class="pilcrow">¶</a></p>
 <span id="name-soa-resource-record-data-de"></span><div id="fig_dns-rdata-soa">
 <figure id="figure-6">
-              <div class="lang-cddl sourcecode" id="section-3.2.1.1-6.1">
+              <div class="lang-cddl sourcecode" id="section-3.2.1.1-5.1">
 <pre>
 soa = [
   domain-name,  ; mname
@@ -1604,11 +1603,10 @@ soa = [
                 <p id="section-3.2.1.2-2.2.1">EXCHANGE as a domain name (see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>).<a href="#section-3.2.1.2-2.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
-<p id="section-3.2.1.2-3">TBD: make some parts optional?<a href="#section-3.2.1.2-3" class="pilcrow">¶</a></p>
-<p id="section-3.2.1.2-4">The definition for MX record data can be seen in <a href="#fig_dns-rdata-mx" class="auto internal xref">Figure 7</a>.<a href="#section-3.2.1.2-4" class="pilcrow">¶</a></p>
+<p id="section-3.2.1.2-3">The definition for MX record data can be seen in <a href="#fig_dns-rdata-mx" class="auto internal xref">Figure 7</a>.<a href="#section-3.2.1.2-3" class="pilcrow">¶</a></p>
 <span id="name-mx-resource-record-data-def"></span><div id="fig_dns-rdata-mx">
 <figure id="figure-7">
-              <div class="lang-cddl sourcecode" id="section-3.2.1.2-5.1">
+              <div class="lang-cddl sourcecode" id="section-3.2.1.2-4.1">
 <pre>
 mx = [
   preference: uint,
@@ -1627,13 +1625,13 @@ mx = [
             <h5 id="name-srv-record-data">
 <a href="#section-3.2.1.3" class="section-number selfRef">3.2.1.3. </a><a href="#name-srv-record-data" class="section-name selfRef">SRV Record Data</a>
             </h5>
-<p id="section-3.2.1.3-1">The record data of RRs with record-type = 33 (SRV) <span class="bcp14">MAY</span> be expressed as an array with at least 4 entries representing the 4 parts of the MX resource record defined in <span>[<a href="#RFC2782" class="cite xref">RFC2782</a>]</span> in the following order:<a href="#section-3.2.1.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.1.3-1">The record data of RRs with record-type = 33 (SRV) <span class="bcp14">MAY</span> be expressed as an array with at least 3 entries representing the parts of the SRV resource record defined in <span>[<a href="#RFC2782" class="cite xref">RFC2782</a>]</span> in the following order:<a href="#section-3.2.1.3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.2.1.3-2.1">
                 <p id="section-3.2.1.3-2.1.1">Priority as an unsigned integer,<a href="#section-3.2.1.3-2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-3.2.1.3-2.2">
-                <p id="section-3.2.1.3-2.2.1">Weight as an unsigned integer,<a href="#section-3.2.1.3-2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-3.2.1.3-2.2.1">an optional Weight as an unsigned integer,<a href="#section-3.2.1.3-2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-3.2.1.3-2.3">
                 <p id="section-3.2.1.3-2.3.1">Port as an unsigned integer,<a href="#section-3.2.1.3-2.3.1" class="pilcrow">¶</a></p>
@@ -1642,15 +1640,18 @@ mx = [
                 <p id="section-3.2.1.3-2.4.1">Target as a domain name (see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>).<a href="#section-3.2.1.3-2.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
-<p id="section-3.2.1.3-3">TBD: make some parts optional?<a href="#section-3.2.1.3-3" class="pilcrow">¶</a></p>
-<p id="section-3.2.1.3-4">The definition for MX record data can be seen in <a href="#fig_dns-rdata-mx" class="auto internal xref">Figure 7</a>.<a href="#section-3.2.1.3-4" class="pilcrow">¶</a></p>
+<p id="section-3.2.1.3-3">If the weight is present or not can be determined by the number of unsigned integers before the Target.
+2 unsigned integers before the Target mean the weight was elided and defaults to 0.
+3 unsigned integers before the Target mean the weight is in the second position of the record data array.
+The default of 0 was picked, as this is a value domain administrators should pick if there isn't any server selection to do <span>[<a href="#RFC2782" class="cite xref">RFC2782</a>]</span>.<a href="#section-3.2.1.3-3" class="pilcrow">¶</a></p>
+<p id="section-3.2.1.3-4">The definition for SRV record data can be seen in <a href="#fig_dns-rdata-srv" class="auto internal xref">Figure 8</a>.<a href="#section-3.2.1.3-4" class="pilcrow">¶</a></p>
 <span id="name-srv-resource-record-data-de"></span><div id="fig_dns-rdata-srv">
 <figure id="figure-8">
               <div class="lang-cddl sourcecode" id="section-3.2.1.3-5.1">
 <pre>
 srv = [
   priority: uint,
-  weight: uint,
+  ? weight: uint .default 0,
   port: uint,
   domain-name,  ; target
 ]
@@ -1667,27 +1668,33 @@ srv = [
             <h5 id="name-svcb-and-https-record-data">
 <a href="#section-3.2.1.4" class="section-number selfRef">3.2.1.4. </a><a href="#name-svcb-and-https-record-data" class="section-name selfRef">SVCB and HTTPS Record Data</a>
             </h5>
-<p id="section-3.2.1.4-1">The record data of RRs with record-type = 64 (SVCB) and record-type = 65 (HTTPS) <span class="bcp14">MAY</span> be expressed as an array with at least 3 entries representing the 3 parts of the MX resource record defined in <span>[<a href="#RFC2782" class="cite xref">RFC2782</a>]</span> in the following order:<a href="#section-3.2.1.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.1.4-1">The record data of RRs with record-type = 64 (SVCB) and record-type = 65 (HTTPS) <span class="bcp14">MAY</span> be expressed as an array with at least 3 entries representing the 3 parts of the SVCB/HTTPS resource record defined in <span>[<a href="#RFC9460" class="cite xref">RFC9460</a>]</span> in the following order:<a href="#section-3.2.1.4-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.2.1.4-2.1">
-                <p id="section-3.2.1.4-2.1.1">SvcPriority as an unsigned integer,<a href="#section-3.2.1.4-2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-3.2.1.4-2.1.1">An optional SvcPriority as an unsigned integer,<a href="#section-3.2.1.4-2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-3.2.1.4-2.2">
-                <p id="section-3.2.1.4-2.2.1">TargetName as a domain name (see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>), and<a href="#section-3.2.1.4-2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-3.2.1.4-2.2.1">An optional TargetName as a domain name (see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>), and<a href="#section-3.2.1.4-2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-3.2.1.4-2.3">
                 <p id="section-3.2.1.4-2.3.1">SvcParams as an array of alternating pairs of SvcParamKey (as unsigned integer) and SvcParamValue
 (as byte string).<a href="#section-3.2.1.4-2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
-<p id="section-3.2.1.4-3">TBD: make some parts optional?<a href="#section-3.2.1.4-3" class="pilcrow">¶</a></p>
+<p id="section-3.2.1.4-3">If the SvcPriority is present can be determined by checking if the record data array starts with an unsigned integer or not.
+If the array does not start with an unsigned integer, the SvcPriority is elided and defaults to 0, i.e., the record is in AliasMode (see <span><a href="https://rfc-editor.org/rfc/rfc9460#section-2.4.2" class="relref">Section 2.4.2</a> of [<a href="#RFC9460" class="cite xref">RFC9460</a>]</span>).
+If the array starts with a unsigned integer, it is the SvcPriority and the record is in ServiceMode (see <span><a href="https://rfc-editor.org/rfc/rfc9460#section-2.4.3" class="relref">Section 2.4.3</a> of [<a href="#RFC9460" class="cite xref">RFC9460</a>]</span>).<a href="#section-3.2.1.4-3" class="pilcrow">¶</a></p>
+<p id="section-3.2.1.4-4">If the TargetName is present can be determined by checkinf if the record data array has a text string after the SvcPriority, i.e., if the SvcPriority is elided the array would start with a text string.
+If there is no text string after the SvcPriority, the TargetName is elided and defaults to the sequence of text strings "" (i.e. the root domain "." in the common name representation defined in <span><a href="https://rfc-editor.org/rfc/rfc1035#section-2.3.1" class="relref">Section 2.3.1</a> of [<a href="#RFC1035" class="cite xref">RFC1035</a>]</span>, see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>), see <span><a href="https://rfc-editor.org/rfc/rfc9460#section-2.5" class="relref">Section 2.5</a> of [<a href="#RFC9460" class="cite xref">RFC9460</a>]</span>.
+If there is a text string after the SvcPriority, the TargetName is not elided and in the form specified in <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>.<a href="#section-3.2.1.4-4" class="pilcrow">¶</a></p>
+<p id="section-3.2.1.4-5">The definition for SVCB and HTTPS record data can be seen in <a href="#fig_dns-rdata-svcb" class="auto internal xref">Figure 9</a>.<a href="#section-3.2.1.4-5" class="pilcrow">¶</a></p>
 <span id="name-svcb-and-https-resource-rec"></span><div id="fig_dns-rdata-svcb">
 <figure id="figure-9">
-              <div class="lang-cddl sourcecode" id="section-3.2.1.4-4.1">
+              <div class="lang-cddl sourcecode" id="section-3.2.1.4-6.1">
 <pre>
 svcb = [
-  svc-priority: uint,
-  domain-name,  ; target name
+  ? svc-priority: uint .default 0,
+  ? domain-name,  ; target name
   svc-params: [ *svc-param-pair ],
 ]
 
@@ -2242,8 +2249,12 @@ IANA is requested to allocate the tags defined in <a href="#tab-tag-values" clas
 <span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Vigano, C.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures"</span>, <span class="seriesInfo">RFC 8610</span>, <span class="seriesInfo">DOI 10.17487/RFC8610</span>, <time datetime="2019-06" class="refDate">June 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8610">https://www.rfc-editor.org/rfc/rfc8610</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8949">[RFC8949]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">P. Hoffman</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR)"</span>, <span class="seriesInfo">STD 94</span>, <span class="seriesInfo">RFC 8949</span>, <span class="seriesInfo">DOI 10.17487/RFC8949</span>, <time datetime="2020-12" class="refDate">December 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8949">https://www.rfc-editor.org/rfc/rfc8949</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9460">[RFC9460]</dt>
+      <dd>
+<span class="refAuthor">Schwartz, B.</span>, <span class="refAuthor">Bishop, M.</span>, and <span class="refAuthor">E. Nygren</span>, <span class="refTitle">"Service Binding and Parameter Specification via the DNS (SVCB and HTTPS Resource Records)"</span>, <span class="seriesInfo">RFC 9460</span>, <span class="seriesInfo">DOI 10.17487/RFC9460</span>, <time datetime="2023-11" class="refDate">November 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9460">https://www.rfc-editor.org/rfc/rfc9460</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
