@@ -5,12 +5,12 @@
 CBOR                                                       M. S. Lenders
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              C. Bormann
-Expires: 24 March 2025                            Universität Bremen TZI
+Expires: 25 March 2025                            Universität Bremen TZI
                                                            T. C. Schmidt
                                                              HAW Hamburg
                                                              M. Wählisch
                                         TU Dresden & Barkhausen Institut
-                                                       20 September 2024
+                                                       21 September 2024
 
 
      A Concise Binary Object Representation (CBOR) of DNS Messages
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Lenders, et al.           Expires 24 March 2025                 [Page 1]
+Lenders, et al.           Expires 25 March 2025                 [Page 1]
 
 Internet-Draft                  dns+cbor                  September 2024
 
@@ -63,7 +63,7 @@ Internet-Draft                  dns+cbor                  September 2024
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 March 2025.
+   This Internet-Draft will expire on 25 March 2025.
 
 Copyright Notice
 
@@ -85,52 +85,53 @@ Table of Contents
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
    3.  CBOR Representations (application/dns+cbor) . . . . . . . . .   4
      3.1.  Domain Name Representation  . . . . . . . . . . . . . . .   4
-     3.2.  DNS Resource Records  . . . . . . . . . . . . . . . . . .   5
-       3.2.1.  Standard RRs  . . . . . . . . . . . . . . . . . . . .   5
-       3.2.2.  EDNS OPT Pseudo-RRs . . . . . . . . . . . . . . . . .   9
-     3.3.  DNS Queries . . . . . . . . . . . . . . . . . . . . . . .  10
-     3.4.  DNS Responses . . . . . . . . . . . . . . . . . . . . . .  12
-   4.  Name and Address Compression with CBOR-packed . . . . . . . .  13
-     4.1.  Media Type Negotiation  . . . . . . . . . . . . . . . . .  14
-     4.2.  DNS Representation in CBOR-packed . . . . . . . . . . . .  14
-     4.3.  Compression . . . . . . . . . . . . . . . . . . . . . . .  14
-   5.  Implementation Status . . . . . . . . . . . . . . . . . . . .  14
-     5.1.  Python decoder/encoder  . . . . . . . . . . . . . . . . .  15
-     5.2.  Embedded decoder/encoder  . . . . . . . . . . . . . . . .  15
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  15
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
-     7.1.  Media Type Registration . . . . . . . . . . . . . . . . .  15
-       7.1.1.  "application/dns+cbor"  . . . . . . . . . . . . . . .  16
-     7.2.  CoAP Content-Format Registration  . . . . . . . . . . . .  17
-       7.2.1.  "application/dns+cbor"  . . . . . . . . . . . . . . .  17
-       7.2.2.  "application/dns+cbor;packed=1" . . . . . . . . . . .  17
-     7.3.  CBOR Tags Registry  . . . . . . . . . . . . . . . . . . .  17
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  17
+       3.1.1.  Name Compression  . . . . . . . . . . . . . . . . . .   5
+     3.2.  DNS Resource Records  . . . . . . . . . . . . . . . . . .   6
+       3.2.1.  Standard RRs  . . . . . . . . . . . . . . . . . . . .   6
+       3.2.2.  EDNS OPT Pseudo-RRs . . . . . . . . . . . . . . . . .  10
+     3.3.  DNS Queries . . . . . . . . . . . . . . . . . . . . . . .  11
+     3.4.  DNS Responses . . . . . . . . . . . . . . . . . . . . . .  13
+   4.  Further Compression with CBOR-packed  . . . . . . . . . . . .  14
+     4.1.  Media Type Negotiation  . . . . . . . . . . . . . . . . .  15
+     4.2.  DNS Representation in CBOR-packed . . . . . . . . . . . .  15
+     4.3.  Compression . . . . . . . . . . . . . . . . . . . . . . .  15
+   5.  Implementation Status . . . . . . . . . . . . . . . . . . . .  15
+     5.1.  Python decoder/encoder  . . . . . . . . . . . . . . . . .  16
+     5.2.  Embedded decoder/encoder  . . . . . . . . . . . . . . . .  16
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  16
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
+     7.1.  Media Type Registration . . . . . . . . . . . . . . . . .  16
+       7.1.1.  "application/dns+cbor"  . . . . . . . . . . . . . . .  17
+     7.2.  CoAP Content-Format Registration  . . . . . . . . . . . .  18
+       7.2.1.  "application/dns+cbor"  . . . . . . . . . . . . . . .  18
+       7.2.2.  "application/dns+cbor;packed=1" . . . . . . . . . . .  18
+     7.3.  CBOR Tags Registry  . . . . . . . . . . . . . . . . . . .  18
 
 
 
-Lenders, et al.           Expires 24 March 2025                 [Page 2]
+Lenders, et al.           Expires 25 March 2025                 [Page 2]
 
 Internet-Draft                  dns+cbor                  September 2024
 
 
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  17
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .  19
-   Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .  20
-     A.1.  DNS Queries . . . . . . . . . . . . . . . . . . . . . . .  20
-     A.2.  DNS Responses . . . . . . . . . . . . . . . . . . . . . .  20
-   Appendix B.  Comparison to Classic DNS Wire Format  . . . . . . .  22
-   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  24
-     C.1.  Since draft-lenders-dns-cbor-07 . . . . . . . . . . . . .  24
-     C.2.  Since draft-lenders-dns-cbor-06 . . . . . . . . . . . . .  25
-     C.3.  Since draft-lenders-dns-cbor-05 . . . . . . . . . . . . .  25
-     C.4.  Since draft-lenders-dns-cbor-04 . . . . . . . . . . . . .  25
-     C.5.  Since draft-lenders-dns-cbor-03 . . . . . . . . . . . . .  25
-     C.6.  Since draft-lenders-dns-cbor-02 . . . . . . . . . . . . .  25
-     C.7.  Since draft-lenders-dns-cbor-01 . . . . . . . . . . . . .  25
-     C.8.  Since draft-lenders-dns-cbor-00 . . . . . . . . . . . . .  26
-   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  26
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  26
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  18
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  18
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  20
+   Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .  21
+     A.1.  DNS Queries . . . . . . . . . . . . . . . . . . . . . . .  21
+     A.2.  DNS Responses . . . . . . . . . . . . . . . . . . . . . .  21
+   Appendix B.  Comparison to Classic DNS Wire Format  . . . . . . .  23
+   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  25
+     C.1.  Since draft-lenders-dns-cbor-07 . . . . . . . . . . . . .  25
+     C.2.  Since draft-lenders-dns-cbor-06 . . . . . . . . . . . . .  26
+     C.3.  Since draft-lenders-dns-cbor-05 . . . . . . . . . . . . .  26
+     C.4.  Since draft-lenders-dns-cbor-04 . . . . . . . . . . . . .  26
+     C.5.  Since draft-lenders-dns-cbor-03 . . . . . . . . . . . . .  26
+     C.6.  Since draft-lenders-dns-cbor-02 . . . . . . . . . . . . .  26
+     C.7.  Since draft-lenders-dns-cbor-01 . . . . . . . . . . . . .  26
+     C.8.  Since draft-lenders-dns-cbor-00 . . . . . . . . . . . . .  27
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  27
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  27
 
 1.  Introduction
 
@@ -164,8 +165,7 @@ Internet-Draft                  dns+cbor                  September 2024
 
 
 
-
-Lenders, et al.           Expires 24 March 2025                 [Page 3]
+Lenders, et al.           Expires 25 March 2025                 [Page 3]
 
 Internet-Draft                  dns+cbor                  September 2024
 
@@ -221,17 +221,66 @@ Internet-Draft                  dns+cbor                  September 2024
 
 
 
-Lenders, et al.           Expires 24 March 2025                 [Page 4]
+Lenders, et al.           Expires 25 March 2025                 [Page 4]
 
 Internet-Draft                  dns+cbor                  September 2024
 
 
-   domain-name = (+ label)
-   label = (
-     tstr .regexp "([^.]+[.])*[^.]+"
+   domain-name = (
+     + label,
+     ? #6.TBDt(uint),
    )
+   label = tstr
 
                       Figure 2: Domain Name Definition
+
+3.1.1.  Name Compression
+
+   For name compression, a tag TBDt encapsulating an unsigned integer
+   _i_ can be appended to the sequence of text strings.  To extend the
+   name, the unsigned integer _i_ points to the _i_-th text string
+   (counted depth first) in the overall DNS message.  That string and
+   all strings or another tag TBDt following the _i_-th string are
+   appended to the domain.  If another tag TBDt is encountered it is
+   resolved in the same way.  Strings following a tag TBDt MUST NOT be
+   appended to the domain name.  To prevent circular references, the DNS
+   name suffix extension algorithm should error whenever a string is
+   encountered more than once during the extension of a name.
+   Decompression stops when any other type than a text string or any
+   other tag than tag TBDt are encountered.  The pseudo-code for this
+   DNS name suffix extension algorithm can be seen in Figure 3.
+
+   function decode_name(cbor_pointer: cbor_major_type) -> array
+   {
+     name: array = []
+     visited: set = []
+     while (typeof(cbor_pointer) in [tstr, tag]):
+       if typeof(cbor_pointer) == tag:
+         if tag_number(cbor_pointer) != TBDt:
+           break
+         i: uint = tag_value(cbor_pointer)
+         cbor_pointer = go to i-th string (depth first) in CBOR object
+         if cbor_pointer in visited:
+           return ERROR("Circular reference")
+       # cbor_pointer should be of type tstr at this point
+       name.append(cbor_pointer)
+       visited.add(cbor_pointer)
+     return name
+   }
+
+                 Figure 3: Name Suffix Extension Algorithm
+
+   The tag TBDt is included in the definition in Figure 2.
+
+
+
+
+
+
+Lenders, et al.           Expires 25 March 2025                 [Page 5]
+
+Internet-Draft                  dns+cbor                  September 2024
+
 
 3.2.  DNS Resource Records
 
@@ -244,11 +293,11 @@ Internet-Draft                  dns+cbor                  September 2024
    Further special records, e.g., TSIG can be defined in follow-up
    specifications and are out of scope of this document.
 
-   The representation of a DNS resource records is defined in Figure 3.
+   The representation of a DNS resource records is defined in Figure 4.
 
    dns-rr = rr / #6.141(opt-rr) / bstr
 
-                  Figure 3: DNS Resource Record Definition
+                  Figure 4: DNS Resource Record Definition
 
 3.2.1.  Standard RRs
 
@@ -273,19 +322,21 @@ Internet-Draft                  dns+cbor                  September 2024
    (see Section 3.3) or provided with the response see Section 3.4.  The
    query may be derived from the context of the transfer protocol.
 
-
-
-
-
-Lenders, et al.           Expires 24 March 2025                 [Page 5]
-
-Internet-Draft                  dns+cbor                  September 2024
-
-
    If the record type is elided, the record type from the question is
    assumed.  If record class is elided, the record class from the
    question is assumed.  When a record class is required, the record
    type MUST also be provided.
+
+
+
+
+
+
+
+Lenders, et al.           Expires 25 March 2025                 [Page 6]
+
+Internet-Draft                  dns+cbor                  September 2024
+
 
    The byte format of the record data as a byte string follows the
    classic DNS wire format as specified in Section 3.3 [RFC1035] (or
@@ -304,7 +355,7 @@ Internet-Draft                  dns+cbor                  September 2024
 
    Depending on the record type, the record data may also be expressed
    as an array.  Some initial array types are specified below.  Future
-   specifications can extend the definition for rdata-array in Figure 4.
+   specifications can extend the definition for rdata-array in Figure 5.
    Any additional type in rdata-array MUST be an array.
 
    rr = [
@@ -324,19 +375,7 @@ Internet-Draft                  dns+cbor                  September 2024
    )
    rdata-array = soa / mx / srv / svcb  ; MUST be an array
 
-             Figure 4: DNS Standard Resource Record Definition
-
-
-
-
-
-
-
-
-Lenders, et al.           Expires 24 March 2025                 [Page 6]
-
-Internet-Draft                  dns+cbor                  September 2024
-
+             Figure 5: DNS Standard Resource Record Definition
 
 3.2.1.1.  SOA Record Data
 
@@ -347,6 +386,13 @@ Internet-Draft                  dns+cbor                  September 2024
    *  MNAME as a domain name (see Section 3.1),
 
    *  SERIAL as an unsigned integer,
+
+
+
+Lenders, et al.           Expires 25 March 2025                 [Page 7]
+
+Internet-Draft                  dns+cbor                  September 2024
+
 
    *  REFRESH as an unsigned integer,
 
@@ -363,7 +409,7 @@ Internet-Draft                  dns+cbor                  September 2024
 
    TBD: make some parts optional?
 
-   The definition for MX record data can be seen in Figure 5.
+   The definition for MX record data can be seen in Figure 6.
 
    soa = [
      domain-name,  ; mname
@@ -375,7 +421,7 @@ Internet-Draft                  dns+cbor                  September 2024
      domain-name,  ; rname
    ]
 
-               Figure 5: SOA Resource Record Data Definition
+               Figure 6: SOA Resource Record Data Definition
 
 3.2.1.2.  MX Record Data
 
@@ -387,23 +433,24 @@ Internet-Draft                  dns+cbor                  September 2024
 
    *  EXCHANGE as a domain name (see Section 3.1).
 
-
-
-Lenders, et al.           Expires 24 March 2025                 [Page 7]
-
-Internet-Draft                  dns+cbor                  September 2024
-
-
    TBD: make some parts optional?
 
-   The definition for MX record data can be seen in Figure 6.
+   The definition for MX record data can be seen in Figure 7.
 
    mx = [
      preference: uint,
      domain-name,  ; exchange
    ]
 
-                Figure 6: MX Resource Record Data Definition
+
+
+
+Lenders, et al.           Expires 25 March 2025                 [Page 8]
+
+Internet-Draft                  dns+cbor                  September 2024
+
+
+                Figure 7: MX Resource Record Data Definition
 
 3.2.1.3.  SRV Record Data
 
@@ -421,7 +468,7 @@ Internet-Draft                  dns+cbor                  September 2024
 
    TBD: make some parts optional?
 
-   The definition for MX record data can be seen in Figure 6.
+   The definition for MX record data can be seen in Figure 7.
 
    srv = [
      priority: uint,
@@ -430,7 +477,7 @@ Internet-Draft                  dns+cbor                  September 2024
      domain-name,  ; target
    ]
 
-               Figure 7: SRV Resource Record Data Definition
+               Figure 8: SRV Resource Record Data Definition
 
 3.2.1.4.  SVCB and HTTPS Record Data
 
@@ -443,17 +490,21 @@ Internet-Draft                  dns+cbor                  September 2024
 
    *  TargetName as a domain name (see Section 3.1), and
 
-
-
-Lenders, et al.           Expires 24 March 2025                 [Page 8]
-
-Internet-Draft                  dns+cbor                  September 2024
-
-
    *  SvcParams as an array of alternating pairs of SvcParamKey (as
       unsigned integer) and SvcParamValue (as byte string).
 
    TBD: make some parts optional?
+
+
+
+
+
+
+
+Lenders, et al.           Expires 25 March 2025                 [Page 9]
+
+Internet-Draft                  dns+cbor                  September 2024
+
 
    svcb = [
      svc-priority: uint,
@@ -466,7 +517,7 @@ Internet-Draft                  dns+cbor                  September 2024
      svc-param-value: bstr,
    )
 
-          Figure 8: SVCB and HTTPS Resource Record Data Definition
+          Figure 9: SVCB and HTTPS Resource Record Data Definition
 
 3.2.2.  EDNS OPT Pseudo-RRs
 
@@ -497,17 +548,19 @@ Internet-Draft                  dns+cbor                  September 2024
 
    TBD: reverse extended flags to get MSB-defined DO into LSB?
 
+   Note that future EDNS versions may require a different format than
+   the one described above.
 
 
 
 
-Lenders, et al.           Expires 24 March 2025                 [Page 9]
+
+
+
+Lenders, et al.           Expires 25 March 2025                [Page 10]
 
 Internet-Draft                  dns+cbor                  September 2024
 
-
-   Note that future EDNS versions may require a different format than
-   the one described above.
 
    opt-rr = [
      ? udp-payload-size: uint .default 512,
@@ -527,7 +580,7 @@ Internet-Draft                  dns+cbor                  September 2024
      ? version: uint .default 0,
    )
 
-                Figure 9: DNS OPT Resource Record Definition
+               Figure 10: DNS OPT Resource Record Definition
 
 3.3.  DNS Queries
 
@@ -552,21 +605,18 @@ Internet-Draft                  dns+cbor                  September 2024
 
    If the flags are elided, the value 0 is assumed.
 
-
-
-
-
-
-Lenders, et al.           Expires 24 March 2025                [Page 10]
-
-Internet-Draft                  dns+cbor                  September 2024
-
-
    This specification assumes that the DNS messages are sent over a
    transfer protocol that can map the queries to their responses, e.g.,
    DNS over HTTPS [RFC8484] or DNS over CoAP
    [I-D.ietf-core-dns-over-coap].  As a consequence, the DNS transaction
    ID is always elided and the value 0 is assumed.
+
+
+
+Lenders, et al.           Expires 25 March 2025                [Page 11]
+
+Internet-Draft                  dns+cbor                  September 2024
+
 
    A question within the question section is encoded as a CBOR array
    containing the following entries:
@@ -610,15 +660,19 @@ Internet-Draft                  dns+cbor                  September 2024
    as it may contain EDNS OPT Pseudo-RRs, which are common in queries
    (see Section 3.2.2).
 
+   The representation of a DNS query is defined in Figure 11.
 
 
 
-Lenders, et al.           Expires 24 March 2025                [Page 11]
+
+
+
+
+
+Lenders, et al.           Expires 25 March 2025                [Page 12]
 
 Internet-Draft                  dns+cbor                  September 2024
 
-
-   The representation of a DNS query is defined in Figure 10.
 
    dns-query = [
      ? flags: uint .default 0x0000,
@@ -647,7 +701,7 @@ Internet-Draft                  dns+cbor                  September 2024
      additional: [+ dns-rr],
    )
 
-                      Figure 10: DNS Query Definition
+                      Figure 11: DNS Query Definition
 
 3.4.  DNS Responses
 
@@ -669,7 +723,9 @@ Internet-Draft                  dns+cbor                  September 2024
 
 
 
-Lenders, et al.           Expires 24 March 2025                [Page 12]
+
+
+Lenders, et al.           Expires 25 March 2025                [Page 13]
 
 Internet-Draft                  dns+cbor                  September 2024
 
@@ -708,13 +764,15 @@ Internet-Draft                  dns+cbor                  September 2024
      ? extra-sections,
    ]
 
-                     Figure 11: DNS Response Definition
+                     Figure 12: DNS Response Definition
 
-4.  Name and Address Compression with CBOR-packed
+4.  Further Compression with CBOR-packed
 
    If both DNS server and client support CBOR-packed
-   [I-D.ietf-cbor-packed], it MAY be used for name and address
-   compression in DNS responses.
+   [I-D.ietf-cbor-packed], it MAY be used for further compression in DNS
+   responses.  Especially IPv6 addresses in, e.g., AAAA resource records
+   can benefit from straight referencing to compress common address
+   prefixes.
 
 
 
@@ -723,9 +781,7 @@ Internet-Draft                  dns+cbor                  September 2024
 
 
 
-
-
-Lenders, et al.           Expires 24 March 2025                [Page 13]
+Lenders, et al.           Expires 25 March 2025                [Page 14]
 
 Internet-Draft                  dns+cbor                  September 2024
 
@@ -781,7 +837,7 @@ Internet-Draft                  dns+cbor                  September 2024
 
 
 
-Lenders, et al.           Expires 24 March 2025                [Page 14]
+Lenders, et al.           Expires 25 March 2025                [Page 15]
 
 Internet-Draft                  dns+cbor                  September 2024
 
@@ -837,7 +893,7 @@ Internet-Draft                  dns+cbor                  September 2024
 
 
 
-Lenders, et al.           Expires 24 March 2025                [Page 15]
+Lenders, et al.           Expires 25 March 2025                [Page 16]
 
 Internet-Draft                  dns+cbor                  September 2024
 
@@ -893,7 +949,7 @@ Internet-Draft                  dns+cbor                  September 2024
 
 
 
-Lenders, et al.           Expires 24 March 2025                [Page 16]
+Lenders, et al.           Expires 25 March 2025                [Page 17]
 
 Internet-Draft                  dns+cbor                  September 2024
 
@@ -930,12 +986,15 @@ Internet-Draft                  dns+cbor                  September 2024
    In the registry "CBOR Tags" [IANA.cbor-tags], IANA is requested to
    allocate the tags defined in Table 1.
 
-      +========+===========+===============+========================+
-      |    Tag | Data Item | Semantics     | Reference              |
-      +========+===========+===============+========================+
-      | TBD141 | array     | CBOR EDNS     | draft-lenders-dns-cbor |
-      |        |           | option record |                        |
-      +--------+-----------+---------------+------------------------+
+     +========+===========+=================+========================+
+     |    Tag | Data Item | Semantics       | Reference              |
+     +========+===========+=================+========================+
+     |   TBDt | unsigned  | DNS name suffix | draft-lenders-dns-cbor |
+     |        | integer   | extension       |                        |
+     +--------+-----------+-----------------+------------------------+
+     | TBD141 | array     | CBOR EDNS       | draft-lenders-dns-cbor |
+     |        |           | option record   |                        |
+     +--------+-----------+-----------------+------------------------+
 
                       Table 1: Values for Tag Numbers
 
@@ -946,10 +1005,7 @@ Internet-Draft                  dns+cbor                  September 2024
 
 
 
-
-
-
-Lenders, et al.           Expires 24 March 2025                [Page 17]
+Lenders, et al.           Expires 25 March 2025                [Page 18]
 
 Internet-Draft                  dns+cbor                  September 2024
 
@@ -1005,7 +1061,7 @@ Internet-Draft                  dns+cbor                  September 2024
 
 
 
-Lenders, et al.           Expires 24 March 2025                [Page 18]
+Lenders, et al.           Expires 25 March 2025                [Page 19]
 
 Internet-Draft                  dns+cbor                  September 2024
 
@@ -1061,7 +1117,7 @@ Internet-Draft                  dns+cbor                  September 2024
 
 
 
-Lenders, et al.           Expires 24 March 2025                [Page 19]
+Lenders, et al.           Expires 25 March 2025                [Page 20]
 
 Internet-Draft                  dns+cbor                  September 2024
 
@@ -1117,7 +1173,7 @@ A.2.  DNS Responses
 
 
 
-Lenders, et al.           Expires 24 March 2025                [Page 20]
+Lenders, et al.           Expires 25 March 2025                [Page 21]
 
 Internet-Draft                  dns+cbor                  September 2024
 
@@ -1173,7 +1229,7 @@ Internet-Draft                  dns+cbor                  September 2024
 
 
 
-Lenders, et al.           Expires 24 March 2025                [Page 21]
+Lenders, et al.           Expires 25 March 2025                [Page 22]
 
 Internet-Draft                  dns+cbor                  September 2024
 
@@ -1229,7 +1285,7 @@ Appendix B.  Comparison to Classic DNS Wire Format
 
 
 
-Lenders, et al.           Expires 24 March 2025                [Page 22]
+Lenders, et al.           Expires 25 March 2025                [Page 23]
 
 Internet-Draft                  dns+cbor                  September 2024
 
@@ -1285,7 +1341,7 @@ Internet-Draft                  dns+cbor                  September 2024
 
 
 
-Lenders, et al.           Expires 24 March 2025                [Page 23]
+Lenders, et al.           Expires 25 March 2025                [Page 24]
 
 Internet-Draft                  dns+cbor                  September 2024
 
@@ -1341,7 +1397,7 @@ C.1.  Since draft-lenders-dns-cbor-07
 
 
 
-Lenders, et al.           Expires 24 March 2025                [Page 24]
+Lenders, et al.           Expires 25 March 2025                [Page 25]
 
 Internet-Draft                  dns+cbor                  September 2024
 
@@ -1397,7 +1453,7 @@ C.7.  Since draft-lenders-dns-cbor-01
 
 
 
-Lenders, et al.           Expires 24 March 2025                [Page 25]
+Lenders, et al.           Expires 25 March 2025                [Page 26]
 
 Internet-Draft                  dns+cbor                  September 2024
 
@@ -1453,4 +1509,4 @@ Authors' Addresses
 
 
 
-Lenders, et al.           Expires 24 March 2025                [Page 26]
+Lenders, et al.           Expires 25 March 2025                [Page 27]
