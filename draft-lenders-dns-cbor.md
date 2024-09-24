@@ -428,13 +428,17 @@ opt-rcode-v = (
 
 ## DNS Queries {#sec:queries}
 
-DNS queries are encoded as CBOR arrays containing up to 5 entries in the following order:
+DNS queries are encoded as CBOR arrays containing up to 6 entries in the following order:
 
-1. An optional flag field (as unsigned integer),
-2. The question section (as array),
-3. An optional answer section (as array),
-4. An optional authority section (as array), and
-5. An optional additional section (as array)
+1. An optional boolean field,
+2. An optional flag field (as unsigned integer),
+3. The question section (as array),
+4. An optional answer section (as array),
+5. An optional authority section (as array), and
+6. An optional additional section (as array)
+
+If the first item is a boolean and when true, it tells the responding resolver that it MUST include
+the question section in its response. If that boolean is not present, it is assumed to be false.
 
 If the first item of the query is an array, it is the question section, if it is an unsigned
 integer, it is as flag field and maps to the header flags in {{-dns}} and the "DNS Header Flags"
@@ -478,6 +482,7 @@ The representation of a DNS query is defined in {{fig:dns-query}}.
 
 ~~~ cddl
 dns-query = [
+  ? incl-question: bool .default false,
   ? flags: uint .default 0x0000,
   question-section,
   ? query-extra-sections,
