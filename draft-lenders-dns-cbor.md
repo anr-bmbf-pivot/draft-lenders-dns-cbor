@@ -389,9 +389,7 @@ The UDP payload size may be the first element as an unsigned integer in the arra
 It MUST be
 elided if its value is the default value of 512, the maximum allowable size for unextended DNS over UDP (see {{Sections 2.3.4 and 4.2.1 of -dns}}).
 
-The next element is an array of the options, which are represented two elements each, an unsigned
-integer, the option code, followed by a byte string, the option data.
-Multiple options alternate between unsigned integer and byte string within the array.
+The next element is a map of the options, with the option code (unsigned integer) as key and the option data (byte string) as value.
 
 After that, up to three unsigned integers are following.
 The first being the extended flags as unsigned integer (implied to be 0 if elided),
@@ -401,20 +399,16 @@ They are dependent on each of their previous elements.
 If the EDNS version is not elided, both extended flags and extended RCODE MUST not be elided.
 If the RCODE is not elided the extended flags MUST not be elided.
 
-TBD: reverse extended flags to get MSB-defined DO into LSB?
-
 Note that future EDNS versions may require a different format than the one described above.
 
 ~~~ cddl
 opt-rr = [
   ? udp-payload-size: uint .default 512,
-  options: [* opt],
+  options: {* ocode => odata },
   ? opt-rcode-v-flags,
 ]
-opt = (
-  ocode: uint,
-  odata: bstr,
-)
+ocode = uint
+odata = bstr
 opt-rcode-v-flags = (
   flags: uint .default 0,
   ? opt-rcode-v,
