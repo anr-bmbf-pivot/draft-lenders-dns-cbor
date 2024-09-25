@@ -260,22 +260,17 @@ As such, structured record data that do not contain names are always to be repre
 rr = [
   ? domain-name,
   ttl: uint,
-  ? type-spec,
-  rdata: bstr / rdata-array,
-] / [
-  ? domain-name,
-  ttl: uint,
-  ? type-spec,
-  domain-name  ; rdata
+  type-spec-rdata,
 ]
+type-spec-rdata = (
+  ? type-spec,
+  rdata: bstr // ( domain-name ),
+)
+type-spec-rdata //= ( $$structured-ts-rd )
 type-spec = (
   record-type: uint,
   ? record-class: uint,
 )
-rdata-array = $rdata-array .within any-array
-any-array = [ +any ]
-
-$rdata-array = soa / mx / srv / svcb
 ~~~
 {:cddl #fig:dns-standard-rr title="DNS Standard Resource Record Definition"}
 
@@ -296,6 +291,12 @@ MNAME and RNAME are put to the beginning and end of the array, respectively, to 
 The definition for MX record data can be seen in {{fig:dns-rdata-soa}}.
 
 ~~~ cddl
+$$structured-ts-rd //= (
+  6,    ; record-type = SOA
+  ? 1,  ; record-class = IN
+  soa,
+)
+
 soa = [
   domain-name,  ; mname
   serial: uint,
@@ -318,6 +319,12 @@ The record data of RRs with `record-type` = 15 (MX) MAY be expressed as an array
 The definition for MX record data can be seen in {{fig:dns-rdata-mx}}.
 
 ~~~ cddl
+$$structured-ts-rd //= (
+  15,   ; record-type = MX
+  ? 1,  ; record-class = IN
+  mx,
+)
+
 mx = [
   preference: uint,
   domain-name,  ; exchange
@@ -342,6 +349,12 @@ The default of 0 was picked, as this is the value domain administrators should p
 The definition for SRV record data can be seen in {{fig:dns-rdata-srv}}.
 
 ~~~ cddl
+$$structured-ts-rd //= (
+  33,   ; record-type = SRV
+  ? 1,  ; record-class = IN
+  srv,
+)
+
 srv = [
   priority: uint,
   ? weight: uint .default 0,
@@ -371,6 +384,12 @@ If there is a text string or tag TBDt after the SvcPriority, the TargetName is n
 The definition for SVCB and HTTPS record data can be seen in {{fig:dns-rdata-svcb}}.
 
 ~~~ cddl
+$$structured-ts-rd //= (
+  64 / 65,  ; record-type = SVCB or HTTPS
+  ? 1,      ; record-class = IN
+  svcb,
+)
+
 svcb = [
   ? svc-priority: uint .default 0,
   ? domain-name,  ; target name
