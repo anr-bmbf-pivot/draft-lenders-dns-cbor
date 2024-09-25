@@ -784,6 +784,8 @@ IANA is requested to allocate the tags defined in {{tab-tag-values}}.
 
 ## DNS Queries {#sec:query-examples}
 
+[^10]{:mlenders}
+
 A DNS query of the record `AAAA` in class `IN` for name "example.org" is
 represented in CBOR extended diagnostic notation (EDN) (see Section 8 in
 {{-cbor}} and Appendix G in {{-cddl}}) as follows:
@@ -800,6 +802,8 @@ A query of `ANY` record for that name is represented as
     [["example.org", 255, 255]]
 
 ## DNS Responses {#sec:response-examples}
+
+[^10]
 
 The responses to the examples provided in {{sec:query-examples}} are shown
 below. We use the CBOR extended diagnostic notation (EDN) (see Section 8 in
@@ -830,7 +834,7 @@ To represent a minimal response of an `A` record with TTL 3600 seconds for the I
 Note that here also the 1 of record type `A` can be elided, as this record
 type is specified in the question section.
 
-Lastly, a response to `["example.org", 255, 255]` could be[^10]{:mlenders}
+Lastly, a response to `["example.org", 255, 255]` could be
 
     [
       ["example.org", 12, 1],
