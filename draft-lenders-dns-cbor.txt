@@ -632,11 +632,11 @@ Internet-Draft                  dns+cbor                  September 2024
 
    opt-rr = [
      ? udp-payload-size: uint .default 512,
-     options: {
-       uint => bstr,
-     },
+     options: {* ocode => odata },
      ? opt-rcode-v-flags,
    ]
+   ocode = uint
+   odata = bstr
    opt-rcode-v-flags = (
      flags: uint .default 0,
      ? opt-rcode-v,

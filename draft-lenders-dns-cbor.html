@@ -1740,11 +1740,11 @@ If the RCODE is not elided the extended flags <span class="bcp14">MUST</span> no
 <pre>
 opt-rr = [
   ? udp-payload-size: uint .default 512,
-  options: {
-    uint =&gt; bstr,
-  },
+  options: {* ocode =&gt; odata },
   ? opt-rcode-v-flags,
 ]
+ocode = uint
+odata = bstr
 opt-rcode-v-flags = (
   flags: uint .default 0,
   ? opt-rcode-v,
