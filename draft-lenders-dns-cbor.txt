@@ -1242,6 +1242,11 @@ Appendix A.  Examples
 
 A.1.  DNS Queries
 
+
+   // TBD: Needs adoption for new features.
+   //
+   // -- mlenders
+
    A DNS query of the record AAAA in class IN for name "example.org" is
    represented in CBOR extended diagnostic notation (EDN) (see Section 8
    in [RFC8949] and Appendix G in [RFC8610]) as follows:
@@ -1258,6 +1263,11 @@ A.1.  DNS Queries
 
 A.2.  DNS Responses
 
+
+   // TBD: Needs adoption for new features.
+   //
+   // -- mlenders
+
    The responses to the examples provided in Appendix A.1 are shown
    below.  We use the CBOR extended diagnostic notation (EDN) (see
    Section 8 in [RFC8949] and Appendix G in [RFC8610]).
@@ -1272,6 +1282,14 @@ A.2.  DNS Responses
    If the name or the context is required, the following response would
    also be valid:
 
+
+
+
+Lenders, et al.           Expires 29 March 2025                [Page 23]
+
+Internet-Draft                  dns+cbor                  September 2024
+
+
    [[["example.org", 300, h'20010db8000000000000000000000001']]]
 
    If the query can not be mapped to the response for some reason, a
@@ -1283,22 +1301,12 @@ A.2.  DNS Responses
    for the IPv4 address 192.0.2.1, a minimal response to ["example.org",
    1] could be
 
-
-
-Lenders, et al.           Expires 29 March 2025                [Page 23]
-
-Internet-Draft                  dns+cbor                  September 2024
-
-
    [[300, h'c0000201']]
 
    Note that here also the 1 of record type A can be elided, as this
    record type is specified in the question section.
 
    Lastly, a response to ["example.org", 255, 255] could be
-   // TBD: Needs adoption for new features.
-   //
-   // -- mlenders
 
    [
      ["example.org", 12, 1],
@@ -1327,14 +1335,6 @@ Internet-Draft                  dns+cbor                  September 2024
      ]
    ]
 
-   This one advertises two local CoAP servers (identified by service
-   name _coap._udp.local) at 2001:db8::1 and 2001:db8::2 and two
-   nameservers for the example.org domain, ns1.example.org at
-   2001:db8::35 and ns2.example.org at 2001.db8::3535.  Each of the
-   transmitted records has a TTL of 3600 seconds.
-
-
-
 
 
 
@@ -1345,6 +1345,12 @@ Lenders, et al.           Expires 29 March 2025                [Page 24]
 
 Internet-Draft                  dns+cbor                  September 2024
 
+
+   This one advertises two local CoAP servers (identified by service
+   name _coap._udp.local) at 2001:db8::1 and 2001:db8::2 and two
+   nameservers for the example.org domain, ns1.example.org at
+   2001:db8::35 and ns2.example.org at 2001.db8::3535.  Each of the
+   transmitted records has a TTL of 3600 seconds.
 
 Appendix B.  Comparison to Classic DNS Wire Format
 
@@ -1387,12 +1393,6 @@ Appendix B.  Comparison to Classic DNS Wire Format
    +--------+--------------+-------------+--------------+--------------+
 
      Table 2: Comparison of application/dns+cbor to classic DNS format.
-
-
-
-
-
-
 
 
 
