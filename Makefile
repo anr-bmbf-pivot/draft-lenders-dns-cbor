@@ -14,4 +14,5 @@ endif
 
 sourcecode: draft-lenders-dns-cbor.xml
 	rm -rf sourcecode.ba?
+	sed -i 's/6\.TBDt/6\.7/g' draft-lenders-dns-cbor.xml
 	kramdown-rfc-extract-sourcecode -tfiles $<
