@@ -257,9 +257,13 @@ There is an argument to be made for CBOR-structured formats of other record data
 As such, structured record data that do not contain names are always to be represented as a byte string.
 
 ~~~ cddl
+max-uint8 = 0..255
+max-uint16 = 0..65535
+max-uint32 = 0..4294967295
+ttl = max-uint32
 rr = [
   ? domain-name,
-  ttl: uint,
+  ttl: ttl,
   type-spec-rdata,
 ]
 type-spec-rdata = (
@@ -268,8 +272,8 @@ type-spec-rdata = (
 )
 type-spec-rdata //= ( $$structured-ts-rd )
 type-spec = (
-  record-type: uint,
-  ? record-class: uint,
+  record-type: max-uint16,
+  ? record-class: max-uint16,
 )
 ~~~
 {:cddl #fig:dns-standard-rr title="DNS Standard Resource Record Definition"}
@@ -299,11 +303,11 @@ $$structured-ts-rd //= (
 
 soa = [
   domain-name,  ; mname
-  serial: uint,
-  refresh: uint,
-  retry: uint,
-  expire: uint,
-  minimum: uint,
+  serial: max-uint32,
+  refresh: max-uint32,
+  retry: max-uint32,
+  expire: max-uint32,
+  minimum: max-uint32,
   domain-name,  ; rname
 ]
 ~~~
@@ -326,7 +330,7 @@ $$structured-ts-rd //= (
 )
 
 mx = [
-  preference: uint,
+  preference: max-uint16,
   domain-name,  ; exchange
 ]
 ~~~
@@ -356,9 +360,9 @@ $$structured-ts-rd //= (
 )
 
 srv = [
-  priority: uint,
-  ? weight: uint .default 0,
-  port: uint,
+  priority: max-uint16,
+  ? weight: max-uint16 .default 0,
+  port: max-uint16,
   domain-name,  ; target
 ]
 ~~~
@@ -391,13 +395,13 @@ $$structured-ts-rd //= (
 )
 
 svcb = [
-  ? svc-priority: uint .default 0,
+  ? svc-priority: max-uint16 .default 0,
   ? domain-name,  ; target name
   svc-params: [ *svc-param-pair ],
 ]
 
 svc-param-pair = (
-  svc-param-key: uint,
+  svc-param-key: max-uint16,
   svc-param-value: bstr,
 )
 ~~~
@@ -429,19 +433,20 @@ Note that future EDNS versions may require a different format than the one descr
 
 ~~~ cddl
 opt-rr = [
-  ? udp-payload-size: uint .default 512,
+  ? udp-payload-size: max-uint16 .default 512,
   options: {* ocode => odata },
   ? opt-rcode-v-flags,
 ]
-ocode = uint
+ocode = max-uint16
 odata = bstr
 opt-rcode-v-flags = (
-  flags: uint .default 0,
+  flags: max-uint16 .default 0,
   ? opt-rcode-v,
 )
+rcode = 0..4095
 opt-rcode-v = (
-  rcode: uint .default 0,
-  ? version: uint .default 0,
+  rcode: rcode .default 0,
+  ? version: max-uint8 .default 0,
 )
 ~~~
 {:cddl #fig:dns-opt-rr title="DNS OPT Resource Record Definition"}
@@ -496,7 +501,7 @@ The representation of a DNS query is defined in {{fig:dns-query}}.
 ~~~ cddl
 dns-query = [
   ? incl-question: bool .default false,
-  ? flags: uint .default 0x0000,
+  ? flags: max-uint16 .default 0x0000,
   question-section,
   ? query-extra-sections,
 ]
@@ -559,7 +564,7 @@ The authority section is given precedence in elision over the additional section
 
 ~~~ cddl
 dns-response = [
-  ? flags: uint .default 0x8000,
+  ? flags: max-uint16 .default 0x8000,
   ? question-section,
   answer-section,
   ? extra-sections,
