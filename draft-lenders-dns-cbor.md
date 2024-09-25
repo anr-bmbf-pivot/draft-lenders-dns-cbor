@@ -1001,6 +1001,16 @@ case can be seen in {{tab-cbor-comparison-key}}.[^10]{:mlenders}
 
 # Change Log
 
+Since [draft-lenders-dns-cbor-08]
+---------------------------------
+- Clarify why question section was designed the way it is
+- Add answer section to queries for Known Answers in mDNS
+- Express names as sequence of labels
+- Provide dedicated types for more structured RDATA
+- Add RFC1035-like name compression
+- Add switching boolean to query message to explicitly have question present in response
+- Make EDNS options a map
+
 Since [draft-lenders-dns-cbor-07]
 ---------------------------------
 - Add {{sec:comparison-to-classic-dns}} with comparison to classic DNS wire format
@@ -1045,6 +1055,7 @@ Since [draft-lenders-dns-cbor-00]
 - Name and Address compression utilizing CBOR-packed
 - Minor fixes to CBOR EDN and CDDL
 
+[draft-lenders-dns-cbor-08]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-08
 [draft-lenders-dns-cbor-07]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-07
 [draft-lenders-dns-cbor-06]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-06
 [draft-lenders-dns-cbor-05]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-05
