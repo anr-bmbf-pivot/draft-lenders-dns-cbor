@@ -1517,22 +1517,17 @@ As such, structured record data that do not contain names are always to be repre
 rr = [
   ? domain-name,
   ttl: uint,
-  ? type-spec,
-  rdata: bstr / rdata-array,
-] / [
-  ? domain-name,
-  ttl: uint,
-  ? type-spec,
-  domain-name  ; rdata
+  type-spec-rdata,
 ]
+type-spec-rdata = (
+  ? type-spec,
+  rdata: bstr // ( domain-name ),
+)
+type-spec-rdata //= ( $$structured-ts-rd )
 type-spec = (
   record-type: uint,
   ? record-class: uint,
 )
-rdata-array = $rdata-array .within any-array
-any-array = [ +any ]
-
-$rdata-array = soa / mx / srv / svcb
 </pre>
 </div>
 <figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
@@ -1574,6 +1569,12 @@ $rdata-array = soa / mx / srv / svcb
 <figure id="figure-6">
               <div class="lang-cddl sourcecode" id="section-3.2.1.1-5.1">
 <pre>
+$$structured-ts-rd //= (
+  6,    ; record-type = SOA
+  ? 1,  ; record-class = IN
+  soa,
+)
+
 soa = [
   domain-name,  ; mname
   serial: uint,
@@ -1610,6 +1611,12 @@ soa = [
 <figure id="figure-7">
               <div class="lang-cddl sourcecode" id="section-3.2.1.2-4.1">
 <pre>
+$$structured-ts-rd //= (
+  15,   ; record-type = MX
+  ? 1,  ; record-class = IN
+  mx,
+)
+
 mx = [
   preference: uint,
   domain-name,  ; exchange
@@ -1651,6 +1658,12 @@ The default of 0 was picked, as this is the value domain administrators should p
 <figure id="figure-8">
               <div class="lang-cddl sourcecode" id="section-3.2.1.3-5.1">
 <pre>
+$$structured-ts-rd //= (
+  33,   ; record-type = SRV
+  ? 1,  ; record-class = IN
+  srv,
+)
+
 srv = [
   priority: uint,
   ? weight: uint .default 0,
@@ -1694,6 +1707,12 @@ If there is a text string or tag TBDt after the SvcPriority, the TargetName is n
 <figure id="figure-9">
               <div class="lang-cddl sourcecode" id="section-3.2.1.4-6.1">
 <pre>
+$$structured-ts-rd //= (
+  64 / 65,  ; record-type = SVCB or HTTPS
+  ? 1,      ; record-class = IN
+  svcb,
+)
+
 svcb = [
   ? svc-priority: uint .default 0,
   ? domain-name,  ; target name
