@@ -120,24 +120,24 @@ The term "constrained networks" is used as defined in {{-constr-terms}}.
 
 # CBOR Representations (application/dns+cbor)
 
-To keep overhead minimal, DNS messages are represented as CBOR arrays
+DNS messages are represented as CBOR arrays to minimize overhead.
 All CBOR items used in this specification are of definite length.
-CBOR arrays that do not follow the length definitions of this or follow-up specifications, MUST be silently ignored.
+CBOR arrays that do not follow the length definitions of this or of follow-up specifications, MUST be silently ignored.
 CBOR arrays that exceed the message size provided by the transport, MUST be silently ignored.
 It is assumed that DNS query and DNS response are distinguished message types and that the query can be mapped to the response by the transfer protocol of choice.
 To define the representation of binary objects we use the Concise Data Definition Language (CDDL) {{-cddl}}.
-For examples we use the CBOR Extended Diagnostic Notation {{-edn}}.
+For examples, we use the CBOR Extended Diagnostic Notation {{-edn}}.
 
 ~~~ cddl
 dns-message = dns-query / dns-response
 ~~~
 {:cddl #fig:dns-msg title="This document defines both DNS Queries and Responses in CDDL"}
 
-If, for any reason, a DNS message is not representable in the CBOR format specified in this document, or if more overehead is introduced than reasonable, a fallback to another DNS message format, e.g., the classic DNS format specified in {{-dns}}, MUST always be possible.
+If, for any reason, a DNS message cannot be represented in the CBOR format specified in this document, or if unreasonable overehead is introduced, a fallback to another DNS message format, e.g., the classic DNS format specified in {{-dns}}, MUST always be possible.
 
 ## Domain Name Representation {#sec:domain-names}
 
-Domain names are represented by a sequence of 1 or more (unicode) text strings.
+Domain names are represented by a sequence of one or more (unicode) text strings.
 For instance, "example.org" would be represented as `"example","org"` in CBOR diagnostic notation.
 The root domain "." is represented as an empty string `""`.
 The absence of any label means the name is elided.
