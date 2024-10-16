@@ -14,14 +14,14 @@
 the Concise Binary Object Representation  .
 The primary purpose is to keep DNS messages small in constrained networks. 
     " name="description">
-<meta content="xml2rfc 3.23.1" name="generator">
+<meta content="xml2rfc 3.23.2" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="CBOR" name="keyword">
 <meta content="DNS" name="keyword">
 <meta content="draft-lenders-dns-cbor-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.23.1
-    Python 3.12.6
+  xml2rfc 3.23.2
+    Python 3.12.7
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
@@ -1031,11 +1031,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">dns+cbor</td>
-<td class="right">September 2024</td>
+<td class="right">October 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lenders, et al.</td>
-<td class="center">Expires 29 March 2025</td>
+<td class="center">Expires 19 April 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1048,12 +1048,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-lenders-dns-cbor-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-09-25" class="published">25 September 2024</time>
+<time datetime="2024-10-16" class="published">16 October 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-03-29">29 March 2025</time></dd>
+<dd class="expires"><time datetime="2025-04-19">19 April 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1117,7 +1117,7 @@ The primary purpose is to keep DNS messages small in constrained networks.<a hre
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 29 March 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 19 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1309,18 +1309,16 @@ The primary purpose is to keep DNS messages small in constrained networks.<a hre
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">In constrained networks <span>[<a href="#RFC7228" class="cite xref">RFC7228</a>]</span>, the link layer may restrict the payload sizes to
+<p id="section-1-1">In constrained networks <span>[<a href="#RFC7228" class="cite xref">RFC7228</a>]</span>, the link layer may restrict the payload sizes of frames to
 only a few hundreds bytes.  Encrypted DNS resolution, such as DNS over HTTPS (DoH) <span>[<a href="#RFC8484" class="cite xref">RFC8484</a>]</span> or
 DNS over CoAP (DoC) <span>[<a href="#I-D.ietf-core-dns-over-coap" class="cite xref">I-D.ietf-core-dns-over-coap</a>]</span>, may lead to DNS message sizes that exceed this limit, even when
 implementing header compression such as 6LoWPAN IPHC <span>[<a href="#RFC6282" class="cite xref">RFC6282</a>]</span> or SCHC <span>[<a href="#RFC8724" class="cite xref">RFC8724</a>]</span>,
 <span>[<a href="#RFC8824" class="cite xref">RFC8824</a>]</span>.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">Although adoption layers such as 6LoWPAN <span>[<a href="#RFC4944" class="cite xref">RFC4944</a>]</span> or SCHC <span>[<a href="#RFC8724" class="cite xref">RFC8724</a>]</span> offer fragmentation to
 comply with small MTUs, fragmentation should be avoided in constrained networks.
-Fragmentation combined with high packet loss multiplies the loss.
-As such, a compression format for DNS messages is needed.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">This document specifies a compressed data format for DNS messages.  DNS messages are encoded in
-Concise Binary Object Representation (CBOR) <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> and, additionally, unnecessary or
-redundant information is removed.  To use the outcome of this specification in DoH and DoC,
+Fragmentation combined with high packet loss multiplies the likelihood of loss.
+Hence, a compression format that reduces fragmentation of DNS messages is beneficial.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">This document specifies a compressed data format for DNS messages using Concise Binary Object Representation (CBOR) <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> encoding. Additionally,  unnecessary or redundant information are stripped off DNS messages.  To use the outcome of this specification in DoH and DoC,
 this document also specifies a Media Type header for DoH and a Content-Format option for DoC.<a href="#section-1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1347,13 +1345,13 @@ appear in all capitals, as shown here.<a href="#section-2-6" class="pilcrow">¶<
       <h2 id="name-cbor-representations-applic">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-cbor-representations-applic" class="section-name selfRef">CBOR Representations (application/dns+cbor)</a>
       </h2>
-<p id="section-3-1">To keep overhead minimal, DNS messages are represented as CBOR arrays
+<p id="section-3-1">DNS messages are represented as CBOR arrays to minimize overhead.
 All CBOR items used in this specification are of definite length.
-CBOR arrays that do not follow the length definitions of this or follow-up specifications, <span class="bcp14">MUST</span> be silently ignored.
+CBOR arrays that do not follow the length definitions of this or of follow-up specifications, <span class="bcp14">MUST</span> be silently ignored.
 CBOR arrays that exceed the message size provided by the transport, <span class="bcp14">MUST</span> be silently ignored.
 It is assumed that DNS query and DNS response are distinguished message types and that the query can be mapped to the response by the transfer protocol of choice.
 To define the representation of binary objects we use the Concise Data Definition Language (CDDL) <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>.
-For examples we use the CBOR Extended Diagnostic Notation <span>[<a href="#I-D.ietf-cbor-edn-literals" class="cite xref">I-D.ietf-cbor-edn-literals</a>]</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
+For examples, we use the CBOR Extended Diagnostic Notation <span>[<a href="#I-D.ietf-cbor-edn-literals" class="cite xref">I-D.ietf-cbor-edn-literals</a>]</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <span id="name-this-document-defines-both-"></span><div id="fig_dns-msg">
 <figure id="figure-1">
         <div class="lang-cddl sourcecode" id="section-3-2.1">
@@ -1365,13 +1363,13 @@ dns-message = dns-query / dns-response
 <a href="#name-this-document-defines-both-" class="selfRef">This document defines both DNS Queries and Responses in CDDL</a>
         </figcaption></figure>
 </div>
-<p id="section-3-3">If, for any reason, a DNS message is not representable in the CBOR format specified in this document, or if more overehead is introduced than reasonable, a fallback to another DNS message format, e.g., the classic DNS format specified in <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span>, <span class="bcp14">MUST</span> always be possible.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-3">If, for any reason, a DNS message cannot be represented in the CBOR format specified in this document, or if unreasonable overehead is introduced, a fallback to another DNS message format, e.g., the classic DNS format specified in <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span>, <span class="bcp14">MUST</span> always be possible.<a href="#section-3-3" class="pilcrow">¶</a></p>
 <div id="sec_domain-names">
 <section id="section-3.1">
         <h3 id="name-domain-name-representation">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-domain-name-representation" class="section-name selfRef">Domain Name Representation</a>
         </h3>
-<p id="section-3.1-1">Domain names are represented by a sequence of 1 or more (unicode) text strings.
+<p id="section-3.1-1">Domain names are represented by a sequence of one or more (unicode) text strings.
 For instance, "example.org" would be represented as <code>"example","org"</code> in CBOR diagnostic notation.
 The root domain "." is represented as an empty string <code>""</code>.
 The absence of any label means the name is elided.
@@ -2291,7 +2289,7 @@ IANA is requested to allocate the tags defined in <a href="#tab-tag-values" clas
 <dl class="references">
 <dt id="I-D.ietf-core-dns-over-coap">[I-D.ietf-core-dns-over-coap]</dt>
         <dd>
-<span class="refAuthor">Lenders, M. S.</span>, <span class="refAuthor">Amsüss, C.</span>, <span class="refAuthor">Gündoğan, C.</span>, <span class="refAuthor">Schmidt, T. C.</span>, and <span class="refAuthor">M. Wählisch</span>, <span class="refTitle">"DNS over CoAP (DoC)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-dns-over-coap-07</span>, <time datetime="2024-06-28" class="refDate">28 June 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-dns-over-coap-07">https://datatracker.ietf.org/doc/html/draft-ietf-core-dns-over-coap-07</a>&gt;</span>. </dd>
+<span class="refAuthor">Lenders, M. S.</span>, <span class="refAuthor">Amsüss, C.</span>, <span class="refAuthor">Gündoğan, C.</span>, <span class="refAuthor">Schmidt, T. C.</span>, and <span class="refAuthor">M. Wählisch</span>, <span class="refTitle">"DNS over CoAP (DoC)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-dns-over-coap-08</span>, <time datetime="2024-09-26" class="refDate">26 September 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-dns-over-coap-08">https://datatracker.ietf.org/doc/html/draft-ietf-core-dns-over-coap-08</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC4944">[RFC4944]</dt>
         <dd>
