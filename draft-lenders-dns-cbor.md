@@ -16,12 +16,12 @@ keyword:
  - CBOR
  - DNS
 venue:
-  group: CBOR
-  type: Working Group
-  mail: cbor@ietf.org
-  arch: "https://mailarchive.ietf.org/arch/browse/cbor/"
-  github: "anr-bmbf-pivot/draft-lenders-dns-cbor"
-  latest: "https://anr-bmbf-pivot.github.io/draft-lenders-dns-cbor/draft-lenders-dns-cbor.html"
+    group: CBOR
+    type: Working Group
+    mail: cbor@ietf.org
+    arch: "https://mailarchive.ietf.org/arch/browse/cbor/"
+    github: "anr-bmbf-pivot/draft-lenders-dns-cbor"
+    latest: "https://anr-bmbf-pivot.github.io/draft-lenders-dns-cbor/draft-lenders-dns-cbor.html"
 
 author:
  -  fullname: Martine Sophie Lenders
@@ -88,7 +88,7 @@ The primary purpose is to keep DNS messages small in constrained networks.
 
 # Introduction
 
-In constrained networks {{-constr-terms}}, the link layer may restrict the payload sizes to
+In constrained networks {{-constr-terms}}, the link layer may restrict the payload sizes of frames to
 only a few hundreds bytes.  Encrypted DNS resolution, such as DNS over HTTPS (DoH) {{-doh}} or
 DNS over CoAP (DoC) {{-doc}}, may lead to DNS message sizes that exceed this limit, even when
 implementing header compression such as 6LoWPAN IPHC {{-iphc}} or SCHC {{-schc}},
@@ -96,12 +96,10 @@ implementing header compression such as 6LoWPAN IPHC {{-iphc}} or SCHC {{-schc}}
 
 Although adoption layers such as 6LoWPAN {{-6lowpan}} or SCHC {{-schc}} offer fragmentation to
 comply with small MTUs, fragmentation should be avoided in constrained networks.
-Fragmentation combined with high packet loss multiplies the loss.
-As such, a compression format for DNS messages is needed.
+Fragmentation combined with high packet loss multiplies the likelihood of loss.
+Hence, a compression format that reduces fragmentation of DNS messages is beneficial.
 
-This document specifies a compressed data format for DNS messages.  DNS messages are encoded in
-Concise Binary Object Representation (CBOR) {{-cbor}} and, additionally, unnecessary or
-redundant information is removed.  To use the outcome of this specification in DoH and DoC,
+This document specifies a compressed data format for DNS messages using Concise Binary Object Representation (CBOR) {{-cbor}} encoding. Additionally,  unnecessary or redundant information are stripped off DNS messages.  To use the outcome of this specification in DoH and DoC,
 this document also specifies a Media Type header for DoH and a Content-Format option for DoC.
 
 # Terminology
