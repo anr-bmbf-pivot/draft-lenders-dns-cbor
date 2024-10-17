@@ -121,18 +121,18 @@ Internet-Draft                  dns+cbor                    October 2024
      A.1.  DNS Queries . . . . . . . . . . . . . . . . . . . . . . .  24
      A.2.  DNS Responses . . . . . . . . . . . . . . . . . . . . . .  24
    Appendix B.  Comparison to Classic DNS Wire Format  . . . . . . .  26
-   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  27
-     C.1.  Since draft-lenders-dns-cbor-08 . . . . . . . . . . . . .  27
-     C.2.  Since draft-lenders-dns-cbor-07 . . . . . . . . . . . . .  28
-     C.3.  Since draft-lenders-dns-cbor-06 . . . . . . . . . . . . .  28
-     C.4.  Since draft-lenders-dns-cbor-05 . . . . . . . . . . . . .  28
-     C.5.  Since draft-lenders-dns-cbor-04 . . . . . . . . . . . . .  28
-     C.6.  Since draft-lenders-dns-cbor-03 . . . . . . . . . . . . .  28
-     C.7.  Since draft-lenders-dns-cbor-02 . . . . . . . . . . . . .  29
-     C.8.  Since draft-lenders-dns-cbor-01 . . . . . . . . . . . . .  29
-     C.9.  Since draft-lenders-dns-cbor-00 . . . . . . . . . . . . .  29
-   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  29
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  29
+   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  29
+     C.1.  Since draft-lenders-dns-cbor-08 . . . . . . . . . . . . .  29
+     C.2.  Since draft-lenders-dns-cbor-07 . . . . . . . . . . . . .  29
+     C.3.  Since draft-lenders-dns-cbor-06 . . . . . . . . . . . . .  29
+     C.4.  Since draft-lenders-dns-cbor-05 . . . . . . . . . . . . .  29
+     C.5.  Since draft-lenders-dns-cbor-04 . . . . . . . . . . . . .  29
+     C.6.  Since draft-lenders-dns-cbor-03 . . . . . . . . . . . . .  30
+     C.7.  Since draft-lenders-dns-cbor-02 . . . . . . . . . . . . .  30
+     C.8.  Since draft-lenders-dns-cbor-01 . . . . . . . . . . . . .  30
+     C.9.  Since draft-lenders-dns-cbor-00 . . . . . . . . . . . . .  30
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  30
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  30
 
 1.  Introduction
 
@@ -1298,38 +1298,28 @@ Appendix A.  Examples
 
 A.1.  DNS Queries
 
-
-   // TBD: Needs adoption for new features.
-   //
-   // -- mlenders
-
    A DNS query of the record AAAA in class IN for name "example.org" is
    represented in CBOR extended diagnostic notation (EDN) (see Section 8
    in [RFC8949] and Appendix G in [RFC8610]) as follows:
 
-   [["example.org"]]
+   [["example", "org"]]
 
    A query of an A record for the same name is represented as
 
-   [["example.org", 1]]
+   [["example", "org", 1]]
 
    A query of ANY record for that name is represented as
 
-   [["example.org", 255, 255]]
+   [["example", "org", 255, 255]]
 
 A.2.  DNS Responses
 
-
-   // TBD: Needs adoption for new features.
-   //
-   // -- mlenders
-
    The responses to the examples provided in Appendix A.1 are shown
    below.  We use the CBOR extended diagnostic notation (EDN) (see
-   Section 8 in [RFC8949] and Appendix G in [RFC8610]).
+   [I-D.ietf-cbor-edn-literals] and Appendix G in [RFC8610]).
 
    To represent an AAAA record with TTL 300 seconds for the IPv6 address
-   2001:db8::1, a minimal response to ["example.org"] could be
+   2001:db8::1, a minimal response to [["example", "org"]] could be
 
    [[[300, h'20010db8000000000000000000000001']]]
 
@@ -1338,6 +1328,16 @@ A.2.  DNS Responses
    If the name or the context is required, the following response would
    also be valid:
 
+   [[["example", "org", 300, h'20010db8000000000000000000000001']]]
+
+   If the query can not be mapped to the response for some reason, a
+   response would look like:
+
+   [["example", "org"], [[300, h'20010db8000000000000000000000001']]]
+
+   To represent a minimal response of an A record with TTL 3600 seconds
+   for the IPv4 address 192.0.2.1, a minimal response to [["example",
+   "org", 1]] could be
 
 
 
@@ -1346,50 +1346,50 @@ Lenders, et al.           Expires 20 April 2025                [Page 24]
 Internet-Draft                  dns+cbor                    October 2024
 
 
-   [[["example.org", 300, h'20010db8000000000000000000000001']]]
-
-   If the query can not be mapped to the response for some reason, a
-   response would look like:
-
-   [["example.org"], [[300, h'20010db8000000000000000000000001']]]
-
-   To represent a minimal response of an A record with TTL 3600 seconds
-   for the IPv4 address 192.0.2.1, a minimal response to ["example.org",
-   1] could be
-
-   [[300, h'c0000201']]
+   [[[300, h'c0000201']]]
 
    Note that here also the 1 of record type A can be elided, as this
    record type is specified in the question section.
 
-   Lastly, a response to ["example.org", 255, 255] could be
+   Lastly, a response to [["example", "org", 255, 255]] could be
 
    [
-     ["example.org", 12, 1],
-     [[3600, "_coap._udp.local"]],
+     ["example", "org", 12, 1],
+     [[3600, "_coap", "_udp", "local"]],
      [
-       [3600, 2, "ns1.example.org"],
-       [3600, 2, "ns2.example.org"]
+       [3600, 2, "ns1", TBDt(0)],
+       [3600, 2, "ns2", TBDt(0)]
      ],
      [
        [
-         "_coap._udp.local", 3600, 28,
+         TBDt(2), 3600, 28,
          h'20010db8000000000000000000000001'
        ],
        [
-         "_coap._udp.local", 3600, 28,
+         TBDt(2), 3600, 28,
          h'20010db8000000000000000000000002'
        ],
        [
-         "ns1.example.org", 3600, 28,
+         TBDt(5), 3600, 28,
          h'20010db8000000000000000000000035'
        ],
        [
-         "ns2.example.org", 3600, 28,
+         TBDt(6), 3600, 28,
          h'20010db8000000000000000000003535'
        ]
      ]
    ]
+
+   This one advertises two local CoAP servers (identified by service
+   name _coap._udp.local) at 2001:db8::1 and 2001:db8::2 and two
+   nameservers for the example.org domain, ns1.example.org at
+   2001:db8::35 and ns2.example.org at 2001.db8::3535.  Each of the
+   transmitted records has a TTL of 3600 seconds.  Note the use of name
+   compression (see Section 3.1.1) in this example.
+
+
+
+
 
 
 
@@ -1402,22 +1402,61 @@ Lenders, et al.           Expires 20 April 2025                [Page 25]
 Internet-Draft                  dns+cbor                    October 2024
 
 
-   This one advertises two local CoAP servers (identified by service
-   name _coap._udp.local) at 2001:db8::1 and 2001:db8::2 and two
-   nameservers for the example.org domain, ns1.example.org at
-   2001:db8::35 and ns2.example.org at 2001.db8::3535.  Each of the
-   transmitted records has a TTL of 3600 seconds.
-
 Appendix B.  Comparison to Classic DNS Wire Format
 
    Table 2 shows a comparison between the classic DNS wire format and
    the application/dns+cbor format.  Note that the worst case results
    typically appear only rarely in DNS.  The classic DNS format is
    preferred in those cases.  A key for which configuration was used in
-   which case can be seen in Table 3.
-   // TBD: Needs adoption for new features.
+   which case can be seen in Table 3.  Any name label that is longer
+   than 23 bytes adds a name overhead of 1 byte to its CBOR type header.
+   // TBD: Also add structured RRs?.
    //
    // -- mlenders
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lenders, et al.           Expires 20 April 2025                [Page 26]
+
+Internet-Draft                  dns+cbor                    October 2024
+
 
    +========+==============+===========================================+
    |Item    |   Classic DNS|                application/               |
@@ -1434,11 +1473,18 @@ Appendix B.  Comparison to Classic DNS Wire Format
    |Count   |             2|            1|             3|             3|
    |fields  |              |             |              |              |
    +--------+--------------+-------------+--------------+--------------+
-   |Question| 6 + name len.|2 + name len.| 7 + name len.|10 + name len.|
-   |section |              |             |              |              |
+   |Question| 6 + name len.|2 + name len.| 6 + name len.| 9 + name len.|
+   |section |              |             |             +|             +|
+   |        |              |             | name overhead| name overhead|
    +--------+--------------+-------------+--------------+--------------+
-   |Standard|12 + name len.|            3|15 + name len.|18 + name len.|
-   |RR      |  + rdata len.| + rdata len.|  + rdata len.|  + rdata len.|
+   |Standard|12 + name len.|            3|14 + name len.|17 + name len.|
+   |RR      |  + rdata len.| + rdata len.|+ rdata len. +|+ rdata len. +|
+   |        |              |             | name overhead| name overhead|
+   +--------+--------------+-------------+--------------+--------------+
+   |Standard|12 + name len.|4 + TBDt len.|15 + name len.|17 + name len.|
+   |RR with |  + rdata len.|             | + TBDt len. +| + TBDt len. +|
+   |name    |              |             | name overhead| name overhead|
+   |rdata   |              |             |              |              |
    +--------+--------------+-------------+--------------+--------------+
    |EDNS Opt|  11 + options|  2 + options|   6 + options|  14 + options|
    |Pseudo- |              |             |              |              |
@@ -1453,46 +1499,76 @@ Appendix B.  Comparison to Classic DNS Wire Format
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 26]
+
+
+
+
+
+
+
+
+
+
+Lenders, et al.           Expires 20 April 2025                [Page 27]
 
 Internet-Draft                  dns+cbor                    October 2024
 
 
-   +===========+======================================================+
-   | Item      |          application/dns+cbor configuration          |
-   |           +=================+=================+==================+
-   |           |       best case | realistic worst |      theoretical |
-   |           |                 |            case |       worst case |
-   +===========+=================+=================+==================+
-   | Header    |    Flags elided | QR, Opcode, AA, |  QR, Opcode, AA, |
-   | (ID &     |                 |   TC, or RD are |    TC, or RD are |
-   | Flags)    |                 |             set |              set |
-   +-----------+-----------------+-----------------+------------------+
-   | Count     | Encoded in CBOR | Encoded in CBOR |  Encoded in CBOR |
-   | fields    |    array header |   array header, |    array header, |
-   |           |                 | >255 records in |  >255 records in |
-   |           |                 |         section |          section |
-   +-----------+-----------------+-----------------+------------------+
-   | Question  |    Class, type, |     Type > 255, |      Type > 255, |
-   | section   | and name elided | name len. > 255 |     Class > 255, |
-   |           |                 |                 |  name len. > 255 |
-   +-----------+-----------------+-----------------+------------------+
-   | Standard  |    Class, type, |     Type > 255, |      Type > 255, |
-   | RR        |        and name | name len. > 255 |     Class > 255, |
-   |           |         elided, |    rdata len. > |  name len. > 255 |
-   |           | rdata len. < 24 |             255 | rdata len. > 255 |
-   +-----------+-----------------+-----------------+------------------+
-   | EDNS Opt  |     All EDNS(0) |     Rcode < 24, |      UDP payload |
-   | Pseudo-RR |   fields elided |    DO flag set, |       len. > 255 |
-   |           |                 |                 |      Rcode > 255 |
-   |           |                 |                 |    Version > 255 |
-   |           |                 |                 |      DO flag set |
-   +-----------+-----------------+-----------------+------------------+
-   | EDNS      |       Code < 24 |       Code < 24 |       Code > 255 |
-   | Option    |     Length < 24 |    Length > 255 |     Length > 255 |
-   +-----------+-----------------+-----------------+------------------+
+   +===========+=======================================================+
+   | Item      |           application/dns+cbor configuration          |
+   |           +==================+=================+==================+
+   |           |        best case | realistic worst |      theoretical |
+   |           |                  |            case |       worst case |
+   +===========+==================+=================+==================+
+   | Header    |     Flags elided | QR, Opcode, AA, |  QR, Opcode, AA, |
+   | (ID &     |                  |   TC, or RD are |    TC, or RD are |
+   | Flags)    |                  |             set |              set |
+   +-----------+------------------+-----------------+------------------+
+   | Count     |  Encoded in CBOR | Encoded in CBOR |  Encoded in CBOR |
+   | fields    |     array header |   array header, |    array header, |
+   |           |                  | >255 records in |  >255 records in |
+   |           |                  |         section |          section |
+   +-----------+------------------+-----------------+------------------+
+   | Question  |     Class, type, |     Type > 255, |      Type > 255, |
+   | section   |  and name elided | label len. > 23 |     Class > 255, |
+   |           |                  |                 |  label len. > 23 |
+   +-----------+------------------+-----------------+------------------+
+   | Standard  |     Class, type, |     Type > 255, |      Type > 255, |
+   | RR        |         and name | label len. > 23 |     Class > 255, |
+   |           |          elided, |    rdata len. > |   label len. >23 |
+   |           |  rdata len. < 24 |             255 | rdata len. > 255 |
+   +-----------+------------------+-----------------+------------------+
+   | Standard  |     Class, type, |     Type > 255, |      Type > 255, |
+   | RR with   |         and name | label len. > 23 |  label len. > 23 |
+   | name      |          elided, |    TBDt(i) with | TBDt(i) with i > |
+   | rdata     |     TBDt(i) with |          i > 23 |              255 |
+   |           |           i < 24 |                 |                  |
+   +-----------+------------------+-----------------+------------------+
+   | EDNS Opt  |      All EDNS(0) |     Rcode < 24, |      UDP payload |
+   | Pseudo-RR |    fields elided |    DO flag set, |       len. > 255 |
+   |           |                  |                 |      Rcode > 255 |
+   |           |                  |                 |    Version > 255 |
+   |           |                  |                 |      DO flag set |
+   +-----------+------------------+-----------------+------------------+
+   | EDNS      |        Code < 24 |       Code < 24 |       Code > 255 |
+   | Option    |      Length < 24 |    Length > 255 |     Length > 255 |
+   +-----------+------------------+-----------------+------------------+
 
-                 Table 3: Configuration key for Table 2 .
+                  Table 3: Configuration key for Table 2 .
+
+
+
+
+
+
+
+
+
+
+Lenders, et al.           Expires 20 April 2025                [Page 28]
+
+Internet-Draft                  dns+cbor                    October 2024
+
 
 Appendix C.  Change Log
 
@@ -1506,13 +1582,6 @@ C.1.  Since draft-lenders-dns-cbor-08
    *  Express names as sequence of labels
 
    *  Provide dedicated types for more structured RDATA
-
-
-
-Lenders, et al.           Expires 20 April 2025                [Page 27]
-
-Internet-Draft                  dns+cbor                    October 2024
-
 
    *  Add RFC1035-like name compression
 
@@ -1549,6 +1618,14 @@ C.5.  Since draft-lenders-dns-cbor-04
 
    *  Add Implementation Status section
 
+
+
+
+Lenders, et al.           Expires 20 April 2025                [Page 29]
+
+Internet-Draft                  dns+cbor                    October 2024
+
+
    *  Remove int as representation for rdata
 
    *  Add note on representation of more structured rdata
@@ -1561,14 +1638,6 @@ C.6.  Since draft-lenders-dns-cbor-03
    *  Simplify CDDL to more idiomatic style
 
    *  Remove DNS transaction IDs
-
-
-
-
-Lenders, et al.           Expires 20 April 2025                [Page 28]
-
-Internet-Draft                  dns+cbor                    October 2024
-
 
 C.7.  Since draft-lenders-dns-cbor-02
       (https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-02)
@@ -1605,6 +1674,14 @@ Authors' Addresses
    Helmholtzstr. 10
    D-01069 Dresden
    Germany
+
+
+
+Lenders, et al.           Expires 20 April 2025                [Page 30]
+
+Internet-Draft                  dns+cbor                    October 2024
+
+
    Email: martine.lenders@tu-dresden.de
 
 
@@ -1615,15 +1692,6 @@ Authors' Addresses
    Germany
    Phone: +49-421-218-63921
    Email: cabo@tzi.org
-
-
-
-
-
-
-Lenders, et al.           Expires 20 April 2025                [Page 29]
-
-Internet-Draft                  dns+cbor                    October 2024
 
 
    Thomas C. Schmidt
@@ -1665,16 +1733,4 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-Lenders, et al.           Expires 20 April 2025                [Page 30]
+Lenders, et al.           Expires 20 April 2025                [Page 31]

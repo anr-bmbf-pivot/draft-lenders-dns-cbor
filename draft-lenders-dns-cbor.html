@@ -2375,26 +2375,25 @@ IANA is requested to allocate the tags defined in <a href="#tab-tag-values" clas
         <h3 id="name-dns-queries-2">
 <a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-dns-queries-2" class="section-name selfRef">DNS Queries</a>
         </h3>
-<p id="appendix-A.1-1"><span class="cref" id="_10">TBD: Needs adoption for new features.<span class="crefSource">mlenders</span></span><a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
-<p id="appendix-A.1-2">A DNS query of the record <code>AAAA</code> in class <code>IN</code> for name "example.org" is
+<p id="appendix-A.1-1">A DNS query of the record <code>AAAA</code> in class <code>IN</code> for name "example.org" is
 represented in CBOR extended diagnostic notation (EDN) (see Section 8 in
-<span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> and Appendix G in <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>) as follows:<a href="#appendix-A.1-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.1-3">
+<span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> and Appendix G in <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>) as follows:<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
+<div class="lang-cbor-diag sourcecode" id="appendix-A.1-2">
 <pre>
-[["example.org"]]
-</pre><a href="#appendix-A.1-3" class="pilcrow">¶</a>
+[["example", "org"]]
+</pre><a href="#appendix-A.1-2" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A.1-4">A query of an <code>A</code> record for the same name is represented as<a href="#appendix-A.1-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.1-5">
+<p id="appendix-A.1-3">A query of an <code>A</code> record for the same name is represented as<a href="#appendix-A.1-3" class="pilcrow">¶</a></p>
+<div class="lang-cbor-diag sourcecode" id="appendix-A.1-4">
 <pre>
-[["example.org", 1]]
-</pre><a href="#appendix-A.1-5" class="pilcrow">¶</a>
+[["example", "org", 1]]
+</pre><a href="#appendix-A.1-4" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A.1-6">A query of <code>ANY</code> record for that name is represented as<a href="#appendix-A.1-6" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.1-7">
+<p id="appendix-A.1-5">A query of <code>ANY</code> record for that name is represented as<a href="#appendix-A.1-5" class="pilcrow">¶</a></p>
+<div class="lang-cbor-diag sourcecode" id="appendix-A.1-6">
 <pre>
-[["example.org", 255, 255]]
-</pre><a href="#appendix-A.1-7" class="pilcrow">¶</a>
+[["example", "org", 255, 255]]
+</pre><a href="#appendix-A.1-6" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2403,76 +2402,75 @@ represented in CBOR extended diagnostic notation (EDN) (see Section 8 in
         <h3 id="name-dns-responses-2">
 <a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-dns-responses-2" class="section-name selfRef">DNS Responses</a>
         </h3>
-<p id="appendix-A.2-1"><span class="cref" id="_11">TBD: Needs adoption for new features.<span class="crefSource">mlenders</span></span><a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
-<p id="appendix-A.2-2">The responses to the examples provided in <a href="#sec_query-examples" class="auto internal xref">Appendix A.1</a> are shown
-below. We use the CBOR extended diagnostic notation (EDN) (see Section 8 in
-<span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> and Appendix G in <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>).<a href="#appendix-A.2-2" class="pilcrow">¶</a></p>
-<p id="appendix-A.2-3">To represent an <code>AAAA</code> record with TTL 300 seconds for the IPv6 address 2001:db8::1, a minimal
-response to <code>["example.org"]</code> could be<a href="#appendix-A.2-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.2-4">
+<p id="appendix-A.2-1">The responses to the examples provided in <a href="#sec_query-examples" class="auto internal xref">Appendix A.1</a> are shown
+below. We use the CBOR extended diagnostic notation (EDN) (see <span>[<a href="#I-D.ietf-cbor-edn-literals" class="cite xref">I-D.ietf-cbor-edn-literals</a>]</span> and Appendix G in <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>).<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-2">To represent an <code>AAAA</code> record with TTL 300 seconds for the IPv6 address 2001:db8::1, a minimal
+response to <code>[["example", "org"]]</code> could be<a href="#appendix-A.2-2" class="pilcrow">¶</a></p>
+<div class="lang-cbor-diag sourcecode" id="appendix-A.2-3">
 <pre>
 [[[300, h'20010db8000000000000000000000001']]]
-</pre><a href="#appendix-A.2-4" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.2-3" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A.2-5">In this case, the name is derived from the query.<a href="#appendix-A.2-5" class="pilcrow">¶</a></p>
-<p id="appendix-A.2-6">If the name or the context is required, the following response would also
-be valid:<a href="#appendix-A.2-6" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.2-7">
+<p id="appendix-A.2-4">In this case, the name is derived from the query.<a href="#appendix-A.2-4" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-5">If the name or the context is required, the following response would also
+be valid:<a href="#appendix-A.2-5" class="pilcrow">¶</a></p>
+<div class="lang-cbor-diag sourcecode" id="appendix-A.2-6">
 <pre>
-[[["example.org", 300, h'20010db8000000000000000000000001']]]
-</pre><a href="#appendix-A.2-7" class="pilcrow">¶</a>
+[[["example", "org", 300, h'20010db8000000000000000000000001']]]
+</pre><a href="#appendix-A.2-6" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A.2-8">If the query can not be mapped to the response for some reason, a response
-would look like:<a href="#appendix-A.2-8" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.2-9">
+<p id="appendix-A.2-7">If the query can not be mapped to the response for some reason, a response
+would look like:<a href="#appendix-A.2-7" class="pilcrow">¶</a></p>
+<div class="lang-cbor-diag sourcecode" id="appendix-A.2-8">
 <pre>
-[["example.org"], [[300, h'20010db8000000000000000000000001']]]
-</pre><a href="#appendix-A.2-9" class="pilcrow">¶</a>
+[["example", "org"], [[300, h'20010db8000000000000000000000001']]]
+</pre><a href="#appendix-A.2-8" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A.2-10">To represent a minimal response of an <code>A</code> record with TTL 3600 seconds for the IPv4 address
-192.0.2.1, a minimal response to <code>["example.org", 1]</code> could be<a href="#appendix-A.2-10" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.2-11">
+<p id="appendix-A.2-9">To represent a minimal response of an <code>A</code> record with TTL 3600 seconds for the IPv4 address
+192.0.2.1, a minimal response to <code>[["example", "org", 1]]</code> could be<a href="#appendix-A.2-9" class="pilcrow">¶</a></p>
+<div class="lang-cbor-diag sourcecode" id="appendix-A.2-10">
 <pre>
-[[300, h'c0000201']]
-</pre><a href="#appendix-A.2-11" class="pilcrow">¶</a>
+[[[300, h'c0000201']]]
+</pre><a href="#appendix-A.2-10" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A.2-12">Note that here also the 1 of record type <code>A</code> can be elided, as this record
-type is specified in the question section.<a href="#appendix-A.2-12" class="pilcrow">¶</a></p>
-<p id="appendix-A.2-13">Lastly, a response to <code>["example.org", 255, 255]</code> could be<a href="#appendix-A.2-13" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.2-14">
+<p id="appendix-A.2-11">Note that here also the 1 of record type <code>A</code> can be elided, as this record
+type is specified in the question section.<a href="#appendix-A.2-11" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-12">Lastly, a response to <code>[["example", "org", 255, 255]]</code> could be<a href="#appendix-A.2-12" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.2-13">
 <pre>
 [
-  ["example.org", 12, 1],
-  [[3600, "_coap._udp.local"]],
+  ["example", "org", 12, 1],
+  [[3600, "_coap", "_udp", "local"]],
   [
-    [3600, 2, "ns1.example.org"],
-    [3600, 2, "ns2.example.org"]
+    [3600, 2, "ns1", TBDt(0)],
+    [3600, 2, "ns2", TBDt(0)]
   ],
   [
     [
-      "_coap._udp.local", 3600, 28,
+      TBDt(2), 3600, 28,
       h'20010db8000000000000000000000001'
     ],
     [
-      "_coap._udp.local", 3600, 28,
+      TBDt(2), 3600, 28,
       h'20010db8000000000000000000000002'
     ],
     [
-      "ns1.example.org", 3600, 28,
+      TBDt(5), 3600, 28,
       h'20010db8000000000000000000000035'
     ],
     [
-      "ns2.example.org", 3600, 28,
+      TBDt(6), 3600, 28,
       h'20010db8000000000000000000003535'
     ]
   ]
 ]
-</pre><a href="#appendix-A.2-14" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.2-13" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A.2-15">This one advertises two local CoAP servers (identified by service name <code>_coap._udp.local</code>) at
+<p id="appendix-A.2-14">This one advertises two local CoAP servers (identified by service name <code>_coap._udp.local</code>) at
 2001:db8::1 and 2001:db8::2 and two nameservers for the example.org domain, ns1.example.org at
 2001:db8::35 and ns2.example.org at 2001.db8::3535. Each of the transmitted records has a TTL of
-3600 seconds.<a href="#appendix-A.2-15" class="pilcrow">¶</a></p>
+3600 seconds.
+Note the use of name compression (see <a href="#sec_name-compression" class="auto internal xref">Section 3.1.1</a>) in this example.<a href="#appendix-A.2-14" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2485,7 +2483,8 @@ type is specified in the question section.<a href="#appendix-A.2-12" class="pilc
 <p id="appendix-B-1"><a href="#tab-cbor-comparison" class="auto internal xref">Table 2</a> shows a comparison between the classic DNS wire format and the
 application/dns+cbor format. Note that the worst case results typically appear only rarely in DNS.
 The classic DNS format is preferred in those cases. A key for which configuration was used in which
-case can be seen in <a href="#tab-cbor-comparison-key" class="auto internal xref">Table 3</a>.<span class="cref" id="_12">TBD: Needs adoption for new features.<span class="crefSource">mlenders</span></span><a href="#appendix-B-1" class="pilcrow">¶</a></p>
+case can be seen in <a href="#tab-cbor-comparison-key" class="auto internal xref">Table 3</a>. Any name label that is longer than 23 bytes adds
+a name overhead of 1 byte to its CBOR type header.<span class="cref" id="_10">TBD: Also add structured RRs?.<span class="crefSource">mlenders</span></span><a href="#appendix-B-1" class="pilcrow">¶</a></p>
 <span id="name-comparison-of-application-d"></span><div id="tab-cbor-comparison">
 <table class="center" id="table-2">
         <caption>
@@ -2523,16 +2522,23 @@ case can be seen in <a href="#tab-cbor-comparison-key" class="auto internal xref
             <td class="text-left" rowspan="1" colspan="1">Question section</td>
             <td class="text-right" rowspan="1" colspan="1">6 + name len.</td>
             <td class="text-right" rowspan="1" colspan="1">2 + name len.</td>
-            <td class="text-right" rowspan="1" colspan="1">7 + name len.</td>
-            <td class="text-right" rowspan="1" colspan="1">10 + name len.</td>
+            <td class="text-right" rowspan="1" colspan="1">6 + name len. + name overhead</td>
+            <td class="text-right" rowspan="1" colspan="1">9 + name len. + name overhead</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">Standard RR</td>
             <td class="text-right" rowspan="1" colspan="1">12 + name len. + rdata len.</td>
             <td class="text-right" rowspan="1" colspan="1">3        <br>
  + rdata len.</td>
-            <td class="text-right" rowspan="1" colspan="1">15 + name len. + rdata len.</td>
-            <td class="text-right" rowspan="1" colspan="1">18 + name len. + rdata len.</td>
+            <td class="text-right" rowspan="1" colspan="1">14 + name len. + rdata len. + name overhead</td>
+            <td class="text-right" rowspan="1" colspan="1">17 + name len. + rdata len. + name overhead</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">Standard RR with name rdata</td>
+            <td class="text-right" rowspan="1" colspan="1">12 + name len. + rdata len.</td>
+            <td class="text-right" rowspan="1" colspan="1">4 + TBDt len.</td>
+            <td class="text-right" rowspan="1" colspan="1">15 + name len. + TBDt len. + name overhead</td>
+            <td class="text-right" rowspan="1" colspan="1">17 + name len. + TBDt len. + name overhead</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">EDNS Opt Pseudo-RR</td>
@@ -2588,22 +2594,33 @@ case can be seen in <a href="#tab-cbor-comparison-key" class="auto internal xref
             <td class="text-left" rowspan="1" colspan="1">Question section</td>
             <td class="text-right" rowspan="1" colspan="1">Class, type, and name elided</td>
             <td class="text-right" rowspan="1" colspan="1">Type &gt; 255,        <br>
-name len. &gt; 255</td>
+label len. &gt; 23</td>
             <td class="text-right" rowspan="1" colspan="1">Type &gt; 255,        <br>
 Class &gt; 255,        <br>
-name len. &gt; 255</td>
+label len. &gt; 23</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">Standard RR</td>
             <td class="text-right" rowspan="1" colspan="1">Class, type, and name elided,        <br>
 rdata len. &lt; 24</td>
             <td class="text-right" rowspan="1" colspan="1">Type &gt; 255,        <br>
-name len. &gt; 255        <br>
+label len. &gt; 23        <br>
 rdata len. &gt; 255</td>
             <td class="text-right" rowspan="1" colspan="1">Type &gt; 255,        <br>
 Class &gt; 255,        <br>
-name len. &gt; 255        <br>
+label len. &gt;23        <br>
 rdata len. &gt; 255</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">Standard RR with name rdata</td>
+            <td class="text-right" rowspan="1" colspan="1">Class, type, and name elided,        <br>
+TBDt(i) with i &lt; 24</td>
+            <td class="text-right" rowspan="1" colspan="1">Type &gt; 255,        <br>
+label len. &gt; 23        <br>
+TBDt(i) with i &gt; 23</td>
+            <td class="text-right" rowspan="1" colspan="1">Type &gt; 255,        <br>
+label len. &gt; 23        <br>
+TBDt(i) with i &gt; 255</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">EDNS Opt Pseudo-RR</td>
