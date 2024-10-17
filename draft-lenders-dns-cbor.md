@@ -993,8 +993,8 @@ a name overhead of 1 byte to its CBOR type header.[^10]{: mlenders}
       <td align="left">Standard RR with name rdata</td>
       <td align="right">12 + name&nbsp;len. + rdata&nbsp;len.</td>
       <td align="right">4 + TBDt&nbsp;len.</td>
-      <td align="right">15 + name&nbsp;len. + TBDt&nbsp;len. + name&nbsp;overhead</td>
-      <td align="right">17 + name&nbsp;len. + TBDt&nbsp;len. + name&nbsp;overhead</td>
+      <td align="right">14&nbsp;+&nbsp;name&nbsp;len. + rdata&nbsp;len. + name&nbsp;overheads</td>
+      <td align="right">16&nbsp;+&nbsp;name&nbsp;len. + rdata&nbsp;len. + name&nbsp;overheads</td>
     </tr>
     <tr>
       <td align="left">EDNS Opt Pseudo-RR</td>
@@ -1049,13 +1049,13 @@ a name overhead of 1 byte to its CBOR type header.[^10]{: mlenders}
       <td align="left">Standard RR</td>
       <td align="right">Class, type, and name elided,<br/>rdata len. &lt; 24</td>
       <td align="right">Type &gt; 255,<br/>label len. &gt; 23<br/>rdata len. &gt; 255</td>
-      <td align="right">Type &gt; 255,<br/>Class &gt; 255,<br/>label len. &gt;23<br/>rdata len. &gt; 255</td>
+      <td align="right">Type &gt; 255,<br/>Class &gt; 255,<br/>label len. &gt; 23<br/>rdata len. &gt; 255</td>
     </tr>
     <tr>
       <td align="left">Standard RR with name rdata</td>
       <td align="right">Class, type, and name elided,<br/>TBDt(i) with i&nbsp;&lt; 24</td>
-      <td align="right">Type &gt; 255,<br/>label len. &gt; 23<br/>TBDt(i) with i&nbsp;&gt; 23</td>
-      <td align="right">Type &gt; 255,<br/>label len. &gt; 23<br/>TBDt(i) with i&nbsp;&gt; 255</td>
+      <td align="right">Type &gt; 255,<br/>label len. &gt; 23<br/>name uncompressed</td>
+      <td align="right">Type &gt; 255,<br/>Class &gt; 255,<br/>label len. &gt; 23<br/>name uncompressed</td>
     </tr>
     <tr>
       <td align="left">EDNS Opt Pseudo-RR</td>
