@@ -154,8 +154,8 @@ or resource record.
 
 ~~~ cddl
 domain-name = (
-  + label,
-  ? #6.TBDt(uint),
+  * label,
+  ? ( #6.TBDt(uint) / label ),
 )
 label = tstr
 ~~~
