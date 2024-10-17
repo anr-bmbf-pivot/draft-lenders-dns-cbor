@@ -181,7 +181,7 @@ For instance, the name "www.example.org" can be encountered twice in the expampl
   [ "example" / c == 0 /, "org" / c == 1 / ],
   # Answer section:
   [
-    # "example.org" CNAME (5) is "www.example.org"
+    # "example.org" (elided) CNAME (5) is "www.example.org"
     [ 5, "www" / c == 2 /, TBDt(0) / references c == 0 / ],
     # "www.example.org" AAAA (28, elided) is 2001:db8::1
     [
