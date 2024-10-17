@@ -841,98 +841,110 @@ IANA is requested to allocate the tags defined in {{tab-tag-values}}.
 
 ## DNS Queries {#sec:query-examples}
 
-[^10]{:mlenders}
-
 A DNS query of the record `AAAA` in class `IN` for name "example.org" is
 represented in CBOR extended diagnostic notation (EDN) (see Section 8 in
 {{-cbor}} and Appendix G in {{-cddl}}) as follows:
 
-    [["example.org"]]
-
+~~~ cbor-diag
+[["example", "org"]]
+~~~
 
 A query of an `A` record for the same name is represented as
 
-    [["example.org", 1]]
+~~~ cbor-diag
+[["example", "org", 1]]
+~~~
 
 A query of `ANY` record for that name is represented as
 
-    [["example.org", 255, 255]]
+~~~ cbor-diag
+[["example", "org", 255, 255]]
+~~~
 
 ## DNS Responses {#sec:response-examples}
 
-[^10]
-
 The responses to the examples provided in {{sec:query-examples}} are shown
-below. We use the CBOR extended diagnostic notation (EDN) (see Section 8 in
-{{-cbor}} and Appendix G in {{-cddl}}).
+below. We use the CBOR extended diagnostic notation (EDN) (see {{-edn}} and Appendix G in {{-cddl}}).
 
 To represent an `AAAA` record with TTL 300 seconds for the IPv6 address 2001:db8::1, a minimal
-response to `["example.org"]` could be
+response to `[["example", "org"]]` could be
 
-    [[[300, h'20010db8000000000000000000000001']]]
+~~~ cbor-diag
+[[[300, h'20010db8000000000000000000000001']]]
+~~~
 
 In this case, the name is derived from the query.
 
 If the name or the context is required, the following response would also
 be valid:
 
-    [[["example.org", 300, h'20010db8000000000000000000000001']]]
+~~~ cbor-diag
+[[["example", "org", 300, h'20010db8000000000000000000000001']]]
+~~~
 
 If the query can not be mapped to the response for some reason, a response
 would look like:
 
-    [["example.org"], [[300, h'20010db8000000000000000000000001']]]
+~~~ cbor-diag
+[["example", "org"], [[300, h'20010db8000000000000000000000001']]]
+~~~
 
 To represent a minimal response of an `A` record with TTL 3600 seconds for the IPv4 address
-192.0.2.1, a minimal response to `["example.org", 1]` could be
+192.0.2.1, a minimal response to `[["example", "org", 1]]` could be
 
-    [[300, h'c0000201']]
+~~~ cbor-diag
+[[[300, h'c0000201']]]
+~~~
 
 Note that here also the 1 of record type `A` can be elided, as this record
 type is specified in the question section.
 
-Lastly, a response to `["example.org", 255, 255]` could be
+Lastly, a response to `[["example", "org", 255, 255]]` could be
 
+~~~
+[
+  ["example", "org", 12, 1],
+  [[3600, "_coap", "_udp", "local"]],
+  [
+    [3600, 2, "ns1", TBDt(0)],
+    [3600, 2, "ns2", TBDt(0)]
+  ],
+  [
     [
-      ["example.org", 12, 1],
-      [[3600, "_coap._udp.local"]],
-      [
-        [3600, 2, "ns1.example.org"],
-        [3600, 2, "ns2.example.org"]
-      ],
-      [
-        [
-          "_coap._udp.local", 3600, 28,
-          h'20010db8000000000000000000000001'
-        ],
-        [
-          "_coap._udp.local", 3600, 28,
-          h'20010db8000000000000000000000002'
-        ],
-        [
-          "ns1.example.org", 3600, 28,
-          h'20010db8000000000000000000000035'
-        ],
-        [
-          "ns2.example.org", 3600, 28,
-          h'20010db8000000000000000000003535'
-        ]
-      ]
+      TBDt(2), 3600, 28,
+      h'20010db8000000000000000000000001'
+    ],
+    [
+      TBDt(2), 3600, 28,
+      h'20010db8000000000000000000000002'
+    ],
+    [
+      TBDt(5), 3600, 28,
+      h'20010db8000000000000000000000035'
+    ],
+    [
+      TBDt(6), 3600, 28,
+      h'20010db8000000000000000000003535'
     ]
+  ]
+]
+~~~
 
 This one advertises two local CoAP servers (identified by service name `_coap._udp.local`) at
 2001:db8::1 and 2001:db8::2 and two nameservers for the example.org domain, ns1.example.org at
 2001:db8::35 and ns2.example.org at 2001.db8::3535. Each of the transmitted records has a TTL of
 3600 seconds.
+Note the use of name compression (see {{sec:name-compression}}) in this example.
 
 # Comparison to Classic DNS Wire Format {#sec:comparison-to-classic-dns}
 
 {{tab-cbor-comparison}} shows a comparison between the classic DNS wire format and the
 application/dns+cbor format. Note that the worst case results typically appear only rarely in DNS.
 The classic DNS format is preferred in those cases. A key for which configuration was used in which
-case can be seen in {{tab-cbor-comparison-key}}.[^10]{:mlenders}
+case can be seen in {{tab-cbor-comparison-key}}. Any name label that is longer than 23 bytes adds
+a name overhead of 1 byte to its CBOR type header.[^10]{: mlenders}
 
-[^10]: TBD: Needs adoption for new features.
+[^10]: TBD: Also add structured RRs?.
 
 <table anchor="tab-cbor-comparison">
   <name>Comparison of application/dns+cbor to classic DNS format.</name>
@@ -967,23 +979,23 @@ case can be seen in {{tab-cbor-comparison-key}}.[^10]{:mlenders}
       <td align="left">Question section</td>
       <td align="right">6&nbsp;+&nbsp;name&nbsp;len.</td>
       <td align="right">2&nbsp;+&nbsp;name&nbsp;len.</td>
-      <td align="right">7&nbsp;+&nbsp;name&nbsp;len.</td>
-      <td align="right">10&nbsp;+&nbsp;name&nbsp;len.</td>
+      <td align="right">6&nbsp;+&nbsp;name&nbsp;len. + name&nbsp;overhead</td>
+      <td align="right">9&nbsp;+&nbsp;name&nbsp;len. + name&nbsp;overhead</td>
     </tr>
     <tr>
       <td align="left">Standard RR</td>
       <td align="right">12&nbsp;+&nbsp;name&nbsp;len. + rdata&nbsp;len.</td>
       <td align="right">3<br/> +&nbsp;rdata&nbsp;len.</td>
-      <td align="right">15&nbsp;+&nbsp;name&nbsp;len. + rdata&nbsp;len.</td>
-      <td align="right">18&nbsp;+&nbsp;name&nbsp;len. + rdata&nbsp;len.</td>
+      <td align="right">14&nbsp;+&nbsp;name&nbsp;len. + rdata&nbsp;len. + name&nbsp;overhead</td>
+      <td align="right">17&nbsp;+&nbsp;name&nbsp;len. + rdata&nbsp;len. + name&nbsp;overhead</td>
     </tr>
-    <!-- Add when name compression is in <tr>
+    <tr>
       <td align="left">Standard RR with name rdata</td>
       <td align="right">12 + name&nbsp;len. + rdata&nbsp;len.</td>
-      <td align="right">6 + rdata&nbsp;len.</td>
-      <td align="right">15 + name&nbsp;len. + rdata&nbsp;len.</td>
-      <td align="right">18 + name&nbsp;len. + rdata&nbsp;len.</td>
-    </tr>-->
+      <td align="right">4 + TBDt&nbsp;len.</td>
+      <td align="right">15 + name&nbsp;len. + TBDt&nbsp;len. + name&nbsp;overhead</td>
+      <td align="right">17 + name&nbsp;len. + TBDt&nbsp;len. + name&nbsp;overhead</td>
+    </tr>
     <tr>
       <td align="left">EDNS Opt Pseudo-RR</td>
       <td align="right">11 + options</td>
@@ -1030,21 +1042,21 @@ case can be seen in {{tab-cbor-comparison-key}}.[^10]{:mlenders}
     <tr>
       <td align="left">Question section</td>
       <td align="right">Class, type, and name elided</td>
-      <td align="right">Type &gt; 255,<br/>name len. &gt; 255</td>
-      <td align="right">Type &gt; 255,<br/>Class &gt; 255,<br/>name len. &gt; 255</td>
+      <td align="right">Type &gt; 255,<br/>label len. &gt; 23</td>
+      <td align="right">Type &gt; 255,<br/>Class &gt; 255,<br/>label len. &gt; 23</td>
     </tr>
     <tr>
       <td align="left">Standard RR</td>
       <td align="right">Class, type, and name elided,<br/>rdata len. &lt; 24</td>
-      <td align="right">Type &gt; 255,<br/>name len. &gt; 255<br/>rdata len. &gt; 255</td>
-      <td align="right">Type &gt; 255,<br/>Class &gt; 255,<br/>name len. &gt; 255<br/>rdata len. &gt; 255</td>
+      <td align="right">Type &gt; 255,<br/>label len. &gt; 23<br/>rdata len. &gt; 255</td>
+      <td align="right">Type &gt; 255,<br/>Class &gt; 255,<br/>label len. &gt;23<br/>rdata len. &gt; 255</td>
     </tr>
-    <!-- Add when name compression is in <tr>
+    <tr>
       <td align="left">Standard RR with name rdata</td>
-      <td align="right">6 + RDATA&nbsp;len. (5,8,name compressed)</td>
-      <td align="right">15 + name&nbsp;len. + RDATA&nbsp;len. (6,10,12)</td>
-      <td align="right">18 + name&nbsp;len. + RDATA&nbsp;len. (6,7,10,12)</td>
-    </tr>-->
+      <td align="right">Class, type, and name elided,<br/>TBDt(i) with i&nbsp;&lt; 24</td>
+      <td align="right">Type &gt; 255,<br/>label len. &gt; 23<br/>TBDt(i) with i&nbsp;&gt; 23</td>
+      <td align="right">Type &gt; 255,<br/>label len. &gt; 23<br/>TBDt(i) with i&nbsp;&gt; 255</td>
+    </tr>
     <tr>
       <td align="left">EDNS Opt Pseudo-RR</td>
       <td align="right">All EDNS(0) fields elided</td>
