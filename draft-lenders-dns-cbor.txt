@@ -1481,9 +1481,9 @@ Internet-Draft                  dns+cbor                    October 2024
    |RR      |  + rdata len.| + rdata len.|+ rdata len. +|+ rdata len. +|
    |        |              |             | name overhead| name overhead|
    +--------+--------------+-------------+--------------+--------------+
-   |Standard|12 + name len.|4 + TBDt len.|15 + name len.|17 + name len.|
-   |RR with |  + rdata len.|             | + TBDt len. +| + TBDt len. +|
-   |name    |              |             | name overhead| name overhead|
+   |Standard|12 + name len.|4 + TBDt len.|14 + name len.|16 + name len.|
+   |RR with |  + rdata len.|             |+ rdata len. +|+ rdata len. +|
+   |name    |              |             |name overheads|name overheads|
    |rdata   |              |             |              |              |
    +--------+--------------+-------------+--------------+--------------+
    |EDNS Opt|  11 + options|  2 + options|   6 + options|  14 + options|
@@ -1535,14 +1535,14 @@ Internet-Draft                  dns+cbor                    October 2024
    +-----------+------------------+-----------------+------------------+
    | Standard  |     Class, type, |     Type > 255, |      Type > 255, |
    | RR        |         and name | label len. > 23 |     Class > 255, |
-   |           |          elided, |    rdata len. > |   label len. >23 |
+   |           |          elided, |    rdata len. > |  label len. > 23 |
    |           |  rdata len. < 24 |             255 | rdata len. > 255 |
    +-----------+------------------+-----------------+------------------+
    | Standard  |     Class, type, |     Type > 255, |      Type > 255, |
-   | RR with   |         and name | label len. > 23 |  label len. > 23 |
-   | name      |          elided, |    TBDt(i) with | TBDt(i) with i > |
-   | rdata     |     TBDt(i) with |          i > 23 |              255 |
-   |           |           i < 24 |                 |                  |
+   | RR with   |         and name | label len. > 23 |     Class > 255, |
+   | name      |          elided, |            name |  label len. > 23 |
+   | rdata     |     TBDt(i) with |    uncompressed |             name |
+   |           |           i < 24 |                 |     uncompressed |
    +-----------+------------------+-----------------+------------------+
    | EDNS Opt  |      All EDNS(0) |     Rcode < 24, |      UDP payload |
    | Pseudo-RR |    fields elided |    DO flag set, |       len. > 255 |

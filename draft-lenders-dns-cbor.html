@@ -2537,8 +2537,8 @@ a name overhead of 1 byte to its CBOR type header.<span class="cref" id="_10">TB
             <td class="text-left" rowspan="1" colspan="1">Standard RR with name rdata</td>
             <td class="text-right" rowspan="1" colspan="1">12 + name len. + rdata len.</td>
             <td class="text-right" rowspan="1" colspan="1">4 + TBDt len.</td>
-            <td class="text-right" rowspan="1" colspan="1">15 + name len. + TBDt len. + name overhead</td>
-            <td class="text-right" rowspan="1" colspan="1">17 + name len. + TBDt len. + name overhead</td>
+            <td class="text-right" rowspan="1" colspan="1">14 + name len. + rdata len. + name overheads</td>
+            <td class="text-right" rowspan="1" colspan="1">16 + name len. + rdata len. + name overheads</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">EDNS Opt Pseudo-RR</td>
@@ -2608,7 +2608,7 @@ label len. &gt; 23        <br>
 rdata len. &gt; 255</td>
             <td class="text-right" rowspan="1" colspan="1">Type &gt; 255,        <br>
 Class &gt; 255,        <br>
-label len. &gt;23        <br>
+label len. &gt; 23        <br>
 rdata len. &gt; 255</td>
           </tr>
           <tr>
@@ -2617,10 +2617,11 @@ rdata len. &gt; 255</td>
 TBDt(i) with i &lt; 24</td>
             <td class="text-right" rowspan="1" colspan="1">Type &gt; 255,        <br>
 label len. &gt; 23        <br>
-TBDt(i) with i &gt; 23</td>
+name uncompressed</td>
             <td class="text-right" rowspan="1" colspan="1">Type &gt; 255,        <br>
+Class &gt; 255,        <br>
 label len. &gt; 23        <br>
-TBDt(i) with i &gt; 255</td>
+name uncompressed</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">EDNS Opt Pseudo-RR</td>
