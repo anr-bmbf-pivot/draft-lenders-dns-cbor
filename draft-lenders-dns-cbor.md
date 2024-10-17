@@ -140,13 +140,15 @@ If, for any reason, a DNS message cannot be represented in the CBOR format speci
 Domain names are represented by a sequence of one or more (unicode) text strings.
 For instance, "example.org" would be represented as `"example","org"` in CBOR diagnostic notation.
 The root domain "." is represented as an empty string `""`.
-The absence of any label means the name is elided.
+The absence of any label or tag TBDt (see {{sec:name-compression}} below) means the name is elided.
 For the purpose of this document, domain names remain case-insensitive as specified in {{-dns}}.
 
 The representation of a domain name is defined in {{fig:domain-name}}.
 
 This sequence of text strings is supposed to be embedded into a surrounding array, usually the query
 or resource record.
+
+### Name Compression {#sec:name-compression}
 
 {:cddl: sourcecode-name="dns-cbor.cddl"}
 
@@ -159,8 +161,39 @@ label = tstr
 ~~~
 {:cddl #fig:domain-name title="Domain Name Definition"}
 
-### Name Compression {#sec:name-compression}
+Names are compresessed by pointing to existing labels in the message.
+CBOR objects are typically decoded depth-first.
+Whenever we encounter a label we take the value of a counter _c_ as the position of that label.
+The counter _c_ is then increased.
 
+A tag TBDt may follow any sequence of labels, even an empty sequence.
+This tag TBDt encapsulates an unsigned integer _i_ which points to a label at position _i_.
+_i_ MUST be lesser than _c_.
+A name then is decoded as any label that then preceeded tag TBDt(_i_) and all labels including and following at position _i_ are appended.
+This includes any further occurrence of tag TBDt after the referenced label sequence, though the decoding stops after this tag was recursively decoded.
+
+For instance, the name "www.example.org" can be encountered twice in the expample in
+{{fig:name-compression-example}} (notated in CBOR Extended Diagnostic Notation, see {{-edn}}).
+
+~~~ cbor-diag
+[
+  # AAAA (28, elided) question for "example.org"
+  [ "example" / c == 0 /, "org" / c == 1 / ],
+  # Answer section:
+  [
+    # "example.org" CNAME (5) is "www.example.org"
+    [ 5, "www" / c == 2 /, TBDt(0) / references c == 0 / ],
+    # "www.example.org" AAAA (28, elided) is 2001:db8::1
+    [
+      TBDt(2) / references c == 2 /,
+      h'20010db8000000000000000000000001'
+    ]
+  ]
+]
+~~~
+{: #fig:name-compression-example title="Example for name compression." }
+
+<!--
 For name compression, a tag TBDt encapsulating an unsigned integer _i_ can be appended to the sequence of text strings.
 To extend the name suffix, the unsigned integer _i_ points to the _i_-th text string (counted depth first) in the overall DNS message.
 That string and all text strings or another tag TBDt following the string at the _i_-th position are appended to the name sequence.
@@ -168,9 +201,11 @@ If another tag TBDt is encountered, it is resolved in the same way.
 Strings following a tag TBDt MUST NOT be appended to the name sequence.
 To prevent circular references, this DNS name suffix extension algorithm should error whenever a string position is encountered more than once during the extension of a name.
 Likewise, the algorithm should error whenever the _i_ is greater than the position of the previous seen string from this occurrence of tag TBDt.
-Only backward referencing is allowed for tagTBDt.
+Only backward referencing is allowed for tag TBDt.
 Decompression stops when any other type than a text string or any other tag than tag TBDt are
 encountered.
+-->
+
 The pseudo-code for this DNS name suffix extension algorithm can be seen in {{fig:decode-name}}.
 
 ~~~
