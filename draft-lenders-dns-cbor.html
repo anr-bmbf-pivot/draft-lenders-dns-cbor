@@ -1035,7 +1035,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lenders, et al.</td>
-<td class="center">Expires 20 April 2025</td>
+<td class="center">Expires 22 April 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1048,12 +1048,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-lenders-dns-cbor-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-10-17" class="published">17 October 2024</time>
+<time datetime="2024-10-19" class="published">19 October 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-04-20">20 April 2025</time></dd>
+<dd class="expires"><time datetime="2025-04-22">22 April 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1117,7 +1117,7 @@ The primary purpose is to keep DNS messages small in constrained networks.<a hre
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 20 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 22 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1397,16 +1397,16 @@ label = tstr
 <a href="#name-domain-name-definition" class="selfRef">Domain Name Definition</a>
             </figcaption></figure>
 </div>
-<p id="section-3.1.1-2">Names are compresessed by pointing to existing labels in the message.
+<p id="section-3.1.1-2">Names are compressed by pointing to existing labels in the message.
 CBOR objects are typically decoded depth-first.
 Whenever we encounter a label we take the value of a counter <em>c</em> as the position of that label.
 The counter <em>c</em> is then increased.<a href="#section-3.1.1-2" class="pilcrow">¶</a></p>
 <p id="section-3.1.1-3">A tag TBDt may follow any sequence of labels, even an empty sequence.
 This tag TBDt encapsulates an unsigned integer <em>i</em> which points to a label at position <em>i</em>.
-<em>i</em> <span class="bcp14">MUST</span> be lesser than <em>c</em>.
-A name then is decoded as any label that then preceeded tag TBDt(<em>i</em>) and all labels including and following at position <em>i</em> are appended.
+<em>i</em> <span class="bcp14">MUST</span> be smaller than <em>c</em>.
+A name then is decoded as any label that then preceded tag TBDt(<em>i</em>) and all labels including and following at position <em>i</em> are appended.
 This includes any further occurrence of tag TBDt after the referenced label sequence, though the decoding stops after this tag was recursively decoded.<a href="#section-3.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-3.1.1-4">For instance, the name "www.example.org" can be encountered twice in the expample in
+<p id="section-3.1.1-4">For instance, the name "www.example.org" can be encountered twice in the example in
 <a href="#fig_name-compression-example" class="auto internal xref">Figure 3</a> (notated in CBOR Extended Diagnostic Notation, see <span>[<a href="#I-D.ietf-cbor-edn-literals" class="cite xref">I-D.ietf-cbor-edn-literals</a>]</span>).<a href="#section-3.1.1-4" class="pilcrow">¶</a></p>
 <span id="name-example-for-name-compressio"></span><div id="fig_name-compression-example">
 <figure id="figure-3">
@@ -1475,8 +1475,8 @@ function decode_name(obj: cbor_obj, cbor_ptr: cbor_major_type): list
         </h3>
 <p id="section-3.2-1">This document specifies the representation of both standard DNS resource records (RRs, see <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span>)
 and EDNS option pseudo-RRs (see <span>[<a href="#RFC6891" class="cite xref">RFC6891</a>]</span>.<span class="cref" id="_1">Also add capability to summarize Resource Record Sets to one array, e.g. <code>["example","org",3600,1,[b'c0002563', h'c00021ab']]</code>?<span class="crefSource">mlenders</span></span>
-If for any reason, a resource record can not be represented in the given formats, they can be
-represented in their binary wire-format form, as a byte string.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+If for any reason, a resource record cannot be represented in the given formats, they can be
+represented in their binary wire-format form as a byte string.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 <p id="section-3.2-2">Further special records, e.g., TSIG can be defined in follow-up specifications and are out of scope
 of this document.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
 <p id="section-3.2-3">The representation of a DNS resource records is defined in <a href="#fig_dns-rr" class="auto internal xref">Figure 5</a>.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
@@ -1531,7 +1531,7 @@ This way of representing the record data also means that name compression (see <
 Some initial array types are specified below.
 Future specifications can extend the definition for <code>$rdata-array</code> in <a href="#fig_dns-standard-rr" class="auto internal xref">Figure 6</a>.
 These extensions mainly serve to expose names to name compression (see <a href="#sec_name-compression" class="auto internal xref">Section 3.1.1</a>).
-There is an argument to be made for CBOR-structured formats of other record data representations (e.g. DNSKEY or RRSIG), but structuring such records as an array usually adds more overhead than just transfering the byte representation.
+There is an argument to be made for CBOR-structured formats of other record data representations (e.g. DNSKEY or RRSIG), but structuring such records as an array usually adds more overhead than just transferring the byte representation.
 As such, structured record data that do not contain names are always to be represented as a byte string.<a href="#section-3.2.1-7" class="pilcrow">¶</a></p>
 <span id="name-dns-standard-resource-recor"></span><div id="fig_dns-standard-rr">
 <figure id="figure-6">
@@ -1912,7 +1912,7 @@ extra-sections = (
         <h3 id="name-dns-responses">
 <a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-dns-responses" class="section-name selfRef">DNS Responses</a>
         </h3>
-<p id="section-3.4-1">DNS responses are encoded as a CBOR array containing up to 5 entries.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.4-1">A DNS response is encoded as a CBOR array containing up to 5 entries.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-3.4-2">
 <li id="section-3.4-2.1">
             <p id="section-3.4-2.1.1">An optional flag field (as unsigned integer),<a href="#section-3.4-2.1.1" class="pilcrow">¶</a></p>
@@ -1935,17 +1935,17 @@ extra-sections = (
 response, they <span class="bcp14">MUST</span> be set accordingly and thus included in the response.
 If the flags are not included, the flags are implied to be 0x8000 (everything unset except for the
 QR flag).<a href="#section-3.4-4" class="pilcrow">¶</a></p>
-<p id="section-3.4-5">If the response includes only 1 array, this is the DNS answer section represented as an
+<p id="section-3.4-5">If the response includes only one array, then the DNS answer section represents an
 array of one or more DNS Resource Records (see <a href="#sec_rr" class="auto internal xref">Section 3.2</a>).<a href="#section-3.4-5" class="pilcrow">¶</a></p>
 <p id="section-3.4-6">If the response includes more than 2 arrays, the first entry may be the question section, identified
 by not being an array of arrays. If it is present, it is followed by the answer section. The
 question section is encoded as specified in <a href="#sec_queries" class="auto internal xref">Section 3.3</a>.<a href="#section-3.4-6" class="pilcrow">¶</a></p>
-<p id="section-3.4-7">If the answer section is followed by 1 extra array, it is the additional section.
+<p id="section-3.4-7">If the answer section is followed by one extra array, this array is the additional section.
 Like the answer section, the additional section is represented as an array of one or more DNS Resource Records (see <a href="#sec_rr" class="auto internal xref">Section 3.2</a>).<a href="#section-3.4-7" class="pilcrow">¶</a></p>
-<p id="section-3.4-8">If the answer section is followed by 2 extra arrays, the first is the authority section, and the second the additional section.
+<p id="section-3.4-8">If the answer section is followed by two extra arrays, the first is the authority section, and the second is the additional section.
 The authority section is also represented as an array of one or more DNS Resource Records (see
 <a href="#sec_rr" class="auto internal xref">Section 3.2</a>).<a href="#section-3.4-8" class="pilcrow">¶</a></p>
-<p id="section-3.4-9">The authority section is given precedence in elision over the additional section, as due to EDNS options or, e.g., CNAME answers that also provide the A/AAAA records, the additional section tends to show up more often than the authority section.<a href="#section-3.4-9" class="pilcrow">¶</a></p>
+<p id="section-3.4-9">The authority section is given precedence in elision over the additional section, as due to EDNS options or, e.g., CNAME answers that also provide the A/AAAA records. The additional section tends to show up more often than the authority section.<a href="#section-3.4-9" class="pilcrow">¶</a></p>
 <span id="name-dns-response-definition"></span><div id="fig_dns-response">
 <figure id="figure-13">
           <div class="lang-cddl sourcecode" id="section-3.4-10.1">
@@ -1973,19 +1973,19 @@ dns-response = [
       </h2>
 <p id="section-4-1">If both DNS server and client support CBOR-packed <span>[<a href="#I-D.ietf-cbor-packed" class="cite xref">I-D.ietf-cbor-packed</a>]</span>, it <span class="bcp14">MAY</span> be used for further
 compression in DNS responses.
-Especially IPv6 addresses in, e.g., AAAA resource records can benefit from straight referencing to
+Especially IPv6 addresses, e.g., in AAAA resource records can benefit from straight referencing to
 compress common address prefixes.<a href="#section-4-1" class="pilcrow">¶</a></p>
 <div id="media-type-negotiation">
 <section id="section-4.1">
         <h3 id="name-media-type-negotiation">
 <a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-media-type-negotiation" class="section-name selfRef">Media Type Negotiation</a>
         </h3>
-<p id="section-4.1-1">A DNS client uses media type "application/dns+cbor;packed=1" to negotiate (see, e.g.,
-<span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> or <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, Section 5.5.4) with the DNS server if the server supports packed
+<p id="section-4.1-1">A DNS client uses the media type "application/dns+cbor;packed=1" to negotiate (see, e.g.,
+<span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> or <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, Section 5.5.4) with the DNS server whether the server supports packed
 CBOR.
 If it does, it <span class="bcp14">MAY</span> request the response to be in CBOR-packed (media type
-"applicaton/dns+cbor;packed=1").
-The server then <span class="bcp14">SHOULD</span> reply with the response in CBOR-packed which it also signals with media type
+"application/dns+cbor;packed=1").
+The server then <span class="bcp14">SHOULD</span> reply with the response in CBOR-packed, which it also signals with media type
 "application/dns+cbor;packed=1".<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1998,7 +1998,7 @@ The server then <span class="bcp14">SHOULD</span> reply with the response in CBO
 (<span>[<a href="#I-D.ietf-cbor-packed" class="cite xref">I-D.ietf-cbor-packed</a>]</span>, Section 3.1) with the rump being the compressed response.
 The difference to <span>[<a href="#I-D.ietf-cbor-packed" class="cite xref">I-D.ietf-cbor-packed</a>]</span> is that tag TBD113 is <span class="bcp14">OPTIONAL</span>.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.2-2">Packed compression of queries is not specified, as apart from EDNS(0) (see <a href="#sec_edns" class="auto internal xref">Section 3.2.2</a>), they only
-consist of one question most of the time, i.e., there is next to no redundancy.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+consist of one question most of the time, i.e., there is close to no redundancy.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec_pack-compression">
@@ -2006,8 +2006,7 @@ consist of one question most of the time, i.e., there is next to no redundancy.<
         <h3 id="name-compression">
 <a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-compression" class="section-name selfRef">Compression</a>
         </h3>
-<p id="section-4.3-1">How the compressor constructs the packing table, i.e., how the compression is applied, is out of
-scope of this document. Several potential compression algorithms were evaluated in [TBD].<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-1">The method of the compressor to construct the packing table, i.e., how the compression is applied, is out of scope of this document. Several potential compression algorithms were evaluated in [TBD].<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>

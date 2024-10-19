@@ -5,12 +5,12 @@
 CBOR                                                       M. S. Lenders
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              C. Bormann
-Expires: 20 April 2025                            Universität Bremen TZI
+Expires: 22 April 2025                            Universität Bremen TZI
                                                            T. C. Schmidt
                                                              HAW Hamburg
                                                              M. Wählisch
                                         TU Dresden & Barkhausen Institut
-                                                         17 October 2024
+                                                         19 October 2024
 
 
      A Concise Binary Object Representation (CBOR) of DNS Messages
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Lenders, et al.           Expires 20 April 2025                 [Page 1]
+Lenders, et al.           Expires 22 April 2025                 [Page 1]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -63,7 +63,7 @@ Internet-Draft                  dns+cbor                    October 2024
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 April 2025.
+   This Internet-Draft will expire on 22 April 2025.
 
 Copyright Notice
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Lenders, et al.           Expires 20 April 2025                 [Page 2]
+Lenders, et al.           Expires 22 April 2025                 [Page 2]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -165,7 +165,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                 [Page 3]
+Lenders, et al.           Expires 22 April 2025                 [Page 3]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -221,7 +221,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                 [Page 4]
+Lenders, et al.           Expires 22 April 2025                 [Page 4]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -251,22 +251,22 @@ Internet-Draft                  dns+cbor                    October 2024
 
                       Figure 2: Domain Name Definition
 
-   Names are compresessed by pointing to existing labels in the message.
+   Names are compressed by pointing to existing labels in the message.
    CBOR objects are typically decoded depth-first.  Whenever we
    encounter a label we take the value of a counter _c_ as the position
    of that label.  The counter _c_ is then increased.
 
    A tag TBDt may follow any sequence of labels, even an empty sequence.
    This tag TBDt encapsulates an unsigned integer _i_ which points to a
-   label at position _i_. _i_ MUST be lesser than _c_. A name then is
-   decoded as any label that then preceeded tag TBDt(_i_) and all labels
+   label at position _i_. _i_ MUST be smaller than _c_. A name then is
+   decoded as any label that then preceded tag TBDt(_i_) and all labels
    including and following at position _i_ are appended.  This includes
    any further occurrence of tag TBDt after the referenced label
    sequence, though the decoding stops after this tag was recursively
    decoded.
 
    For instance, the name "www.example.org" can be encountered twice in
-   the expample in Figure 3 (notated in CBOR Extended Diagnostic
+   the example in Figure 3 (notated in CBOR Extended Diagnostic
    Notation, see [I-D.ietf-cbor-edn-literals]).
 
 
@@ -277,7 +277,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                 [Page 5]
+Lenders, et al.           Expires 22 April 2025                 [Page 5]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -333,7 +333,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                 [Page 6]
+Lenders, et al.           Expires 22 April 2025                 [Page 6]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -346,9 +346,9 @@ Internet-Draft                  dns+cbor                    October 2024
    // Also add capability to summarize Resource Record Sets to one
    // array, e.g. ["example","org",3600,1,[b'c0002563', h'c00021ab']]?
    //
-   // -- mlenders If for any reason, a resource record can not be
+   // -- mlenders If for any reason, a resource record cannot be
    represented in the given formats, they can be represented in their
-   binary wire-format form, as a byte string.
+   binary wire-format form as a byte string.
 
    Further special records, e.g., TSIG can be defined in follow-up
    specifications and are out of scope of this document.
@@ -389,7 +389,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                 [Page 7]
+Lenders, et al.           Expires 22 April 2025                 [Page 7]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -419,9 +419,9 @@ Internet-Draft                  dns+cbor                    October 2024
    compression (see Section 3.1.1).  There is an argument to be made for
    CBOR-structured formats of other record data representations (e.g.
    DNSKEY or RRSIG), but structuring such records as an array usually
-   adds more overhead than just transfering the byte representation.  As
-   such, structured record data that do not contain names are always to
-   be represented as a byte string.
+   adds more overhead than just transferring the byte representation.
+   As such, structured record data that do not contain names are always
+   to be represented as a byte string.
 
    max-uint8 = 0..255
    max-uint16 = 0..65535
@@ -445,7 +445,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                 [Page 8]
+Lenders, et al.           Expires 22 April 2025                 [Page 8]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -501,7 +501,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                 [Page 9]
+Lenders, et al.           Expires 22 April 2025                 [Page 9]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -557,7 +557,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 10]
+Lenders, et al.           Expires 22 April 2025                [Page 10]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -613,7 +613,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 11]
+Lenders, et al.           Expires 22 April 2025                [Page 11]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -669,7 +669,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 12]
+Lenders, et al.           Expires 22 April 2025                [Page 12]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -725,7 +725,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 13]
+Lenders, et al.           Expires 22 April 2025                [Page 13]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -781,7 +781,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 14]
+Lenders, et al.           Expires 22 April 2025                [Page 14]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -831,13 +831,13 @@ Internet-Draft                  dns+cbor                    October 2024
 
 3.4.  DNS Responses
 
-   DNS responses are encoded as a CBOR array containing up to 5 entries.
+   A DNS response is encoded as a CBOR array containing up to 5 entries.
 
    1.  An optional flag field (as unsigned integer),
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 15]
+Lenders, et al.           Expires 22 April 2025                [Page 15]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -859,8 +859,8 @@ Internet-Draft                  dns+cbor                    October 2024
    included, the flags are implied to be 0x8000 (everything unset except
    for the QR flag).
 
-   If the response includes only 1 array, this is the DNS answer section
-   represented as an array of one or more DNS Resource Records (see
+   If the response includes only one array, then the DNS answer section
+   represents an array of one or more DNS Resource Records (see
    Section 3.2).
 
    If the response includes more than 2 arrays, the first entry may be
@@ -868,20 +868,20 @@ Internet-Draft                  dns+cbor                    October 2024
    it is present, it is followed by the answer section.  The question
    section is encoded as specified in Section 3.3.
 
-   If the answer section is followed by 1 extra array, it is the
-   additional section.  Like the answer section, the additional section
-   is represented as an array of one or more DNS Resource Records (see
-   Section 3.2).
+   If the answer section is followed by one extra array, this array is
+   the additional section.  Like the answer section, the additional
+   section is represented as an array of one or more DNS Resource
+   Records (see Section 3.2).
 
-   If the answer section is followed by 2 extra arrays, the first is the
-   authority section, and the second the additional section.  The
+   If the answer section is followed by two extra arrays, the first is
+   the authority section, and the second is the additional section.  The
    authority section is also represented as an array of one or more DNS
    Resource Records (see Section 3.2).
 
    The authority section is given precedence in elision over the
    additional section, as due to EDNS options or, e.g., CNAME answers
-   that also provide the A/AAAA records, the additional section tends to
-   show up more often than the authority section.
+   that also provide the A/AAAA records.  The additional section tends
+   to show up more often than the authority section.
 
    dns-response = [
      ? flags: max-uint16 .default 0x8000,
@@ -893,7 +893,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 16]
+Lenders, et al.           Expires 22 April 2025                [Page 16]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -904,19 +904,19 @@ Internet-Draft                  dns+cbor                    October 2024
 
    If both DNS server and client support CBOR-packed
    [I-D.ietf-cbor-packed], it MAY be used for further compression in DNS
-   responses.  Especially IPv6 addresses in, e.g., AAAA resource records
+   responses.  Especially IPv6 addresses, e.g., in AAAA resource records
    can benefit from straight referencing to compress common address
    prefixes.
 
 4.1.  Media Type Negotiation
 
-   A DNS client uses media type "application/dns+cbor;packed=1" to
+   A DNS client uses the media type "application/dns+cbor;packed=1" to
    negotiate (see, e.g., [RFC9110] or [RFC7252], Section 5.5.4) with the
-   DNS server if the server supports packed CBOR.  If it does, it MAY
-   request the response to be in CBOR-packed (media type "applicaton/
-   dns+cbor;packed=1").  The server then SHOULD reply with the response
-   in CBOR-packed which it also signals with media type "application/
-   dns+cbor;packed=1".
+   DNS server whether the server supports packed CBOR.  If it does, it
+   MAY request the response to be in CBOR-packed (media type
+   "application/dns+cbor;packed=1").  The server then SHOULD reply with
+   the response in CBOR-packed, which it also signals with media type
+   "application/dns+cbor;packed=1".
 
 4.2.  DNS Representation in CBOR-packed
 
@@ -927,13 +927,13 @@ Internet-Draft                  dns+cbor                    October 2024
 
    Packed compression of queries is not specified, as apart from EDNS(0)
    (see Section 3.2.2), they only consist of one question most of the
-   time, i.e., there is next to no redundancy.
+   time, i.e., there is close to no redundancy.
 
 4.3.  Compression
 
-   How the compressor constructs the packing table, i.e., how the
-   compression is applied, is out of scope of this document.  Several
-   potential compression algorithms were evaluated in [TBD].
+   The method of the compressor to construct the packing table, i.e.,
+   how the compression is applied, is out of scope of this document.
+   Several potential compression algorithms were evaluated in [TBD].
 
 5.  Implementation Status
 
@@ -949,7 +949,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 17]
+Lenders, et al.           Expires 22 April 2025                [Page 17]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -1005,7 +1005,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 18]
+Lenders, et al.           Expires 22 April 2025                [Page 18]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -1061,7 +1061,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 19]
+Lenders, et al.           Expires 22 April 2025                [Page 19]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -1117,7 +1117,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 20]
+Lenders, et al.           Expires 22 April 2025                [Page 20]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -1173,7 +1173,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 21]
+Lenders, et al.           Expires 22 April 2025                [Page 21]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -1229,7 +1229,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 22]
+Lenders, et al.           Expires 22 April 2025                [Page 22]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -1285,7 +1285,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 23]
+Lenders, et al.           Expires 22 April 2025                [Page 23]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -1341,7 +1341,7 @@ A.2.  DNS Responses
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 24]
+Lenders, et al.           Expires 22 April 2025                [Page 24]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -1397,7 +1397,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 25]
+Lenders, et al.           Expires 22 April 2025                [Page 25]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -1453,7 +1453,7 @@ Appendix B.  Comparison to Classic DNS Wire Format
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 26]
+Lenders, et al.           Expires 22 April 2025                [Page 26]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -1509,7 +1509,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 27]
+Lenders, et al.           Expires 22 April 2025                [Page 27]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -1565,7 +1565,7 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 28]
+Lenders, et al.           Expires 22 April 2025                [Page 28]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -1621,7 +1621,7 @@ C.5.  Since draft-lenders-dns-cbor-04
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 29]
+Lenders, et al.           Expires 22 April 2025                [Page 29]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -1677,7 +1677,7 @@ Authors' Addresses
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 30]
+Lenders, et al.           Expires 22 April 2025                [Page 30]
 
 Internet-Draft                  dns+cbor                    October 2024
 
@@ -1733,4 +1733,4 @@ Internet-Draft                  dns+cbor                    October 2024
 
 
 
-Lenders, et al.           Expires 20 April 2025                [Page 31]
+Lenders, et al.           Expires 22 April 2025                [Page 31]
