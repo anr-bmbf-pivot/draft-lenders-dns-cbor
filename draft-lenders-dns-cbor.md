@@ -161,18 +161,18 @@ label = tstr
 ~~~
 {:cddl #fig:domain-name title="Domain Name Definition"}
 
-Names are compresessed by pointing to existing labels in the message.
+Names are compressed by pointing to existing labels in the message.
 CBOR objects are typically decoded depth-first.
 Whenever we encounter a label we take the value of a counter _c_ as the position of that label.
 The counter _c_ is then increased.
 
 A tag TBDt may follow any sequence of labels, even an empty sequence.
 This tag TBDt encapsulates an unsigned integer _i_ which points to a label at position _i_.
-_i_ MUST be lesser than _c_.
-A name then is decoded as any label that then preceeded tag TBDt(_i_) and all labels including and following at position _i_ are appended.
+_i_ MUST be smaller than _c_.
+A name then is decoded as any label that then preceded tag TBDt(_i_) and all labels including and following at position _i_ are appended.
 This includes any further occurrence of tag TBDt after the referenced label sequence, though the decoding stops after this tag was recursively decoded.
 
-For instance, the name "www.example.org" can be encountered twice in the expample in
+For instance, the name "www.example.org" can be encountered twice in the example in
 {{fig:name-compression-example}} (notated in CBOR Extended Diagnostic Notation, see {{-edn}}).
 
 ~~~ cbor-diag
@@ -240,8 +240,8 @@ The tag TBDt is included in the definition in {{fig:domain-name}}.
 
 This document specifies the representation of both standard DNS resource records (RRs, see {{-dns}})
 and EDNS option pseudo-RRs (see {{-edns}}.[^1]{:mlenders}
-If for any reason, a resource record can not be represented in the given formats, they can be
-represented in their binary wire-format form, as a byte string.
+If for any reason, a resource record cannot be represented in the given formats, they can be
+represented in their binary wire-format form as a byte string.
 
 Further special records, e.g., TSIG can be defined in follow-up specifications and are out of scope
 of this document.
@@ -286,7 +286,7 @@ Depending on the record type, the record data may also be expressed as an array.
 Some initial array types are specified below.
 Future specifications can extend the definition for `$rdata-array` in {{fig:dns-standard-rr}}.
 These extensions mainly serve to expose names to name compression (see {{sec:name-compression}}).
-There is an argument to be made for CBOR-structured formats of other record data representations (e.g. DNSKEY or RRSIG), but structuring such records as an array usually adds more overhead than just transfering the byte representation.
+There is an argument to be made for CBOR-structured formats of other record data representations (e.g. DNSKEY or RRSIG), but structuring such records as an array usually adds more overhead than just transferring the byte representation.
 As such, structured record data that do not contain names are always to be represented as a byte string.
 
 ~~~ cddl
@@ -564,7 +564,7 @@ extra-sections = (
 
 ## DNS Responses {#sec:responses}
 
-DNS responses are encoded as a CBOR array containing up to 5 entries.
+A DNS response is encoded as a CBOR array containing up to 5 entries.
 
 1. An optional flag field (as unsigned integer),
 2. An optional question section (as array, encoded as described in {{sec:queries}})
@@ -579,21 +579,21 @@ response, they MUST be set accordingly and thus included in the response.
 If the flags are not included, the flags are implied to be 0x8000 (everything unset except for the
 QR flag).
 
-If the response includes only 1 array, this is the DNS answer section represented as an
+If the response includes only one array, then the DNS answer section represents an
 array of one or more DNS Resource Records (see {{sec:rr}}).
 
 If the response includes more than 2 arrays, the first entry may be the question section, identified
 by not being an array of arrays. If it is present, it is followed by the answer section. The
 question section is encoded as specified in {{sec:queries}}.
 
-If the answer section is followed by 1 extra array, it is the additional section.
+If the answer section is followed by one extra array, this array is the additional section.
 Like the answer section, the additional section is represented as an array of one or more DNS Resource Records (see {{sec:rr}}).
 
-If the answer section is followed by 2 extra arrays, the first is the authority section, and the second the additional section.
+If the answer section is followed by two extra arrays, the first is the authority section, and the second is the additional section.
 The authority section is also represented as an array of one or more DNS Resource Records (see
 {{sec:rr}}).
 
-The authority section is given precedence in elision over the additional section, as due to EDNS options or, e.g., CNAME answers that also provide the A/AAAA records, the additional section tends to show up more often than the authority section.
+The authority section is given precedence in elision over the additional section, as due to EDNS options or, e.g., CNAME answers that also provide the A/AAAA records. The additional section tends to show up more often than the authority section.
 
 ~~~ cddl
 dns-response = [
@@ -609,17 +609,17 @@ dns-response = [
 
 If both DNS server and client support CBOR-packed {{-cbor-packed}}, it MAY be used for further
 compression in DNS responses.
-Especially IPv6 addresses in, e.g., AAAA resource records can benefit from straight referencing to
+Especially IPv6 addresses, e.g., in AAAA resource records can benefit from straight referencing to
 compress common address prefixes.
 
 ## Media Type Negotiation
 
-A DNS client uses media type "application/dns+cbor;packed=1" to negotiate (see, e.g.,
-{{-http-semantics}} or {{-coap}}, Section 5.5.4) with the DNS server if the server supports packed
+A DNS client uses the media type "application/dns+cbor;packed=1" to negotiate (see, e.g.,
+{{-http-semantics}} or {{-coap}}, Section 5.5.4) with the DNS server whether the server supports packed
 CBOR.
 If it does, it MAY request the response to be in CBOR-packed (media type
-"applicaton/dns+cbor;packed=1").
-The server then SHOULD reply with the response in CBOR-packed which it also signals with media type
+"application/dns+cbor;packed=1").
+The server then SHOULD reply with the response in CBOR-packed, which it also signals with media type
 "application/dns+cbor;packed=1".
 
 ## DNS Representation in CBOR-packed
@@ -629,12 +629,11 @@ The representation of DNS responses in CBOR-packed has the same semantics as for
 The difference to {{-cbor-packed}} is that tag TBD113 is OPTIONAL.
 
 Packed compression of queries is not specified, as apart from EDNS(0) (see {{sec:edns}}), they only
-consist of one question most of the time, i.e., there is next to no redundancy.
+consist of one question most of the time, i.e., there is close to no redundancy.
 
 ## Compression {#sec:pack-compression}
 
-How the compressor constructs the packing table, i.e., how the compression is applied, is out of
-scope of this document. Several potential compression algorithms were evaluated in \[TBD\].
+The method of the compressor to construct the packing table, i.e., how the compression is applied, is out of scope of this document. Several potential compression algorithms were evaluated in \[TBD\].
 
 <!--
 Discussion TBD:
