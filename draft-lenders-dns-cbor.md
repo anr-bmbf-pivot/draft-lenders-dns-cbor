@@ -1082,6 +1082,8 @@ Since [draft-lenders-dns-cbor-08]
 - Add RFC1035-like name compression
 - Add switching boolean to query message to explicitly have question present in response
 - Make EDNS options a map
+- Update examples and comparison table in appendices
+- Update implementation section
 
 Since [draft-lenders-dns-cbor-07]
 ---------------------------------
