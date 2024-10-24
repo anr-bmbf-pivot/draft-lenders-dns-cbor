@@ -55,6 +55,7 @@ author:
 normative:
   RFC1035: dns
   RFC3596: aaaa
+  RFC5891: idna
   RFC6891: edns
   RFC7252: coap
   RFC8610: cddl
@@ -144,6 +145,8 @@ The absence of any label or tag TBDt (see {{sec:name-compression}} below) means 
 For the purpose of this document, domain names remain case-insensitive as specified in {{-dns}}.
 
 The representation of a domain name is defined in {{fig:domain-name}}.
+A label may either be encoded in ASCII-compatible encoding (ACE) {{-idna}} embedded within UTF-8 encoding of the text strings or plain UTF-8.
+It is RECOMMENDED to use the encoding with the shorter length in bytes.
 
 This sequence of text strings is supposed to be embedded into a surrounding array, usually the query
 or resource record.
