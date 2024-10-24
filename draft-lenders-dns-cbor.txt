@@ -237,9 +237,10 @@ Internet-Draft                  dns+cbor                    October 2024
    specified in [RFC1035].
 
    The representation of a domain name is defined in Figure 2.  A label
-   may either be encoded in ASCII-compatible encoding [RFC5891] embedded
-   within UTF-8 encoding of the text strings or plain UTF-8.  It is
-   RECOMMENDED to use the encoding with the shorter length in bytes.
+   may either be encoded in ASCII-compatible encoding (ACE) [RFC5891]
+   embedded within UTF-8 encoding of the text strings or plain UTF-8.
+   It is RECOMMENDED to use the encoding with the shorter length in
+   bytes.
 
    This sequence of text strings is supposed to be embedded into a
    surrounding array, usually the query or resource record.
@@ -271,7 +272,6 @@ Internet-Draft                  dns+cbor                    October 2024
    For instance, the name "www.example.org" can be encountered twice in
    the example in Figure 3 (notated in CBOR Extended Diagnostic
    Notation, see [I-D.ietf-cbor-edn-literals]).
-
 
 
 
