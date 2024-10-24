@@ -147,6 +147,7 @@ For the purpose of this document, domain names remain case-insensitive as specif
 The representation of a domain name is defined in {{fig:domain-name}}.
 A label may either be encoded in ASCII-compatible encoding (ACE) {{-idna}} embedded within UTF-8 encoding of the text strings or plain UTF-8.
 It is RECOMMENDED to use the encoding with the shorter length in bytes.
+A decoder MAY identify the ACE encoding by identifying the label as a valid A-label (see {{-idna}}) and MUST assume the label to be encoded in UTF-8 otherwise.
 
 This sequence of text strings is supposed to be embedded into a surrounding array, usually the query
 or resource record.
