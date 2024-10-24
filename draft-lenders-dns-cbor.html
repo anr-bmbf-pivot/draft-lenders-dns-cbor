@@ -1376,7 +1376,8 @@ The absence of any label or tag TBDt (see <a href="#sec_name-compression" class=
 For the purpose of this document, domain names remain case-insensitive as specified in <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span>.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2">The representation of a domain name is defined in <a href="#fig_domain-name" class="auto internal xref">Figure 2</a>.
 A label may either be encoded in ASCII-compatible encoding (ACE) <span>[<a href="#RFC5891" class="cite xref">RFC5891</a>]</span> embedded within UTF-8 encoding of the text strings or plain UTF-8.
-It is <span class="bcp14">RECOMMENDED</span> to use the encoding with the shorter length in bytes.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+It is <span class="bcp14">RECOMMENDED</span> to use the encoding with the shorter length in bytes.
+A decoder can identify the encoding by identifying the label as an XN-label <span>[<a href="#RFC5891" class="cite xref">RFC5891</a>]</span>.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <p id="section-3.1-3">This sequence of text strings is supposed to be embedded into a surrounding array, usually the query
 or resource record.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
 <div id="sec_name-compression">
