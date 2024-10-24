@@ -241,7 +241,7 @@ Internet-Draft                  dns+cbor                    October 2024
    embedded within UTF-8 encoding of the text strings or plain UTF-8.
    It is RECOMMENDED to use the encoding with the shorter length in
    bytes.  A decoder can identify the encoding by identifying the label
-   as an XN-label [RFC5891].
+   as an XN-label (see [RFC5891]).
 
    This sequence of text strings is supposed to be embedded into a
    surrounding array, usually the query or resource record.
