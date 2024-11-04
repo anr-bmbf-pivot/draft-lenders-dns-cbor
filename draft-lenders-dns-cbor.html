@@ -1461,7 +1461,8 @@ The counter <em>c</em> is then increased.<a href="#section-3.1.1-2" class="pilcr
 This tag TBDt encapsulates an unsigned integer <em>i</em> which points to a label at position <em>i</em>.
 <em>i</em> <span class="bcp14">MUST</span> be smaller than <em>c</em>.
 A name then is decoded as any label that then preceded tag TBDt(<em>i</em>) and all labels including and following at position <em>i</em> are appended.
-This includes any further occurrence of tag TBDt after the referenced label sequence, though the decoding stops after this tag was recursively decoded.<a href="#section-3.1.1-3" class="pilcrow">¶</a></p>
+This includes any further occurrence of tag TBDt after the referenced label sequence, though the decoding stops after this tag was recursively decoded.
+Note, that this also may include simple values or tags that reference the packing table with CBOR-packed (see <a href="#sec_cbor-packed" class="auto internal xref">Section 4</a>).<a href="#section-3.1.1-3" class="pilcrow">¶</a></p>
 <p id="section-3.1.1-4">For instance, the name "www.example.org" can be encountered twice in the example in
 <a href="#fig_name-compression-example" class="auto internal xref">Figure 3</a> (notated in CBOR Extended Diagnostic Notation, see <span>[<a href="#I-D.ietf-cbor-edn-literals" class="cite xref">I-D.ietf-cbor-edn-literals</a>]</span>).<a href="#section-3.1.1-4" class="pilcrow">¶</a></p>
 <span id="name-example-for-name-compressio"></span><div id="fig_name-compression-example">
@@ -1776,14 +1777,14 @@ srv = [
 </li>
               <li class="normal" id="section-3.2.1.4-2.3">
                 <p id="section-3.2.1.4-2.3.1">SvcParams as an array of alternating pairs of SvcParamKey (as unsigned integer) and SvcParamValue
-(as byte string).<a href="#section-3.2.1.4-2.3.1" class="pilcrow">¶</a></p>
+(as byte string).<span class="cref" id="_5">May needs some love?<span class="crefSource">mlenders</span></span><a href="#section-3.2.1.4-2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 <p id="section-3.2.1.4-3">If the SvcPriority is present can be determined by checking if the record data array starts with an unsigned integer or not.
 If the array does not start with an unsigned integer, the SvcPriority is elided and defaults to 0, i.e., the record is in AliasMode (see <span><a href="https://rfc-editor.org/rfc/rfc9460#section-2.4.2" class="relref">Section 2.4.2</a> of [<a href="#RFC9460" class="cite xref">RFC9460</a>]</span>).
 If the array starts with a unsigned integer, it is the SvcPriority.<a href="#section-3.2.1.4-3" class="pilcrow">¶</a></p>
-<p id="section-3.2.1.4-4">If the TargetName is present can be determined by checkinf if the record data array has a text string after the SvcPriority, i.e., if the SvcPriority is elided the array would start with a text string or tag TBDt.
-If there is no text string or tag TBDt after the SvcPriority, the TargetName is elided and defaults to the sequence of text strings <code>""</code> (i.e. the root domain "." in the common name representation defined in <span><a href="https://rfc-editor.org/rfc/rfc1035#section-2.3.1" class="relref">Section 2.3.1</a> of [<a href="#RFC1035" class="cite xref">RFC1035</a>]</span>, see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>), see <span><a href="https://rfc-editor.org/rfc/rfc9460#section-2.5" class="relref">Section 2.5</a> of [<a href="#RFC9460" class="cite xref">RFC9460</a>]</span>.
+<p id="section-3.2.1.4-4">If the TargetName is present can be determined by checking if the record data array has a text string or tag TBDt after the SvcPriority, i.e., if the SvcPriority is elided the array would start with a text string or tag TBDt.
+If there is no text string or tag TBDt after the SvcPriority, the TargetName is elided and defaults to the sequence of text strings <code>""</code> (i.e. the root domain "." in the common name representation defined in <span><a href="https://rfc-editor.org/rfc/rfc1035#section-2.3.1" class="relref">Section 2.3.1</a> of [<a href="#RFC1035" class="cite xref">RFC1035</a>]</span>, see <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>) and <span><a href="https://rfc-editor.org/rfc/rfc9460#section-2.5" class="relref">Section 2.5</a> of [<a href="#RFC9460" class="cite xref">RFC9460</a>]</span>.
 If there is a text string or tag TBDt after the SvcPriority, the TargetName is not elided and in the domain name form specified in <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>.<a href="#section-3.2.1.4-4" class="pilcrow">¶</a></p>
 <p id="section-3.2.1.4-5">The definition for SVCB and HTTPS record data can be seen in <a href="#fig_dns-rdata-svcb" class="auto internal xref">Figure 10</a>.<a href="#section-3.2.1.4-5" class="pilcrow">¶</a></p>
 <span id="name-svcb-and-https-resource-rec"></span><div id="fig_dns-rdata-svcb">
@@ -2022,7 +2023,7 @@ dns-response = [
 </div>
 </section>
 </div>
-<div id="further-compression-with-cbor-packed">
+<div id="sec_cbor-packed">
 <section id="section-4">
       <h2 id="name-further-compression-with-cb">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-further-compression-with-cb" class="section-name selfRef">Further Compression with CBOR-packed</a>
