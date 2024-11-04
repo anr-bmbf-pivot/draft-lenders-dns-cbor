@@ -255,7 +255,7 @@ The representation of a DNS resource records is defined in {{fig:dns-rr}}.
 [^1]: Also add capability to summarize Resource Record Sets to one array, e.g. `["example","org",3600,1,[b'c0002563', h'c00021ab']]`?
 
 ~~~ cddl
-dns-rr = rr / #6.141(opt-rr) / bstr
+$$dns-rr = rr / #6.141(opt-rr) / bstr
 ~~~
 {:cddl #fig:dns-rr title="DNS Resource Record Definition"}
 
@@ -558,10 +558,10 @@ query-extra-sections = (
   ? answer-section,
   extra-sections,
 )
-answer-section = [+ dns-rr]
+answer-section = [+ $$dns-rr]
 extra-sections = (
-  ? authority: [+ dns-rr],
-  additional: [+ dns-rr],
+  ? authority: [+ $$dns-rr],
+  additional: [+ $$dns-rr],
 )
 ~~~
 {:cddl #fig:dns-query title="DNS Query Definition"}
