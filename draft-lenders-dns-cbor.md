@@ -175,6 +175,7 @@ This tag TBDt encapsulates an unsigned integer _i_ which points to a label at po
 _i_ MUST be smaller than _c_.
 A name then is decoded as any label that then preceded tag TBDt(_i_) and all labels including and following at position _i_ are appended.
 This includes any further occurrence of tag TBDt after the referenced label sequence, though the decoding stops after this tag was recursively decoded.
+Note, that this also may include simple values or tags that reference the packing table with CBOR-packed (see {{sec:cbor-packed}}).
 
 For instance, the name "www.example.org" can be encountered twice in the example in
 {{fig:name-compression-example}} (notated in CBOR Extended Diagnostic Notation, see {{-edn}}).
@@ -412,14 +413,16 @@ The record data of RRs with `record-type` = 64 (SVCB) and `record-type` = 65 (HT
 - An optional SvcPriority as an unsigned integer,
 - An optional TargetName as a domain name (see {{sec:domain-names}}), and
 - SvcParams as an array of alternating pairs of SvcParamKey (as unsigned integer) and SvcParamValue
-  (as byte string).
+  (as byte string).[^5]{:mlenders}
+
+[^5]: May needs some love?
 
 If the SvcPriority is present can be determined by checking if the record data array starts with an unsigned integer or not.
 If the array does not start with an unsigned integer, the SvcPriority is elided and defaults to 0, i.e., the record is in AliasMode (see {{Section 2.4.2 of -svcb}}).
 If the array starts with a unsigned integer, it is the SvcPriority.
 
-If the TargetName is present can be determined by checkinf if the record data array has a text string after the SvcPriority, i.e., if the SvcPriority is elided the array would start with a text string or tag TBDt.
-If there is no text string or tag TBDt after the SvcPriority, the TargetName is elided and defaults to the sequence of text strings `""` (i.e. the root domain "." in the common name representation defined in {{Section 2.3.1 of -dns}}, see {{sec:domain-names}}), see {{Section 2.5 of -svcb}}.
+If the TargetName is present can be determined by checking if the record data array has a text string or tag TBDt after the SvcPriority, i.e., if the SvcPriority is elided the array would start with a text string or tag TBDt.
+If there is no text string or tag TBDt after the SvcPriority, the TargetName is elided and defaults to the sequence of text strings `""` (i.e. the root domain "." in the common name representation defined in {{Section 2.3.1 of -dns}}, see {{sec:domain-names}}) and {{Section 2.5 of -svcb}}.
 If there is a text string or tag TBDt after the SvcPriority, the TargetName is not elided and in the domain name form specified in {{sec:domain-names}}.
 
 The definition for SVCB and HTTPS record data can be seen in {{fig:dns-rdata-svcb}}.
@@ -609,7 +612,7 @@ dns-response = [
 ~~~
 {:cddl #fig:dns-response title="DNS Response Definition"}
 
-# Further Compression with CBOR-packed
+# Further Compression with CBOR-packed {#sec:cbor-packed}
 
 If both DNS server and client support CBOR-packed {{-cbor-packed}}, it MAY be used for further
 compression in DNS responses.
