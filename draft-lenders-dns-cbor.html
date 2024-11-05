@@ -1373,11 +1373,12 @@ Fragmentation combined with high packet loss multiplies the likelihood of loss.
 Hence, a compression format that reduces fragmentation of DNS messages is beneficial.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">This document specifies a compressed data format for DNS messages using Concise Binary Object Representation (CBOR) <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> encoding. Additionally,  unnecessary or redundant information are stripped off DNS messages.  To use the outcome of this specification in DoH and DoC,
 this document also specifies a Media Type header for DoH and a Content-Format option for DoC.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">Note, that there is another format that expreses DNS messages in CBOR, C-DNS <span>[<a href="#RFC8618" class="cite xref">RFC8618</a>]</span>.
+<p id="section-1-4">Note, that there is another format that expresses DNS messages in CBOR, C-DNS <span>[<a href="#RFC8618" class="cite xref">RFC8618</a>]</span>.
 C-DNS is primarily a file format to minimize traces of multiple DNS messages and uses the fact that there are multiple messages to do its compression.
-Common values such as names or addresses are collected in separate tables which are referenced from the messages, comparable to CBOR-packed <span>[<a href="#I-D.ietf-cbor-packed" class="cite xref">I-D.ietf-cbor-packed</a>]</span>.<a href="#section-1-4" class="pilcrow">¶</a></p>
+Common values such as names or addresses are collected in separate tables which are referenced from the messages, comparable to CBOR-packed <span>[<a href="#I-D.ietf-cbor-packed" class="cite xref">I-D.ietf-cbor-packed</a>]</span>.
+However, this may add overhead for individual DNS messages.<a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">The format described in this document is a transfer format that aims to provide conciseness and compression for individual DNS messages to be sent over the network.
-This is achieved using the following objectives:<a href="#section-1-5" class="pilcrow">¶</a></p>
+This is achieved applying the following objectives:<a href="#section-1-5" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-1-6">
 <li id="section-1-6.1">
           <p id="section-1-6.1.1">Encoding DNS messages in CBOR (conciseness),<a href="#section-1-6.1.1" class="pilcrow">¶</a></p>

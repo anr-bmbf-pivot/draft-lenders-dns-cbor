@@ -83,7 +83,7 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   4
-   3.  CBOR Representations (application/dns+cbor) . . . . . . . . .   4
+   3.  CBOR Representations (application/dns+cbor) . . . . . . . . .   5
      3.1.  Domain Name Representation  . . . . . . . . . . . . . . .   5
        3.1.1.  Name Compression  . . . . . . . . . . . . . . . . . .   5
      3.2.  DNS Resource Records  . . . . . . . . . . . . . . . . . .   7
@@ -156,12 +156,12 @@ Internet-Draft                  dns+cbor                   November 2024
    DoC, this document also specifies a Media Type header for DoH and a
    Content-Format option for DoC.
 
-   Note, that there is another format that expreses DNS messages in
-   CBOR, C-DNS [RFC8618].  C-DNS is primarily a file format to minimize
-   traces of multiple DNS messages and uses the fact that there are
-   multiple messages to do its compression.  Common values such as names
-   or addresses are collected in separate tables which are referenced
-   from the messages, comparable to CBOR-packed [I-D.ietf-cbor-packed].
+
+
+
+
+
+
 
 
 
@@ -170,9 +170,17 @@ Lenders, et al.            Expires 9 May 2025                   [Page 3]
 Internet-Draft                  dns+cbor                   November 2024
 
 
+   Note, that there is another format that expresses DNS messages in
+   CBOR, C-DNS [RFC8618].  C-DNS is primarily a file format to minimize
+   traces of multiple DNS messages and uses the fact that there are
+   multiple messages to do its compression.  Common values such as names
+   or addresses are collected in separate tables which are referenced
+   from the messages, comparable to CBOR-packed [I-D.ietf-cbor-packed].
+   However, this may add overhead for individual DNS messages.
+
    The format described in this document is a transfer format that aims
    to provide conciseness and compression for individual DNS messages to
-   be sent over the network.  This is achieved using the following
+   be sent over the network.  This is achieved applying the following
    objectives:
 
    1.  Encoding DNS messages in CBOR (conciseness),
@@ -210,14 +218,6 @@ Internet-Draft                  dns+cbor                   November 2024
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-3.  CBOR Representations (application/dns+cbor)
-
-   DNS messages are represented as CBOR arrays to minimize overhead.
-   All CBOR items used in this specification are of definite length.
-   CBOR arrays that do not follow the length definitions of this or of
-   follow-up specifications, MUST be silently ignored.  CBOR arrays that
-   exceed the message size provided by the transport, MUST be silently
-   ignored.  It is assumed that DNS query and DNS response are
 
 
 
@@ -226,6 +226,14 @@ Lenders, et al.            Expires 9 May 2025                   [Page 4]
 Internet-Draft                  dns+cbor                   November 2024
 
 
+3.  CBOR Representations (application/dns+cbor)
+
+   DNS messages are represented as CBOR arrays to minimize overhead.
+   All CBOR items used in this specification are of definite length.
+   CBOR arrays that do not follow the length definitions of this or of
+   follow-up specifications, MUST be silently ignored.  CBOR arrays that
+   exceed the message size provided by the transport, MUST be silently
+   ignored.  It is assumed that DNS query and DNS response are
    distinguished message types and that the query can be mapped to the
    response by the transfer protocol of choice.  To define the
    representation of binary objects we use the Concise Data Definition
@@ -265,14 +273,6 @@ Internet-Draft                  dns+cbor                   November 2024
 
 3.1.1.  Name Compression
 
-   domain-name = (
-     * label,
-     ? ( #6.TBDt(uint) / label ),
-   )
-   label = tstr
-
-                      Figure 2: Domain Name Definition
-
 
 
 
@@ -281,6 +281,14 @@ Lenders, et al.            Expires 9 May 2025                   [Page 5]
 
 Internet-Draft                  dns+cbor                   November 2024
 
+
+   domain-name = (
+     * label,
+     ? ( #6.TBDt(uint) / label ),
+   )
+   label = tstr
+
+                      Figure 2: Domain Name Definition
 
    Names are compressed by pointing to existing labels in the message.
    CBOR objects are typically decoded depth-first.  Whenever we
@@ -320,14 +328,6 @@ Internet-Draft                  dns+cbor                   November 2024
 
    The pseudo-code for this DNS name suffix extension algorithm can be
    seen in Figure 4.
-
-
-
-
-
-
-
-
 
 
 
