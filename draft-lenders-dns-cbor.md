@@ -442,8 +442,9 @@ svcb = [
 
 svc-param-pair = (
   svc-param-key: max-uint16,
-  svc-param-value: bstr,
+  svc-param-value: $$svc-param-value,
 )
+$$svc-param-value = bstr
 ~~~
 {:cddl #fig:dns-rdata-svcb title="SVCB and HTTPS Resource Record Data Definition"}
 
@@ -474,11 +475,10 @@ Note that future EDNS versions may require a different format than the one descr
 ~~~ cddl
 opt-rr = [
   ? udp-payload-size: max-uint16 .default 512,
-  options: {* ocode => odata },
+  options: {* ocode => $$odata },
   ? opt-rcode-v-flags,
 ]
 ocode = max-uint16
-odata = bstr
 opt-rcode-v-flags = (
   flags: max-uint16 .default 0,
   ? opt-rcode-v,
@@ -488,6 +488,7 @@ opt-rcode-v = (
   rcode: rcode .default 0,
   ? version: max-uint8 .default 0,
 )
+$$odata = bstr
 ~~~
 {:cddl #fig:dns-opt-rr title="DNS OPT Resource Record Definition"}
 
