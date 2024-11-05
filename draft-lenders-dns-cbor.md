@@ -71,6 +71,7 @@ informative:
   RFC7228: constr-terms
   RFC8484: doh
   RFC8499: dns-terms
+  RFC8618: cdns
   RFC8724: schc
   RFC8824: coap-schc
   RFC9110: http-semantics
@@ -102,6 +103,18 @@ Hence, a compression format that reduces fragmentation of DNS messages is benefi
 
 This document specifies a compressed data format for DNS messages using Concise Binary Object Representation (CBOR) {{-cbor}} encoding. Additionally,  unnecessary or redundant information are stripped off DNS messages.  To use the outcome of this specification in DoH and DoC,
 this document also specifies a Media Type header for DoH and a Content-Format option for DoC.
+
+Note, that there is another format that expreses DNS messages in CBOR, C-DNS {{-cdns}}.
+C-DNS is primarily a file format to minimize traces of multiple DNS messages and uses the fact that there are multiple messages to do its compression.
+Common values such as names or addresses are collected in separate tables which are referenced from the messages, comparable to CBOR-packed {{-cbor-packed}}.
+
+The format described in this document is a transfer format that aims to provide conciseness and compression for individual DNS messages to be sent over the network.
+This is achieved using the following objectives:
+
+1. Encoding DNS messages in CBOR (conciseness),
+2. Omitting (redundant) fields in DNS queries and responses (conciseness),
+3. Providing easy to implement name compression that allows for on-the-fly construction of DNS queries and responses (compression), and
+4. Providing optional address and value compression in DNS responses using CBOR-packed {{-cbor-packed}} (compression).
 
 # Terminology
 
