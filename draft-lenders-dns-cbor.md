@@ -104,7 +104,7 @@ Hence, a compression format that reduces fragmentation of DNS messages is benefi
 This document specifies a compressed data format for DNS messages using Concise Binary Object Representation (CBOR) {{-cbor}} encoding. Additionally,  unnecessary or redundant information are stripped off DNS messages.  To use the outcome of this specification in DoH and DoC,
 this document also specifies a Media Type header for DoH and a Content-Format option for DoC.
 
-Note, that there is another format that expreses DNS messages in CBOR, C-DNS {{-cdns}}.
+Note, that there is another format that expresses DNS messages in CBOR, C-DNS {{-cdns}}.
 C-DNS is primarily a file format to minimize traces of multiple DNS messages and uses the fact that there are multiple messages to do its compression.
 Common values such as names or addresses are collected in separate tables which are referenced from the messages, comparable to CBOR-packed {{-cbor-packed}}.
 However, this may add overhead for individual DNS messages.
