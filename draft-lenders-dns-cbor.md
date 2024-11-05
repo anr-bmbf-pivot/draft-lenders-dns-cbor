@@ -109,7 +109,7 @@ C-DNS is primarily a file format to minimize traces of multiple DNS messages and
 Common values such as names or addresses are collected in separate tables which are referenced from the messages, comparable to CBOR-packed {{-cbor-packed}}.
 
 The format described in this document is a transfer format that aims to provide conciseness and compression for individual DNS messages to be sent over the network.
-This is achieved using the following objectives:
+This is achieved applying the following objectives:
 
 1. Encoding DNS messages in CBOR (conciseness),
 2. Omitting (redundant) fields in DNS queries and responses (conciseness),
