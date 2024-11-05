@@ -107,6 +107,7 @@ this document also specifies a Media Type header for DoH and a Content-Format op
 Note, that there is another format that expreses DNS messages in CBOR, C-DNS {{-cdns}}.
 C-DNS is primarily a file format to minimize traces of multiple DNS messages and uses the fact that there are multiple messages to do its compression.
 Common values such as names or addresses are collected in separate tables which are referenced from the messages, comparable to CBOR-packed {{-cbor-packed}}.
+However, this may add overhead for individual DNS messages.
 
 The format described in this document is a transfer format that aims to provide conciseness and compression for individual DNS messages to be sent over the network.
 This is achieved applying the following objectives:
