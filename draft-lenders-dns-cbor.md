@@ -427,9 +427,7 @@ The record data of RRs with `record-type` = 64 (SVCB) and `record-type` = 65 (HT
 - An optional SvcPriority as an unsigned integer,
 - An optional TargetName as a domain name (see {{sec:domain-names}}), and
 - SvcParams as an array of alternating pairs of SvcParamKey (as unsigned integer) and SvcParamValue
-  (as byte string).[^5]{:mlenders}
-
-[^5]: May needs some love?
+  (as byte string).
 
 If the SvcPriority is present can be determined by checking if the record data array starts with an unsigned integer or not.
 If the array does not start with an unsigned integer, the SvcPriority is elided and defaults to 0, i.e., the record is in AliasMode (see {{Section 2.4.2 of -svcb}}).
