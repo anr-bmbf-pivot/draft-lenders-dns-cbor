@@ -1105,15 +1105,15 @@ Internet-Draft                  dns+cbor                   November 2024
 
       Macintosh file type code(s): none
 
-   Person & email address to contact for further information: Martine S.
-   Lenders m.lenders@fu-berlin.de (mailto:m.lenders@fu-berlin.de)
+   Person & email address to contact for further information: IETF CBOR
+   Working Group (cbor@ietf.org) or IETF Applications and Real-Time Area
+   (art@ietf.org)
 
    Intended usage: COMMON
 
    Restrictions on Usage: None?
 
-   Author: Martine S.  Lenders m.lenders@fu-berlin.de
-   (mailto:m.lenders@fu-berlin.de)
+
 
 
 
@@ -1122,8 +1122,10 @@ Lenders, et al.            Expires 11 May 2025                 [Page 20]
 Internet-Draft                  dns+cbor                   November 2024
 
 
-   Change controller: Martine S.  Lenders m.lenders@fu-berlin.de
+   Author: Martine S.  Lenders m.lenders@fu-berlin.de
    (mailto:m.lenders@fu-berlin.de)
+
+   Change controller: IETF
 
    Provisional registrations?  No
 
@@ -1140,7 +1142,7 @@ Internet-Draft                  dns+cbor                   November 2024
 
    Encoding: -
 
-   Id: TBD
+   Id: TBD53
 
    Reference: [TBD-this-spec]
 
@@ -1150,7 +1152,7 @@ Internet-Draft                  dns+cbor                   November 2024
 
    Encoding: -
 
-   Id: TBD
+   Id: TBD54
 
    Reference: [TBD-this-spec]
 
@@ -1158,6 +1160,23 @@ Internet-Draft                  dns+cbor                   November 2024
 
    In the registry "CBOR Tags" [IANA.cbor-tags], IANA is requested to
    allocate the tags defined in Table 1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lenders, et al.            Expires 11 May 2025                 [Page 21]
+
+Internet-Draft                  dns+cbor                   November 2024
+
 
      +========+===========+=================+========================+
      |    Tag | Data Item | Semantics       | Reference              |
@@ -1170,13 +1189,6 @@ Internet-Draft                  dns+cbor                   November 2024
      +--------+-----------+-----------------+------------------------+
 
                       Table 1: Values for Tag Numbers
-
-
-
-Lenders, et al.            Expires 11 May 2025                 [Page 21]
-
-Internet-Draft                  dns+cbor                   November 2024
-
 
 8.  References
 
@@ -1213,6 +1225,15 @@ Internet-Draft                  dns+cbor                   November 2024
               DOI 10.17487/RFC2782, February 2000,
               <https://www.rfc-editor.org/rfc/rfc2782>.
 
+
+
+
+
+Lenders, et al.            Expires 11 May 2025                 [Page 22]
+
+Internet-Draft                  dns+cbor                   November 2024
+
+
    [RFC3596]  Thomson, S., Huitema, C., Ksinant, V., and M. Souissi,
               "DNS Extensions to Support IP Version 6", STD 88,
               RFC 3596, DOI 10.17487/RFC3596, October 2003,
@@ -1222,17 +1243,6 @@ Internet-Draft                  dns+cbor                   November 2024
               Applications (IDNA): Protocol", RFC 5891,
               DOI 10.17487/RFC5891, August 2010,
               <https://www.rfc-editor.org/rfc/rfc5891>.
-
-
-
-
-
-
-
-Lenders, et al.            Expires 11 May 2025                 [Page 22]
-
-Internet-Draft                  dns+cbor                   November 2024
-
 
    [RFC6838]  Freed, N., Klensin, J., and T. Hansen, "Media Type
               Specifications and Registration Procedures", BCP 13,
@@ -1271,6 +1281,15 @@ Internet-Draft                  dns+cbor                   November 2024
 
 8.2.  Informative References
 
+
+
+
+
+Lenders, et al.            Expires 11 May 2025                 [Page 23]
+
+Internet-Draft                  dns+cbor                   November 2024
+
+
    [I-D.ietf-core-dns-over-coap]
               Lenders, M. S., Amsüss, C., Gündoğan, C., Schmidt, T. C.,
               and M. Wählisch, "DNS over CoAP (DoC)", Work in Progress,
@@ -1282,13 +1301,6 @@ Internet-Draft                  dns+cbor                   November 2024
               "Transmission of IPv6 Packets over IEEE 802.15.4
               Networks", RFC 4944, DOI 10.17487/RFC4944, September 2007,
               <https://www.rfc-editor.org/rfc/rfc4944>.
-
-
-
-Lenders, et al.            Expires 11 May 2025                 [Page 23]
-
-Internet-Draft                  dns+cbor                   November 2024
-
 
    [RFC6282]  Hui, J., Ed. and P. Thubert, "Compression Format for IPv6
               Datagrams over IEEE 802.15.4-Based Networks", RFC 6282,
@@ -1322,6 +1334,18 @@ Internet-Draft                  dns+cbor                   November 2024
               Packet Capture", RFC 8618, DOI 10.17487/RFC8618, September
               2019, <https://www.rfc-editor.org/rfc/rfc8618>.
 
+
+
+
+
+
+
+
+Lenders, et al.            Expires 11 May 2025                 [Page 24]
+
+Internet-Draft                  dns+cbor                   November 2024
+
+
    [RFC8724]  Minaburo, A., Toutain, L., Gomez, C., Barthel, D., and JC.
               Zuniga, "SCHC: Generic Framework for Static Context Header
               Compression and Fragmentation", RFC 8724,
@@ -1338,13 +1362,6 @@ Internet-Draft                  dns+cbor                   November 2024
               Ed., "HTTP Semantics", STD 97, RFC 9110,
               DOI 10.17487/RFC9110, June 2022,
               <https://www.rfc-editor.org/rfc/rfc9110>.
-
-
-
-Lenders, et al.            Expires 11 May 2025                 [Page 24]
-
-Internet-Draft                  dns+cbor                   November 2024
-
 
    [RFC9619]  Bellis, R. and J. Abley, "In the DNS, QDCOUNT Is (Usually)
               One", RFC 9619, DOI 10.17487/RFC9619, July 2024,
@@ -1377,6 +1394,14 @@ A.2.  DNS Responses
    To represent an AAAA record with TTL 300 seconds for the IPv6 address
    2001:db8::1, a minimal response to [["example", "org"]] could be
 
+
+
+
+Lenders, et al.            Expires 11 May 2025                 [Page 25]
+
+Internet-Draft                  dns+cbor                   November 2024
+
+
    [[[300, h'20010db8000000000000000000000001']]]
 
    In this case, the name is derived from the query.
@@ -1395,19 +1420,43 @@ A.2.  DNS Responses
    for the IPv4 address 192.0.2.1, a minimal response to [["example",
    "org", 1]] could be
 
-
-
-Lenders, et al.            Expires 11 May 2025                 [Page 25]
-
-Internet-Draft                  dns+cbor                   November 2024
-
-
    [[[300, h'c0000201']]]
 
    Note that here also the 1 of record type A can be elided, as this
    record type is specified in the question section.
 
    Lastly, a response to [["example", "org", 255, 255]] could be
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lenders, et al.            Expires 11 May 2025                 [Page 26]
+
+Internet-Draft                  dns+cbor                   November 2024
+
 
    [
      ["example", "org", 12, 1],
@@ -1443,21 +1492,6 @@ Internet-Draft                  dns+cbor                   November 2024
    transmitted records has a TTL of 3600 seconds.  Note the use of name
    compression (see Section 3.1.1) in this example.
 
-
-
-
-
-
-
-
-
-
-
-Lenders, et al.            Expires 11 May 2025                 [Page 26]
-
-Internet-Draft                  dns+cbor                   November 2024
-
-
 Appendix B.  Comparison to Classic DNS Wire Format
 
    Table 2 shows a comparison between the classic DNS wire format and
@@ -1469,40 +1503,6 @@ Appendix B.  Comparison to Classic DNS Wire Format
    // TBD: Also add structured RRs?.
    //
    // -- mlenders
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
