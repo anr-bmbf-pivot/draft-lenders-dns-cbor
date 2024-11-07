@@ -428,6 +428,7 @@ The record data of RRs with `record-type` = 64 (SVCB) and `record-type` = 65 (HT
 - An optional TargetName as a domain name (see {{sec:domain-names}}), and
 - SvcParams as an array of alternating pairs of SvcParamKey (as unsigned integer) and SvcParamValue
   (as byte string).
+  The type of SvcParamValue may be extended in future specifications.
 
 If the SvcPriority is present can be determined by checking if the record data array starts with an unsigned integer or not.
 If the array does not start with an unsigned integer, the SvcPriority is elided and defaults to 0, i.e., the record is in AliasMode (see {{Section 2.4.2 of -svcb}}).
@@ -473,6 +474,7 @@ The UDP payload size may be the first element as an unsigned integer in the arra
 It MUST be elided if its value is the default value of 512, the maximum allowable size for unextended DNS over UDP (see {{Sections 2.3.4 and 4.2.1 of -dns}}).
 
 The next element is a map of the options, with the option code (unsigned integer) as key and the option data (byte string) as value.
+The type of option data may be extended in future specifications.
 
 After that, up to three unsigned integers are following.
 The first being the extended flags as unsigned integer (implied to be 0 if elided),
