@@ -807,7 +807,7 @@ Additional information:
 &nbsp;&nbsp;&nbsp;Macintosh file type code(s): none
 
 Person & email address to contact for further information:
-   Martine S. Lenders <m.lenders@fu-berlin.de>
+   IETF CBOR Working Group (cbor@ietf.org) or IETF Applications and Real-Time Area (art@ietf.org)
 
 Intended usage: COMMON
 
@@ -815,7 +815,7 @@ Restrictions on Usage: None?
 
 Author: Martine S. Lenders <m.lenders@fu-berlin.de>
 
-Change controller: Martine S. Lenders <m.lenders@fu-berlin.de>
+Change controller: IETF
 
 Provisional registrations? No
 
