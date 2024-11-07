@@ -832,7 +832,7 @@ Media-Type: application/dns+cbor
 
 Encoding: -
 
-Id: TBD
+Id: TBD53
 
 Reference: \[TBD-this-spec\]
 
@@ -842,7 +842,7 @@ Media-Type: application/dns+cbor;packed=1
 
 Encoding: -
 
-Id: TBD
+Id: TBD54
 
 Reference: \[TBD-this-spec\]
 
