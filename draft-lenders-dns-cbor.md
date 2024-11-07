@@ -1095,6 +1095,17 @@ a name overhead of 1 byte to its CBOR type header.[^10]{: mlenders}
 
 # Change Log
 
+Since [draft-lenders-dns-cbor-09]
+---------------------------------
+- Add recommendation on label encoding
+- Provide extension points
+  - Mark dns-rr specifically as extension point
+  - Provide extension points for parameter values (options and svc-params)
+- Point out CBOR-packed needs to be unpacked when identifying names
+- Distinguish from C-DNS {{-cdns}}
+- State objectives in introduction
+- Fix nits and typos
+
 Since [draft-lenders-dns-cbor-08]
 ---------------------------------
 - Clarify why question section was designed the way it is
@@ -1151,6 +1162,7 @@ Since [draft-lenders-dns-cbor-00]
 - Name and Address compression utilizing CBOR-packed
 - Minor fixes to CBOR EDN and CDDL
 
+[draft-lenders-dns-cbor-09]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-09
 [draft-lenders-dns-cbor-08]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-08
 [draft-lenders-dns-cbor-07]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-07
 [draft-lenders-dns-cbor-06]: https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-06
