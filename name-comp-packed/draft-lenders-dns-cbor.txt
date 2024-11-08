@@ -908,19 +908,18 @@ Internet-Draft                  dns+cbor                   November 2024
    'c' in ASCII) for CBOR-packed [I-D.ietf-cbor-packed] is defined.  It
    provides an implicit text string suffix sequence table for shared
    items _V_ which is prepended to the existing table for shared items
-   that apply to the entire tag TBD28259 (by default empty table).  The
-   this implicit (i.e. not explicitly represented) table _V_ is
-   constructed as follows: Any coherent sequence of text strings
-   encountered within the rump of tag TBD28259, as well as any of its
-   non-empty suffixes, are added to the table as an array in depth-first
-   order.  Text string sequences within any tables for shared items or
-   argument items within the rump MUST not be added to _V_. If a
-   sequence for which an array is already in _V_ is encountered, a
-   shared item reference _i_ to that array in V replaces this sequence.
-   This shared item reference _i_ means: take the sequence from the
-   array at _V_[_i_] and put it into the surrounding array in place of
-   _i_. The resulting rump should look like referencing the _i_-th
-   string (depth first) in the sequence.
+   that apply to the entire tag TBD28259 (by default empty table).  This
+   implicit (i.e. not explicitly represented) table _V_ is constructed
+   as follows: Any coherent sequence of text strings encountered within
+   the rump of tag TBD28259, as well as any of its non-empty suffixes,
+   are added to the table as an array in depth-first order.  Text string
+   sequences within any tables for shared items or argument items within
+   the rump MUST not be added to _V_. If a sequence for which an array
+   is already in _V_ is encountered, a shared item reference _i_ to that
+   array in V replaces this sequence.  This shared item reference _i_
+   means: take the sequence from the array at _V_[_i_] and put it into
+   the surrounding array in place of _i_. The resulting rump should look
+   like referencing the _i_-th string (depth first) in the sequence.
 
    The "application/dns+cbor" media type comes with an optional
    parameter "packed".  If it is not provided, it is assumed to be 0.
@@ -945,6 +944,7 @@ Internet-Draft                  dns+cbor                   November 2024
                                 compression.
 
    This would generate the following virtual table _V_.
+
 
 
 

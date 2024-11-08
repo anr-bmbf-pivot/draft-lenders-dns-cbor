@@ -2003,7 +2003,7 @@ Text-String-Suffix-Sequence-Packed-CBOR = #6.28259(rump)
 </div>
 <p id="section-4.1-2">For name compression, a new packing table setup tag TBD28259 ('n' and 'c' in ASCII) for CBOR-packed <span>[<a href="#I-D.ietf-cbor-packed" class="cite xref">I-D.ietf-cbor-packed</a>]</span> is defined.
 It provides an implicit text string suffix sequence table for shared items <em>V</em> which is prepended to the existing table for shared items that apply to the entire tag TBD28259 (by default empty table).
-The this implicit (i.e. not explicitly represented) table <em>V</em> is constructed as follows:
+This implicit (i.e. not explicitly represented) table <em>V</em> is constructed as follows:
 Any coherent sequence of text strings encountered within the rump of tag TBD28259, as well as any of its non-empty suffixes, are added to the table as an array in depth-first order.
 Text string sequences within any tables for shared items or argument items within the rump <span class="bcp14">MUST</span> not be added to <em>V</em>.
 If a sequence for which an array is already in <em>V</em> is encountered, a shared item reference <em>i</em> to that array in V replaces this sequence.
