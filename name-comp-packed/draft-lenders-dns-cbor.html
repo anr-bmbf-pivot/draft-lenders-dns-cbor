@@ -1464,6 +1464,8 @@ For readers unfamiliar with CBOR-packed this name compression can be abstracted 
 compression similar to that described in <span><a href="https://rfc-editor.org/rfc/rfc1035#section-4.1.4" class="relref">Section 4.1.4</a> of [<a href="#RFC1035" class="cite xref">RFC1035</a>]</span> but instead of using the byte
 index as reference within the message, text strings are counted, starting at 0, depth-first within
 the message and that number is used as index for the reference.
+Since names are the only text strings, the end of a name can be identified when the decoder cursor
+does not point to a text string or reference to another text string anymore.
 For the reference itself, either simple values or tag 6 are used (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-cbor-packed-13#section-2.2" class="relref">Section 2.2</a> of [<a href="#I-D.ietf-cbor-packed" class="cite xref">I-D.ietf-cbor-packed</a>]</span>).<a href="#section-3.1-4" class="pilcrow">¶</a></p>
 <span id="name-domain-name-definition"></span><div id="fig_domain-name">
 <figure id="figure-2">

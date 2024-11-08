@@ -284,8 +284,11 @@ Internet-Draft                  dns+cbor                   November 2024
 
    index as reference within the message, text strings are counted,
    starting at 0, depth-first within the message and that number is used
-   as index for the reference.  For the reference itself, either simple
-   values or tag 6 are used (see Section 2.2 of [I-D.ietf-cbor-packed]).
+   as index for the reference.  Since names are the only text strings,
+   the end of a name can be identified when the decoder cursor does not
+   point to a text string or reference to another text string anymore.
+   For the reference itself, either simple values or tag 6 are used (see
+   Section 2.2 of [I-D.ietf-cbor-packed]).
 
    domain-name = ( *label )
    label = tstr
@@ -326,9 +329,6 @@ Internet-Draft                  dns+cbor                   November 2024
 
    4.  An optional record class (as unsigned integer), and lastly
 
-   5.  A record data entry (as byte string, domain name, or array for
-       dedicated record data representation).
-
 
 
 
@@ -337,6 +337,9 @@ Lenders, et al.            Expires 12 May 2025                  [Page 6]
 
 Internet-Draft                  dns+cbor                   November 2024
 
+
+   5.  A record data entry (as byte string, domain name, or array for
+       dedicated record data representation).
 
    If the first item of the resource record is a text string, it is the
    first label of a domain name (see Section 3.1).  If the name is
@@ -377,9 +380,6 @@ Internet-Draft                  dns+cbor                   November 2024
    adds more overhead than just transferring the byte representation.
    As such, structured record data that do not contain names are always
    to be represented as a byte string.
-
-
-
 
 
 
