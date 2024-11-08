@@ -171,6 +171,8 @@ For readers unfamiliar with CBOR-packed this name compression can be abstracted 
 compression similar to that described in {{Section 4.1.4 of -dns}} but instead of using the byte
 index as reference within the message, text strings are counted, starting at 0, depth-first within
 the message and that number is used as index for the reference.
+Since names are the only text strings, the end of a name can be identified when the decoder cursor
+does not point to a text string or reference to another text string anymore.
 For the reference itself, either simple values or tag 6 are used (see {{Section 2.2 of -cbor-packed}}).
 
 {:cddl: sourcecode-name="dns-cbor.cddl"}
