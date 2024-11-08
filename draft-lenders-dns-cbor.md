@@ -574,7 +574,7 @@ Text-String-Suffix-Sequence-Packed-CBOR = #6.28259(rump)
 
 For name compression, a new packing table setup tag TBD28259 ('n' and 'c' in ASCII) for CBOR-packed {{-cbor-packed}} is defined.
 It provides an implicit text string suffix sequence table for shared items _V_ which is prepended to the existing table for shared items that apply to the entire tag TBD28259 (by default empty table).
-The this implicit (i.e. not explicitly represented) table _V_ is constructed as follows:
+This implicit (i.e. not explicitly represented) table _V_ is constructed as follows:
 Any coherent sequence of text strings encountered within the rump of tag TBD28259, as well as any of its non-empty suffixes, are added to the table as an array in depth-first order.
 Text string sequences within any tables for shared items or argument items within the rump MUST not be added to _V_.
 If a sequence for which an array is already in _V_ is encountered, a shared item reference _i_ to that array in V replaces this sequence.
