@@ -573,9 +573,9 @@ Text-String-Suffix-Sequence-Packed-CBOR = #6.28259(rump)
 ~~~
 
 For name compression, a new packing table setup tag TBD28259 ('n' and 'c' in ASCII) for CBOR-packed {{-cbor-packed}} is defined.
-It provides an implicit text string suffix sequence table for shared items _V_ which is prepended to the existing table for shared items that apply to the entire tag TBD28259 (by default empty table).
+It provides an implicit text string suffix sequence table for shared items _V_ which is prepended to the existing table for shared items that apply to the content of tag TBD28259 (by default empty table).
 This implicit (i.e. not explicitly represented) table _V_ is constructed as follows:
-Any coherent sequence of text strings encountered within the rump of tag TBD28259, as well as any of its non-empty suffixes, are added to the table as an array in depth-first order.
+Any coherent sequence of text strings encountered within the rump of tag TBD28259, as well as any of its non-empty suffixes, are added to the table as arrays in depth-first order.
 Text string sequences within any tables for shared items or argument items within the rump MUST not be added to _V_.
 If a sequence for which an array is already in _V_ is encountered, a shared item reference _i_ to that array in V replaces this sequence.
 This shared item reference _i_ means: take the sequence from the array at _V_\[_i_\] and put it into the surrounding array in place of _i_.
@@ -587,7 +587,7 @@ With packed=0, any CBOR object `obj` marked by the "application/dns+cbor" media 
 
 ### Example
 
-Take the following content (note that this is intentionally not legal "application/dns+cbor" to illustrate generality).
+Take the following CBOR object _o_ (note that this is intentionally not legal "application/dns+cbor" to illustrate generality).
 
 ~~~ edn
 [
@@ -606,15 +606,15 @@ This would generate the following virtual table _V_.
     ["www", "example", "org"],
     ["example", "org"],
     ["org"],
-    ["svc", "www", "example", "org"],
+    ["svc", simple(0)],
     ["org", "example", "org"]
 ]
 ~~~
 {: #fig:name-compression-example-table title="Implicit table of shared items for the example."}
 
-Note that the sequence "org", "example", "org" is added at index 4 with leading "org", instead of referencing index 2 + index 1, as it is its own distinct suffix sequence.
+Note that the sequence "org", "example", "org" is added at index 4 with leading "org", instead of referencing index 2 + index 1 (`simple(2), simple(1)`), as it is its own distinct suffix sequence.
 
-The packed representation would thus be:
+The packed representation of _o_ would thus be:
 
 ~~~ edn
 TBD28259(
