@@ -2002,9 +2002,9 @@ Text-String-Suffix-Sequence-Packed-CBOR = #6.28259(rump)
 </pre><a href="#section-4.1-1" class="pilcrow">¶</a>
 </div>
 <p id="section-4.1-2">For name compression, a new packing table setup tag TBD28259 ('n' and 'c' in ASCII) for CBOR-packed <span>[<a href="#I-D.ietf-cbor-packed" class="cite xref">I-D.ietf-cbor-packed</a>]</span> is defined.
-It provides an implicit text string suffix sequence table for shared items <em>V</em> which is prepended to the existing table for shared items that apply to the entire tag TBD28259 (by default empty table).
+It provides an implicit text string suffix sequence table for shared items <em>V</em> which is prepended to the existing table for shared items that apply to the content of tag TBD28259 (by default empty table).
 This implicit (i.e. not explicitly represented) table <em>V</em> is constructed as follows:
-Any coherent sequence of text strings encountered within the rump of tag TBD28259, as well as any of its non-empty suffixes, are added to the table as an array in depth-first order.
+Any coherent sequence of text strings encountered within the rump of tag TBD28259, as well as any of its non-empty suffixes, are added to the table as arrays in depth-first order.
 Text string sequences within any tables for shared items or argument items within the rump <span class="bcp14">MUST</span> not be added to <em>V</em>.
 If a sequence for which an array is already in <em>V</em> is encountered, a shared item reference <em>i</em> to that array in V replaces this sequence.
 This shared item reference <em>i</em> means: take the sequence from the array at <em>V</em>[<em>i</em>] and put it into the surrounding array in place of <em>i</em>.
@@ -2017,7 +2017,7 @@ With packed=0, any CBOR object <code>obj</code> marked by the "application/dns+c
           <h4 id="name-example">
 <a href="#section-4.1.1" class="section-number selfRef">4.1.1. </a><a href="#name-example" class="section-name selfRef">Example</a>
           </h4>
-<p id="section-4.1.1-1">Take the following content (note that this is intentionally not legal "application/dns+cbor" to illustrate generality).<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1.1-1">Take the following CBOR object <em>o</em> (note that this is intentionally not legal "application/dns+cbor" to illustrate generality).<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
 <span id="name-unpacked-example-for-implic"></span><div id="fig_name-compression-example-unpacked">
 <figure id="figure-12">
             <div class="lang-edn sourcecode" id="section-4.1.1-2.1">
@@ -2043,7 +2043,7 @@ With packed=0, any CBOR object <code>obj</code> marked by the "application/dns+c
     ["www", "example", "org"],
     ["example", "org"],
     ["org"],
-    ["svc", "www", "example", "org"],
+    ["svc", simple(0)],
     ["org", "example", "org"]
 ]
 </pre>
@@ -2052,8 +2052,8 @@ With packed=0, any CBOR object <code>obj</code> marked by the "application/dns+c
 <a href="#name-implicit-table-of-shared-it" class="selfRef">Implicit table of shared items for the example.</a>
             </figcaption></figure>
 </div>
-<p id="section-4.1.1-5">Note that the sequence "org", "example", "org" is added at index 4 with leading "org", instead of referencing index 2 + index 1, as it is its own distinct suffix sequence.<a href="#section-4.1.1-5" class="pilcrow">¶</a></p>
-<p id="section-4.1.1-6">The packed representation would thus be:<a href="#section-4.1.1-6" class="pilcrow">¶</a></p>
+<p id="section-4.1.1-5">Note that the sequence "org", "example", "org" is added at index 4 with leading "org", instead of referencing index 2 + index 1 (<code>simple(2), simple(1)</code>), as it is its own distinct suffix sequence.<a href="#section-4.1.1-5" class="pilcrow">¶</a></p>
+<p id="section-4.1.1-6">The packed representation of <em>o</em> would thus be:<a href="#section-4.1.1-6" class="pilcrow">¶</a></p>
 <span id="name-the-packed-representation-o"></span><div id="fig_name-compression-example-packed">
 <figure id="figure-14">
             <div class="lang-edn sourcecode" id="section-4.1.1-7.1">
