@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-07T00:13:23.185049+00:00",
+  "timestamp": "2024-11-10T00:14:14.158278+00:00",
   "repo": "anr-bmbf-pivot/draft-lenders-dns-cbor",
   "labels": [
     {
@@ -55,15 +55,15 @@
       "id": "I_kwDOIM0M7M5t8SLz",
       "title": "Represent names as their compontents",
       "url": "https://github.com/anr-bmbf-pivot/draft-lenders-dns-cbor/issues/2",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "miri64",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "During the [mailing list discussions of `-03`](https://mailarchive.ietf.org/arch/msg/cbor/JOHCCBOzC46PrSq-61MMev--mpU/), @chrysn proposed to represent names as their components instead of `tstr`, similar to how it is done in [draft-ietf-core-href](https://datatracker.ietf.org/doc/draft-ietf-core-href/):\r\n\r\n>     host-name   = (*text) ; lowercase, NFC labels\r\n>\r\n>   That is, rather than expressing some.hostname.example.com as `\"some.hostname.example.com\"`, it goes for `\"some\",  \"hostname\", \"example\", \"com\"`\r\n\r\nThere are several advantages to that representation:\r\n\r\n- If not put in their own array, but just verbatim into the arrays already used in the spec, we safe the list specifier, i.e, one byte at least\r\n- Dots (\".\") can be expressed as part of a name component without extra encoding (I don't think that is legal in DNS domain names; @chrysn says they can occur in DNS-SD service names though)\r\n- It would be more in line with how DNS encodes names (delimiter identifies the length of the following name component)\r\n   - This would have the additional advantage that we could use a DNS-like name compression (i.e. an int to refer to an offset in the CBOR binary). The only thing we need to do to make names also encodeable as `uint`s is to swap ttl in RR. This way, the first int in a CBOR array that potentially could contain names always would be identifiable as the name (questions always contain a name, so the first `uint` would just be the name).\r\n\r\nThe only disadvantage we found so far is that there is no straightforward way to use the value or inverted references for names with this... But maybe, if we have DNS-like name compression, this wouldn't be needed anyways.",
       "createdAt": "2023-08-10T06:43:08Z",
-      "updatedAt": "2023-08-10T13:09:20Z",
-      "closedAt": null,
+      "updatedAt": "2024-11-07T13:25:14Z",
+      "closedAt": "2024-11-07T13:25:14Z",
       "comments": [
         {
           "author": "chrysn",
@@ -78,6 +78,13 @@
           "body": "It is legal, but strongly discouraged: https://datatracker.ietf.org/doc/html/rfc1035#section-2.3.1",
           "createdAt": "2023-08-10T13:09:20Z",
           "updatedAt": "2023-08-10T13:09:20Z"
+        },
+        {
+          "author": "miri64",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Addressed in the two most recent versions",
+          "createdAt": "2024-11-07T13:25:14Z",
+          "updatedAt": "2024-11-07T13:25:14Z"
         }
       ]
     },
@@ -230,6 +237,315 @@
           "createdAt": "2024-05-19T09:29:04Z",
           "updatedAt": "2024-05-19T09:29:04Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDOIM0M7M6BK_Fj",
+      "title": "Add capability to summarize rrsets",
+      "url": "https://github.com/anr-bmbf-pivot/draft-lenders-dns-cbor/pull/6",
+      "state": "OPEN",
+      "author": "miri64",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The capability to summarize resource records set was discussed in the past, but I stayed away from it so far, as it adds additional overhead. Well, we add overhead already, so lets add more overhead (but less that the overhead than duplicating TTL and type ;-)) to maybe still have it. This is my proposal to how to optionally provide summarized resource record sets.\r\n\r\nMaybe the CDDL can be streamlined, but at the moment, I don't see how.",
+      "createdAt": "2024-11-07T11:05:10Z",
+      "updatedAt": "2024-11-07T15:55:24Z",
+      "baseRepository": "anr-bmbf-pivot/draft-lenders-dns-cbor",
+      "baseRefName": "main",
+      "baseRefOid": "00568eab291f282baa08b9ce25fe24995083167a",
+      "headRepository": "anr-bmbf-pivot/draft-lenders-dns-cbor",
+      "headRefName": "rrsets",
+      "headRefOid": "d0705dbe935cd7d7f628218ef6a149e30aa22e39",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 7,
+      "id": "PR_kwDOIM0M7M6BVOlO",
+      "title": "Make name compression be based on CBOR-packed",
+      "url": "https://github.com/anr-bmbf-pivot/draft-lenders-dns-cbor/pull/7",
+      "state": "OPEN",
+      "author": "miri64",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "During IETF 121 the idea came up to bring name compression to CBOR-packed after all by providing a special table setup tag. This is the work to that.",
+      "createdAt": "2024-11-08T14:52:03Z",
+      "updatedAt": "2024-11-08T17:41:32Z",
+      "baseRepository": "anr-bmbf-pivot/draft-lenders-dns-cbor",
+      "baseRefName": "main",
+      "baseRefOid": "49e91f9204f5032b9590e9b523d5b8ed5fb2a799",
+      "headRepository": "anr-bmbf-pivot/draft-lenders-dns-cbor",
+      "headRefName": "name-comp-packed",
+      "headRefOid": "c4e91f17f2bb8772e65a014a2723adc155433f56",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOIM0M7M6Qe9sY",
+          "commit": {
+            "abbreviatedOid": "f672f80"
+          },
+          "author": "mguetschow",
+          "authorAssociation": "NONE",
+          "state": "CHANGES_REQUESTED",
+          "body": "Some content-related and several editorial suggestions and comments :)",
+          "createdAt": "2024-11-08T15:00:57Z",
+          "updatedAt": "2024-11-08T15:25:19Z",
+          "comments": [
+            {
+              "originalPosition": 150,
+              "body": "```suggestion\r\nThis implicit (i.e. not explicitly represented) table _V_ is constructed as follows:\r\n```",
+              "createdAt": "2024-11-08T15:00:58Z",
+              "updatedAt": "2024-11-08T15:25:19Z"
+            },
+            {
+              "originalPosition": 151,
+              "body": "```suggestion\r\nAny coherent sequence of text strings encountered within the rump of tag TBD28259, as well as any of its non-empty suffixes, are added to the table as arrays in depth-first order.\r\n```",
+              "createdAt": "2024-11-08T15:05:13Z",
+              "updatedAt": "2024-11-08T15:25:19Z"
+            },
+            {
+              "originalPosition": 151,
+              "body": "Also, what exactly does \"coherent sequence\" mean? Is that a standing term?",
+              "createdAt": "2024-11-08T15:05:57Z",
+              "updatedAt": "2024-11-08T15:25:19Z"
+            },
+            {
+              "originalPosition": 159,
+              "body": "I personally find it confusing that `packed=0` still means there is packing involved. Could we find a different naming?",
+              "createdAt": "2024-11-08T15:09:37Z",
+              "updatedAt": "2024-11-08T15:25:19Z"
+            },
+            {
+              "originalPosition": 149,
+              "body": "```suggestion\r\nIt provides an implicit text string suffix sequence table for shared items _V_ which is prepended to the existing table for shared items that apply to the content of tag TBD28259 (by default empty table).\r\n```\r\n?",
+              "createdAt": "2024-11-08T15:10:54Z",
+              "updatedAt": "2024-11-08T15:25:19Z"
+            },
+            {
+              "originalPosition": 163,
+              "body": "```suggestion\r\nTake the following CBOR object _o_ (note that this is intentionally not legal \"application/dns+cbor\" to illustrate generality).\r\n```\r\n\r\nor any other name, just to be able to reference it later.",
+              "createdAt": "2024-11-08T15:12:35Z",
+              "updatedAt": "2024-11-08T15:25:19Z"
+            },
+            {
+              "originalPosition": 182,
+              "body": "```suggestion\r\n    [\"svc\", simple(0)],\r\n```\r\n\r\nis it not?",
+              "createdAt": "2024-11-08T15:13:32Z",
+              "updatedAt": "2024-11-08T15:25:19Z"
+            },
+            {
+              "originalPosition": 188,
+              "body": "```suggestion\r\nNote that the sequence \"org\", \"example\", \"org\" is added at index 4 with leading \"org\", instead of referencing index 2 + index 1 (`simple(2), simple(1)`), as it is its own distinct suffix sequence.\r\n```",
+              "createdAt": "2024-11-08T15:14:42Z",
+              "updatedAt": "2024-11-08T15:25:19Z"
+            },
+            {
+              "originalPosition": 190,
+              "body": "```suggestion\r\nThe packed representation of _o_ would thus be:\r\n```",
+              "createdAt": "2024-11-08T15:14:51Z",
+              "updatedAt": "2024-11-08T15:25:19Z"
+            },
+            {
+              "originalPosition": 206,
+              "body": "```suggestion\r\nWith, e.g., table setup tag 113, further packing can be achieved via nesting table packing.\r\n```",
+              "createdAt": "2024-11-08T15:16:55Z",
+              "updatedAt": "2024-11-08T15:25:19Z"
+            },
+            {
+              "originalPosition": 210,
+              "body": "```suggestion\r\n113(\r\n  TBD28259(\r\n```\r\n\r\notherwise prepending the table from 113 would shift the TBD28259 ones.",
+              "createdAt": "2024-11-08T15:18:35Z",
+              "updatedAt": "2024-11-08T15:25:19Z"
+            },
+            {
+              "originalPosition": 225,
+              "body": "Could we get rid of this extra rule with by switching the tag order?",
+              "createdAt": "2024-11-08T15:21:18Z",
+              "updatedAt": "2024-11-08T15:25:19Z"
+            },
+            {
+              "originalPosition": 259,
+              "body": "everything except `tag`, `array` and `map` wouldn't make sense, right?",
+              "createdAt": "2024-11-08T15:23:11Z",
+              "updatedAt": "2024-11-08T15:25:19Z"
+            },
+            {
+              "originalPosition": 210,
+              "body": "Which clashes with the requirement that we want to elude TBD28259 for dns+cbor, hum...",
+              "createdAt": "2024-11-08T15:24:53Z",
+              "updatedAt": "2024-11-08T15:25:19Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIM0M7M6Qf83K",
+          "commit": {
+            "abbreviatedOid": "f672f80"
+          },
+          "author": "miri64",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-08T16:30:30Z",
+          "updatedAt": "2024-11-08T16:30:30Z",
+          "comments": [
+            {
+              "originalPosition": 151,
+              "body": "\u201eCBOR sequence\u201c is a standing term. Cohererent is meant wrt text strings, so a (sub) sequence that only contains text strings.",
+              "createdAt": "2024-11-08T16:30:30Z",
+              "updatedAt": "2024-11-08T16:30:30Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIM0M7M6Qf9cx",
+          "commit": {
+            "abbreviatedOid": "f672f80"
+          },
+          "author": "miri64",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-08T16:31:40Z",
+          "updatedAt": "2024-11-08T16:31:41Z",
+          "comments": [
+            {
+              "originalPosition": 159,
+              "body": "The idea is that `packed` might also provide other contexts later. Don't read it as boolean, more as, e.g., a level.",
+              "createdAt": "2024-11-08T16:31:41Z",
+              "updatedAt": "2024-11-08T16:31:41Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIM0M7M6Qf-3W",
+          "commit": {
+            "abbreviatedOid": "cfeb452"
+          },
+          "author": "miri64",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-08T16:34:30Z",
+          "updatedAt": "2024-11-08T16:40:11Z",
+          "comments": [
+            {
+              "originalPosition": 182,
+              "body": "Since it is implicit, this is arbitrary. I thought it might be more helpful to the reader, if we show the full sequences here.",
+              "createdAt": "2024-11-08T16:34:30Z",
+              "updatedAt": "2024-11-08T16:40:11Z"
+            },
+            {
+              "originalPosition": 210,
+              "body": "> otherwise prepending the table from 113 would shift the TBD28259 ones.\r\n\r\nHuh? From how I read my definition (and the definition for 113), the tables of the outer tag are prepended to the tables of the inner tag. I want the TBD28259 table _V_ to be the \u201cstart\u201d of the shared item table. \r\n\r\n",
+              "createdAt": "2024-11-08T16:37:21Z",
+              "updatedAt": "2024-11-08T16:40:11Z"
+            },
+            {
+              "originalPosition": 225,
+              "body": "Then the indices for name compression would be larger than the 113 ones... Which would increase the risk of names having larger references (but as they are more common in DNS messages they should be smaller).",
+              "createdAt": "2024-11-08T16:39:04Z",
+              "updatedAt": "2024-11-08T16:40:11Z"
+            },
+            {
+              "originalPosition": 259,
+              "body": "That would be the same for 113 or 1113. Nevertheless, they have any as data item as well.",
+              "createdAt": "2024-11-08T16:39:42Z",
+              "updatedAt": "2024-11-08T16:40:11Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIM0M7M6QgvXO",
+          "commit": {
+            "abbreviatedOid": "f672f80"
+          },
+          "author": "mguetschow",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-08T17:33:27Z",
+          "updatedAt": "2024-11-08T17:33:27Z",
+          "comments": [
+            {
+              "originalPosition": 151,
+              "body": "Then maybe \"any CBOR sequence consisting of only text strings\"? Maybe it's also just a personal English-word problem with \"coherent\".",
+              "createdAt": "2024-11-08T17:33:27Z",
+              "updatedAt": "2024-11-08T17:33:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIM0M7M6QgyJD",
+          "commit": {
+            "abbreviatedOid": "f672f80"
+          },
+          "author": "mguetschow",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-08T17:36:11Z",
+          "updatedAt": "2024-11-08T17:36:11Z",
+          "comments": [
+            {
+              "originalPosition": 210,
+              "body": "At least for 113, it is definitely the other way around. I guess the rationale is that you enable shorter references within smaller contexts (inside the rump of an inner tag).",
+              "createdAt": "2024-11-08T17:36:11Z",
+              "updatedAt": "2024-11-08T17:36:11Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIM0M7M6QgyVJ",
+          "commit": {
+            "abbreviatedOid": "f672f80"
+          },
+          "author": "mguetschow",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-08T17:36:40Z",
+          "updatedAt": "2024-11-08T17:36:40Z",
+          "comments": [
+            {
+              "originalPosition": 225,
+              "body": "see above.",
+              "createdAt": "2024-11-08T17:36:40Z",
+              "updatedAt": "2024-11-08T17:36:40Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIM0M7M6Qg023",
+          "commit": {
+            "abbreviatedOid": "f672f80"
+          },
+          "author": "mguetschow",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-08T17:41:32Z",
+          "updatedAt": "2024-11-08T17:41:32Z",
+          "comments": [
+            {
+              "originalPosition": 182,
+              "body": "I think this illustrates the implicit table setup algorithm better.",
+              "createdAt": "2024-11-08T17:41:32Z",
+              "updatedAt": "2024-11-08T17:41:32Z"
+            }
+          ]
         }
       ]
     }
