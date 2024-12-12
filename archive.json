@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-12-10T00:15:02.676116+00:00",
+  "timestamp": "2024-12-12T00:14:57.080484+00:00",
   "repo": "anr-bmbf-pivot/draft-lenders-dns-cbor",
   "labels": [
     {
@@ -101,6 +101,22 @@
       "body": "@chrysn wrote on the [CBOR mailing list](https://mailarchive.ietf.org/arch/msg/cbor/JOHCCBOzC46PrSq-61MMev--mpU/):\r\n\r\n> Are the packing tables pre-populated with any values? (\"_coap._udp.\"\r\n> and \".com\" would come to mind). If so, is the 1 in `;packed=1`\r\n> intended to serve as an extension point that dispatches the values of\r\n> the table?\r\n\r\nI really like this idea! However, some details need to be ironed out as this could go several (somewhat disjunct) routes:\r\n1. Are these extension points pre-defined tables?\r\n2. Do we use CRIs/URIs to identify and find tables (see e.g. https://datatracker.ietf.org/doc/draft-amsuess-cbor-packed-by-reference/)?\r\n3. Should the extension point be used in a similar manner as SCHC rule IDs, i.e., identify some pre-shared tables?\r\n\r\n1. and 3. don't necessarily contradict each other, as we could reserve number ranges for either pre-defined tables or pre-shared tables? 2. could also be integrated, e.g. with a dedicated number.",
       "createdAt": "2023-08-10T06:51:14Z",
       "updatedAt": "2023-08-10T06:51:14Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 8,
+      "id": "I_kwDOIM0M7M6i7Am6",
+      "title": "hex/EDN examples",
+      "url": "https://github.com/anr-bmbf-pivot/draft-lenders-dns-cbor/issues/8",
+      "state": "OPEN",
+      "author": "chrysn",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "From today's interim:\r\n\r\n> @or13: Would be nice to see hex / EDN examples in this section: https://www.ietf.org/archive/id/draft-lenders-dns-cbor-10.html#name-dns-representation-in-cbor-",
+      "createdAt": "2024-12-11T16:05:01Z",
+      "updatedAt": "2024-12-11T16:05:01Z",
       "closedAt": null,
       "comments": []
     }
