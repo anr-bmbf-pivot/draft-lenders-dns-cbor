@@ -640,8 +640,8 @@ TBD28259(
       [
         ["www", "example", simple(5)],
         ["svc", simple(0)],
-        simple(5), simple(1), sample(6),
-        simple(3), sample(6)
+        simple(5), simple(1), simple(6),
+        simple(3), simple(6)
       ]
     ]
   )
