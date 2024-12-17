@@ -560,12 +560,12 @@ dns-response = [
 
 # Compression with CBOR-packed {#sec:cbor-packed}
 
-If both DNS server and client support CBOR-packed {{-cbor-packed}}, it MAY be used for further
+CBOR-packed {{-cbor-packed}} is used for name compression in application/dns+cbor.
+
+If both DNS server and client support table setup tag 113 as described in {{Section 3.1 of -cbor-packed}}, it MAY be used for further
 compression in DNS responses.
 Especially IPv6 addresses, e.g., in AAAA resource records can benefit from straight referencing to
-compress common address prefixes.[^6]{: mlenders}
-
-[^6]: Needs rewording.
+compress common address prefixes.
 
 ## Name Compression {#sec:name-compression}
 
@@ -583,8 +583,9 @@ This shared item reference _i_ means: take the sequence from the array at _V_\[_
 The resulting rump should look like referencing the _i_-th string (depth first) in the sequence.
 
 The "application/dns+cbor" media type comes with an optional parameter "packed".
-If it is not provided, it is assumed to be 0.
+If it is not provided, the value of it, i.e. the level of packedness, is assumed to be 0.
 With packed=0, any CBOR object `obj` marked by the "application/dns+cbor" media type MUST explicitly be understood as `TBD28259(obj)`, unless it is already `obj` itself is already tagged explicitly with TBD28259 as a whole.
+This also means, that an "application/dns+cbor" encoder and decoder MUST support level of packedness 0.
 
 ### Example
 
@@ -652,26 +653,27 @@ TBD113(
 
 Note, how the previous references in {{fig:name-compression-example-packed}} do not changed, as the table `["org", 42]` is appended.
 
+## Further DNS Representation with tag 113
+
+The representation of DNS responses with level of packedness 1, i.e. "application/dns+cbor;packed=1", has the same semantics as for tag TBD113
+(see {{Section 3.1 of -cbor-packed}}) with the rump being the compressed response.
+The difference to {{-cbor-packed}} is that tag TBD113 is OPTIONAL with parameter "packed=1".
+As such, any CBOR object `obj` marked by the "application/dns+cbor;packed=1" media type and parameter MUST explicitly be understood as `TBD113(TBD28259(obj))`, unless it is already `obj` itself is already tagged explicitly with TBD113 as a whole[^6]{: mlenders}.
+
+Packed compression of queries is not specified, as apart from EDNS(0) (see {{sec:edns}}), they only
+consist of one question most of the time, i.e., there is close to no redundancy.
+
+[^6]: Is it okay that TBD28259 might be omitted in that case?
+
 ## Media Type Negotiation
 
 A DNS client uses the media type "application/dns+cbor;packed=1" to negotiate (see, e.g.,
-{{-http-semantics}} or {{-coap}}, Section 5.5.4) with the DNS server whether the server supports packed
-CBOR.
-If it does, it MAY request the response to be in CBOR-packed (media type
+{{-http-semantics}} or {{-coap}}, Section 5.5.4) with the DNS server whether the server supports setup table tag TBD113.
+If it does, it MAY request the response to be in level of packedness 1 (media type
 "application/dns+cbor;packed=1").
 The server then SHOULD reply with the response in CBOR-packed, which it also signals with media type
-"application/dns+cbor;packed=1".[^7]{: mlenders}
-
-[^7]: Needs adaptation for new name compression
-
-## DNS Representation in CBOR-packed
-
-The representation of DNS responses in CBOR-packed has the same semantics as for tag TBD113
-({{-cbor-packed}}, Section 3.1) with the rump being the compressed response.
-The difference to {{-cbor-packed}} is that tag TBD113 is OPTIONAL.
-
-Packed compression of queries is not specified, as apart from EDNS(0) (see {{sec:edns}}), they only
-consist of one question most of the time, i.e., there is close to no redundancy.[^7]
+"application/dns+cbor;packed=1".
+Otherwise, both fall back to the implicit "packed=0".
 
 ## Compression {#sec:pack-compression}
 
