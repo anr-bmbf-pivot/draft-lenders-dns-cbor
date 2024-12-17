@@ -93,19 +93,19 @@ Table of Contents
    4.  Compression with CBOR-packed  . . . . . . . . . . . . . . . .  16
      4.1.  Name Compression  . . . . . . . . . . . . . . . . . . . .  17
        4.1.1.  Example . . . . . . . . . . . . . . . . . . . . . . .  17
-     4.2.  Media Type Negotiation  . . . . . . . . . . . . . . . . .  19
-     4.3.  DNS Representation in CBOR-packed . . . . . . . . . . . .  19
-     4.4.  Compression . . . . . . . . . . . . . . . . . . . . . . .  19
+     4.2.  Further DNS Representation with tag 113 . . . . . . . . .  19
+     4.3.  Media Type Negotiation  . . . . . . . . . . . . . . . . .  19
+     4.4.  Compression . . . . . . . . . . . . . . . . . . . . . . .  20
    5.  Implementation Status . . . . . . . . . . . . . . . . . . . .  20
      5.1.  Python decoder/encoder  . . . . . . . . . . . . . . . . .  20
-     5.2.  Embedded decoder/encoder  . . . . . . . . . . . . . . . .  20
+     5.2.  Embedded decoder/encoder  . . . . . . . . . . . . . . . .  21
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .  21
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  21
      7.1.  Media Type Registration . . . . . . . . . . . . . . . . .  21
        7.1.1.  "application/dns+cbor"  . . . . . . . . . . . . . . .  21
      7.2.  CoAP Content-Format Registration  . . . . . . . . . . . .  22
        7.2.1.  "application/dns+cbor"  . . . . . . . . . . . . . . .  22
-       7.2.2.  "application/dns+cbor;packed=1" . . . . . . . . . . .  22
+       7.2.2.  "application/dns+cbor;packed=1" . . . . . . . . . . .  23
 
 
 
@@ -114,7 +114,7 @@ Lenders, et al.           Expires 20 June 2025                  [Page 2]
 Internet-Draft                  dns+cbor                   December 2024
 
 
-     7.3.  CBOR Tags Registry  . . . . . . . . . . . . . . . . . . .  22
+     7.3.  CBOR Tags Registry  . . . . . . . . . . . . . . . . . . .  23
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  23
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .  23
      8.2.  Informative References  . . . . . . . . . . . . . . . . .  25
@@ -273,7 +273,7 @@ Internet-Draft                  dns+cbor                   December 2024
    Name compression is implemented using an extension to CBOR-packed,
    see Section 4.1.  For readers unfamiliar with CBOR-packed this name
    compression can be abstracted to a name compression similar to that
-   described in Section 4.1.4 of [RFC1035] but instead of using the byte
+   described in Section 4.1.4 of [RFC1035].  However, instead of using
 
 
 
@@ -282,13 +282,13 @@ Lenders, et al.           Expires 20 June 2025                  [Page 5]
 Internet-Draft                  dns+cbor                   December 2024
 
 
-   index as reference within the message, text strings are counted,
-   starting at 0, depth-first within the message and that number is used
-   as index for the reference.  Since names are the only text strings,
-   the end of a name can be identified when the decoder cursor does not
-   point to a text string or reference to another text string anymore.
-   For the reference itself, either simple values or tag 6 are used (see
-   Section 2.2 of [I-D.ietf-cbor-packed]).
+   the byte index as reference within the message, text strings are
+   counted, starting at 0, depth-first within the message.  That number
+   is used as index for the reference.  Since names are the only text
+   strings, the end of a name can be identified when the decoder cursor
+   does not point to a text string or reference to another text string
+   anymore.  For the reference itself, either simple values or tag 6 are
+   used (see Section 2.2 of [I-D.ietf-cbor-packed]).
 
    domain-name = ( *label )
    label = tstr
@@ -883,13 +883,13 @@ Internet-Draft                  dns+cbor                   December 2024
 
 4.  Compression with CBOR-packed
 
-   If both DNS server and client support CBOR-packed
-   [I-D.ietf-cbor-packed], it MAY be used for further compression in DNS
-   responses.  Especially IPv6 addresses, e.g., in AAAA resource records
-   can benefit from straight referencing to compress common address
-   prefixes.
-   // Needs rewording.
-   //
+   CBOR-packed [I-D.ietf-cbor-packed] is used for name compression in
+   application/dns+cbor.
+
+
+
+
+
 
 
 
@@ -898,7 +898,11 @@ Lenders, et al.           Expires 20 June 2025                 [Page 16]
 Internet-Draft                  dns+cbor                   December 2024
 
 
-   // -- —mlenders
+   If both DNS server and client support table setup tag 113 as
+   described in Section 3.1 of [I-D.ietf-cbor-packed], it MAY be used
+   for further compression in DNS responses.  Especially IPv6 addresses,
+   e.g., in AAAA resource records can benefit from straight referencing
+   to compress common address prefixes.
 
 4.1.  Name Compression
 
@@ -907,10 +911,10 @@ Internet-Draft                  dns+cbor                   December 2024
    For name compression, a new packing table setup tag TBD28259 ('n' and
    'c' in ASCII) for CBOR-packed [I-D.ietf-cbor-packed] is defined.  It
    provides an implicit text string suffix sequence table for shared
-   items _V_ which is prepended to the existing table for shared items
-   that apply to the content of tag TBD28259 (by default empty table).
-   This implicit (i.e. not explicitly represented) table _V_ is
-   constructed as follows: Any coherent sequence of text strings
+   items _V_ which is appended to the existing table for shared items of
+   any table setup tag within the content of tag TBD28259 (by default
+   empty table).  This implicit (i.e. not explicitly represented) table
+   _V_ is constructed as follows: Any coherent sequence of text strings
    encountered within the rump of tag TBD28259, as well as any of its
    non-empty suffixes, are added to the table as arrays in depth-first
    order.  Text string sequences within any tables for shared items or
@@ -923,11 +927,13 @@ Internet-Draft                  dns+cbor                   December 2024
    string (depth first) in the sequence.
 
    The "application/dns+cbor" media type comes with an optional
-   parameter "packed".  If it is not provided, it is assumed to be 0.
-   With packed=0, any CBOR object obj marked by the "application/
-   dns+cbor" media type MUST explicitly be understood as TBD28259(obj),
-   unless it is already obj itself is already tagged explicitly with
-   TBD28259 as a whole.
+   parameter "packed".  If it is not provided, the value of it, i.e. the
+   level of packedness, is assumed to be 0.  With packed=0, any CBOR
+   object obj marked by the "application/dns+cbor" media type MUST
+   explicitly be understood as TBD28259(obj), unless it is already obj
+   itself is already tagged explicitly with TBD28259 as a whole.  This
+   also means, that an "application/dns+cbor" encoder and decoder MUST
+   support level of packedness 0.
 
 4.1.1.  Example
 
@@ -941,18 +947,17 @@ Internet-Draft                  dns+cbor                   December 2024
      "svc", "www", "example", "org", 42
    ]
 
-    Figure 12: Unpacked example for implicit text string suffix sequence
-                                compression.
-
-   This would generate the following virtual table _V_.
-
-
 
 
 Lenders, et al.           Expires 20 June 2025                 [Page 17]
 
 Internet-Draft                  dns+cbor                   December 2024
 
+
+    Figure 12: Unpacked example for implicit text string suffix sequence
+                                compression.
+
+   This would generate the following virtual table _V_.
 
    [
        ["www", "example", "org"],
@@ -988,8 +993,25 @@ Internet-Draft                  dns+cbor                   December 2024
    With, e.g., table setup tag 113, further packing can be achieved by
    nesting table packing them with TBD28259.
 
-   TBD28259(
-     113(
+
+
+
+
+
+
+
+
+
+
+
+
+Lenders, et al.           Expires 20 June 2025                 [Page 18]
+
+Internet-Draft                  dns+cbor                   December 2024
+
+
+   TBD113(
+     TBD28259(
        [
          ["org", 42],
          [
@@ -1002,62 +1024,40 @@ Internet-Draft                  dns+cbor                   December 2024
      )
    )
 
-
-
-
-Lenders, et al.           Expires 20 June 2025                 [Page 18]
-
-Internet-Draft                  dns+cbor                   December 2024
-
-
           Figure 15: The packed representation of the example with
                           additional table setup.
 
-   Note, how the previous references in Figure 14 do not changed, even
-   though the string "org" is prepended, as strings in tables are
-   ignored when creating the implicit table.  Otherwise, "org" would be
-   refenceable by simple(0) and simple(5), wasting one
-   potentialreference point and making packing more complicated.
+   Note, how the previous references in Figure 14 do not changed, as the
+   table ["org", 42] is appended.
 
-4.2.  Media Type Negotiation
+4.2.  Further DNS Representation with tag 113
 
-   A DNS client uses the media type "application/dns+cbor;packed=1" to
-   negotiate (see, e.g., [RFC9110] or [RFC7252], Section 5.5.4) with the
-   DNS server whether the server supports packed CBOR.  If it does, it
-   MAY request the response to be in CBOR-packed (media type
-   "application/dns+cbor;packed=1").  The server then SHOULD reply with
-   the response in CBOR-packed, which it also signals with media type
-   "application/dns+cbor;packed=1".
-   // Needs adaptation for new name compression
+   The representation of DNS responses with level of packedness 1, i.e.
+   "application/dns+cbor;packed=1", has the same semantics as for tag
+   TBD113 (see Section 3.1 of [I-D.ietf-cbor-packed]) with the rump
+   being the compressed response.  The difference to
+   [I-D.ietf-cbor-packed] is that tag TBD113 is OPTIONAL with parameter
+   "packed=1".  As such, any CBOR object obj marked by the "application/
+   dns+cbor;packed=1" media type and parameter MUST explicitly be
+   understood as TBD113(TBD28259(obj)), unless it is already obj itself
+   is already tagged explicitly with TBD113 as a whole
+   // Is it okay that TBD28259 might be omitted in that case?
    //
-   // -- —mlenders
-
-4.3.  DNS Representation in CBOR-packed
-
-   The representation of DNS responses in CBOR-packed has the same
-   semantics as for tag TBD113 ([I-D.ietf-cbor-packed], Section 3.1)
-   with the rump being the compressed response.  The difference to
-   [I-D.ietf-cbor-packed] is that tag TBD113 is OPTIONAL.
+   // -- —mlenders.
 
    Packed compression of queries is not specified, as apart from EDNS(0)
    (see Section 3.2.2), they only consist of one question most of the
    time, i.e., there is close to no redundancy.
-   // Needs adaptation for new name compression
-   //
-   // -- —mlenders
 
-4.4.  Compression
+4.3.  Media Type Negotiation
 
-   The method of the compressor to construct the packing table, i.e.,
-   how the compression is applied, is out of scope of this document.
-   Several potential compression algorithms were evaluated in [TBD].
-
-
-
-
-
-
-
+   A DNS client uses the media type "application/dns+cbor;packed=1" to
+   negotiate (see, e.g., [RFC9110] or [RFC7252], Section 5.5.4) with the
+   DNS server whether the server supports setup table tag TBD113.  If it
+   does, it MAY request the response to be in level of packedness 1
+   (media type "application/dns+cbor;packed=1").  The server then SHOULD
+   reply with the response in CBOR-packed, which it also signals with
+   media type "application/dns+cbor;packed=1".  Otherwise, both fall
 
 
 
@@ -1065,6 +1065,14 @@ Lenders, et al.           Expires 20 June 2025                 [Page 19]
 
 Internet-Draft                  dns+cbor                   December 2024
 
+
+   back to the implicit "packed=0".
+
+4.4.  Compression
+
+   The method of the compressor to construct the packing table, i.e.,
+   how the compression is applied, is out of scope of this document.
+   Several potential compression algorithms were evaluated in [TBD].
 
 5.  Implementation Status
 
@@ -1104,6 +1112,16 @@ Internet-Draft                  dns+cbor                   December 2024
 
    Last update of this information:  July 2024
 
+
+
+
+
+
+Lenders, et al.           Expires 20 June 2025                 [Page 20]
+
+Internet-Draft                  dns+cbor                   December 2024
+
+
 5.2.  Embedded decoder/encoder
 
    The authors of this document provide a decoder/encoder implementation
@@ -1114,13 +1132,6 @@ Internet-Draft                  dns+cbor                   December 2024
    Level of maturity:  prototype
 
    Version compatibility:  draft-lenders-dns-cbor-05
-
-
-
-Lenders, et al.           Expires 20 June 2025                 [Page 20]
-
-Internet-Draft                  dns+cbor                   December 2024
-
 
    License:  MIT
 
@@ -1159,6 +1170,14 @@ Internet-Draft                  dns+cbor                   December 2024
 
    Published specification: [TBD-this-spec]
 
+
+
+
+Lenders, et al.           Expires 20 June 2025                 [Page 21]
+
+Internet-Draft                  dns+cbor                   December 2024
+
+
    Applications that use this media type: TBD DNS over X systems
 
    Fragment Identifier Considerations: TBD
@@ -1170,13 +1189,6 @@ Internet-Draft                  dns+cbor                   December 2024
       Magic number(s): N/A
 
       File extension(s): dnsc
-
-
-
-Lenders, et al.           Expires 20 June 2025                 [Page 21]
-
-Internet-Draft                  dns+cbor                   December 2024
-
 
       Macintosh file type code(s): none
 
@@ -1212,6 +1224,16 @@ Internet-Draft                  dns+cbor                   December 2024
 
    Reference: [TBD-this-spec]
 
+
+
+
+
+
+Lenders, et al.           Expires 20 June 2025                 [Page 22]
+
+Internet-Draft                  dns+cbor                   December 2024
+
+
 7.2.2.  "application/dns+cbor;packed=1"
 
    Media-Type: application/dns+cbor;packed=1
@@ -1226,13 +1248,6 @@ Internet-Draft                  dns+cbor                   December 2024
 
    In the registry "CBOR Tags" [IANA.cbor-tags], IANA is requested to
    allocate the tags defined in Table 1.
-
-
-
-Lenders, et al.           Expires 20 June 2025                 [Page 22]
-
-Internet-Draft                  dns+cbor                   December 2024
-
 
    +==========+=======+======================+========================+
    |      Tag | Data  | Semantics            | Reference              |
@@ -1266,6 +1281,15 @@ Internet-Draft                  dns+cbor                   December 2024
               September 2024, <https://datatracker.ietf.org/doc/html/
               draft-ietf-cbor-packed-13>.
 
+
+
+
+
+Lenders, et al.           Expires 20 June 2025                 [Page 23]
+
+Internet-Draft                  dns+cbor                   December 2024
+
+
    [IANA.cbor-tags]
               IANA, "Concise Binary Object Representation (CBOR) Tags",
               <https://www.iana.org/assignments/cbor-tags>.
@@ -1278,17 +1302,6 @@ Internet-Draft                  dns+cbor                   December 2024
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
-
-
-
-
-
-
-
-Lenders, et al.           Expires 20 June 2025                 [Page 23]
-
-Internet-Draft                  dns+cbor                   December 2024
-
 
    [RFC2782]  Gulbrandsen, A., Vixie, P., and L. Esibov, "A DNS RR for
               specifying the location of services (DNS SRV)", RFC 2782,
@@ -1324,6 +1337,15 @@ Internet-Draft                  dns+cbor                   December 2024
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
+
+
+
+
+Lenders, et al.           Expires 20 June 2025                 [Page 24]
+
+Internet-Draft                  dns+cbor                   December 2024
+
+
    [RFC8610]  Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
               Definition Language (CDDL): A Notational Convention to
               Express Concise Binary Object Representation (CBOR) and
@@ -1334,17 +1356,6 @@ Internet-Draft                  dns+cbor                   December 2024
               Representation (CBOR)", STD 94, RFC 8949,
               DOI 10.17487/RFC8949, December 2020,
               <https://www.rfc-editor.org/rfc/rfc8949>.
-
-
-
-
-
-
-
-Lenders, et al.           Expires 20 June 2025                 [Page 24]
-
-Internet-Draft                  dns+cbor                   December 2024
-
 
    [RFC9460]  Schwartz, B., Bishop, M., and E. Nygren, "Service Binding
               and Parameter Specification via the DNS (SVCB and HTTPS
@@ -1384,6 +1395,13 @@ Internet-Draft                  dns+cbor                   December 2024
               RFC 7942, DOI 10.17487/RFC7942, July 2016,
               <https://www.rfc-editor.org/rfc/rfc7942>.
 
+
+
+Lenders, et al.           Expires 20 June 2025                 [Page 25]
+
+Internet-Draft                  dns+cbor                   December 2024
+
+
    [RFC8484]  Hoffman, P. and P. McManus, "DNS Queries over HTTPS
               (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
               <https://www.rfc-editor.org/rfc/rfc8484>.
@@ -1391,16 +1409,6 @@ Internet-Draft                  dns+cbor                   December 2024
    [RFC8499]  Hoffman, P., Sullivan, A., and K. Fujiwara, "DNS
               Terminology", RFC 8499, DOI 10.17487/RFC8499, January
               2019, <https://www.rfc-editor.org/rfc/rfc8499>.
-
-
-
-
-
-
-Lenders, et al.           Expires 20 June 2025                 [Page 25]
-
-Internet-Draft                  dns+cbor                   December 2024
-
 
    [RFC8618]  Dickinson, J., Hague, J., Dickinson, S., Manderson, T.,
               and J. Bond, "Compacted-DNS (C-DNS): A Format for DNS
@@ -1442,14 +1450,6 @@ A.1.  DNS Queries
 
    [["example", "org", 1]]
 
-   A query of ANY record for that name is represented as
-
-   [["example", "org", 255, 255]]
-
-
-
-
-
 
 
 
@@ -1457,6 +1457,10 @@ Lenders, et al.           Expires 20 June 2025                 [Page 26]
 
 Internet-Draft                  dns+cbor                   December 2024
 
+
+   A query of ANY record for that name is represented as
+
+   [["example", "org", 255, 255]]
 
 A.2.  DNS Responses
 
@@ -1491,10 +1495,6 @@ A.2.  DNS Responses
    record type is specified in the question section.
 
    Lastly, a response to [["example", "org", 255, 255]] could be
-
-
-
-
 
 
 
