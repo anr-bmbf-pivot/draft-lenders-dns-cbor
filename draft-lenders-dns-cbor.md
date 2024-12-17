@@ -573,7 +573,7 @@ Text-String-Suffix-Sequence-Packed-CBOR = #6.28259(rump)
 ~~~
 
 For name compression, a new packing table setup tag TBD28259 ('n' and 'c' in ASCII) for CBOR-packed {{-cbor-packed}} is defined.
-It provides an implicit text string suffix sequence table for shared items _V_ which is prepended to the existing table for shared items that apply to the content of tag TBD28259 (by default empty table).
+It provides an implicit text string suffix sequence table for shared items _V_ which is appended to the existing table for shared items of any table setup tag within the content of tag TBD28259 (by default empty table).
 This implicit (i.e. not explicitly represented) table _V_ is constructed as follows:
 Any coherent sequence of text strings encountered within the rump of tag TBD28259, as well as any of its non-empty suffixes, are added to the table as arrays in depth-first order.
 Text string sequences within any tables for shared items or argument items within the rump MUST not be added to _V_.
@@ -633,8 +633,8 @@ Note, with "application/dns+cbor;packed=0" the surrounding TBD28259 can be elide
 With, e.g., table setup tag 113, further packing can be achieved by nesting table packing them with TBD28259.
 
 ~~~ edn
-TBD28259(
-  113(
+TBD113(
+  TBD28259(
     [
       ["org", 42],
       [
@@ -649,8 +649,7 @@ TBD28259(
 ~~~
 {: #fig:name-compression-example-packed-113 title="The packed representation of the example with additional table setup."}
 
-Note, how the previous references in {{fig:name-compression-example-packed}} do not changed, even though the string `"org"` is prepended, as strings in tables are ignored when creating the implicit table.
-Otherwise, `"org"` would be refenceable by `simple(0)` and `simple(5)`, wasting one potentialreference point and making packing more complicated.
+Note, how the previous references in {{fig:name-compression-example-packed}} do not changed, as the table `["org", 42]` is appended.
 
 ## Media Type Negotiation
 
