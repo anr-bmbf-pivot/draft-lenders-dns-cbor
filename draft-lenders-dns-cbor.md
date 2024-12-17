@@ -632,7 +632,7 @@ TBD28259(
 
 Note, with "application/dns+cbor;packed=0" the surrounding TBD28259 can be elided (even though the content would not be parsable as application/dns+cbor).
 
-With, e.g., table setup tag 113, further packing can be achieved by nesting table packing them with TBD28259.
+With, e.g., table setup tag 113, further packing can be achieved via nesting table packing.
 
 ~~~ edn
 TBD113(
