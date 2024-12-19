@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-12-17T00:14:32.986796+00:00",
+  "timestamp": "2024-12-19T00:14:19.319751+00:00",
   "repo": "anr-bmbf-pivot/draft-lenders-dns-cbor",
   "labels": [
     {
@@ -294,13 +294,13 @@
       "labels": [],
       "body": "During IETF 121 the idea came up to bring name compression to CBOR-packed after all by providing a special table setup tag. This is the work to that.",
       "createdAt": "2024-11-08T14:52:03Z",
-      "updatedAt": "2024-12-13T13:33:43Z",
+      "updatedAt": "2024-12-17T13:04:17Z",
       "baseRepository": "anr-bmbf-pivot/draft-lenders-dns-cbor",
       "baseRefName": "main",
       "baseRefOid": "49e91f9204f5032b9590e9b523d5b8ed5fb2a799",
       "headRepository": "anr-bmbf-pivot/draft-lenders-dns-cbor",
       "headRefName": "name-comp-packed",
-      "headRefOid": "c4e91f17f2bb8772e65a014a2723adc155433f56",
+      "headRefOid": "034b61ae715a129965522a6a821a0f0cdb7b61e0",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -620,6 +620,46 @@
               "body": "This is a note, there is no extra rule.\r\nIf the rest of the text doesn't say that, it needs to be fixed.",
               "createdAt": "2024-12-13T13:33:43Z",
               "updatedAt": "2024-12-13T13:33:43Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIM0M7M6VhE9j",
+          "commit": {
+            "abbreviatedOid": "f672f80"
+          },
+          "author": "miri64",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-17T10:29:10Z",
+          "updatedAt": "2024-12-17T10:29:10Z",
+          "comments": [
+            {
+              "originalPosition": 210,
+              "body": "Ok, so in this case, if I understand correctly, the outer tag should append to the packing table(s) of the inner tag.\r\n\r\nE.g., taking the example\r\n\r\n```\r\n113(\r\n  TBD28259(\r\n    [\r\n      [\"org\", 42],\r\n      [\r\n        [\"www\", \"example\", simple(5)],\r\n        [\"svc\", simple(0)],\r\n        simple(5), simple(1), simple(6),\r\n        simple(3), simple(6)\r\n      ]\r\n    ]\r\n  )\r\n)\r\n```\r\n\r\nwould still work with\r\n\r\n```\r\n  TBD28259(\r\n    [\r\n        [\"www\", \"example\", \"org\"],\r\n        [\"svc\", simple(0)],\r\n        \"org\", simple(1), 42,\r\n        simple(3), 42\r\n    ]\r\n  )\r\n```\r\n\r\nwhile the other way around \r\n\r\n```\r\nTBD28259(\r\n  113(\r\n    [\r\n      [\"org\", 42],\r\n      [\r\n        [\"www\", \"example\", simple(5)],\r\n        [\"svc\", simple(0)],\r\n        simple(5), simple(1), simple(6),\r\n        simple(3), simple(6)\r\n      ]\r\n    ]\r\n  )\r\n)\r\n```\r\n\r\nwould completely need to rewrite the `simple(i)` references (and not just the new ones) for `113(...)` if `TBD28259(...)` is taken away to make sense.\r\n\r\n```\r\n  113(\r\n    [\r\n      [\"org\", 42],\r\n      [\r\n        [\"www\", \"example\", simple(0)],\r\n        [\"svc\", \"www\", \"example\", simple(0)],\r\n        simple(0), \"example\", simple(0), sample(1),\r\n        \"svc\", \"www\", \"example\", \"org\", sample(1)\r\n      ]\r\n    ]\r\n  )\r\n```\r\n\r\nThis makes sense to me. Will fix (and try to find a better wording to make the table setup clearer).",
+              "createdAt": "2024-12-17T10:29:10Z",
+              "updatedAt": "2024-12-17T10:29:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIM0M7M6Vibek",
+          "commit": {
+            "abbreviatedOid": "034b61a"
+          },
+          "author": "miri64",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-17T13:04:09Z",
+          "updatedAt": "2024-12-17T13:04:17Z",
+          "comments": [
+            {
+              "originalPosition": 170,
+              "body": "I am not set on the term \u201clevel of packedness\u201d. In fact, I would love to get some alternative terms.",
+              "createdAt": "2024-12-17T13:04:09Z",
+              "updatedAt": "2024-12-17T13:04:17Z"
             }
           ]
         }
