@@ -14,22 +14,22 @@
 the Concise Binary Object Representation  .
 The primary purpose is to keep DNS messages small in constrained networks. 
     " name="description">
-<meta content="xml2rfc 3.25.0" name="generator">
+<meta content="xml2rfc 3.27.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="CBOR" name="keyword">
 <meta content="DNS" name="keyword">
 <meta content="draft-lenders-dns-cbor-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.25.0
-    Python 3.12.7
+  xml2rfc 3.27.0
+    Python 3.12.9
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
-    Jinja2 3.1.4
+    Jinja2 3.1.5
     lxml 5.3.0
     platformdirs 4.3.6
-    pycountry 22.3.5
-    PyYAML 6.0.1
+    pycountry 24.6.1
+    PyYAML 6.0.2
     requests 2.32.3
     setuptools 70.3.0
     wcwidth 0.2.13
@@ -442,7 +442,7 @@ dl {
     margin-bottom: 0;
   }
 }
-dl > dt {
+dl:not(.dlNewline) > dt {
   float: left;
   margin-right: 2ch;
   min-width: 8ch;
@@ -1051,11 +1051,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">dns+cbor</td>
-<td class="right">December 2024</td>
+<td class="right">February 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lenders, et al.</td>
-<td class="center">Expires 20 June 2025</td>
+<td class="center">Expires 25 August 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1068,12 +1068,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-lenders-dns-cbor-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-12-17" class="published">17 December 2024</time>
+<time datetime="2025-02-21" class="published">21 February 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-06-20">20 June 2025</time></dd>
+<dd class="expires"><time datetime="2025-08-25">25 August 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1137,7 +1137,7 @@ The primary purpose is to keep DNS messages small in constrained networks.<a hre
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 20 June 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 25 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1146,7 +1146,7 @@ The primary purpose is to keep DNS messages small in constrained networks.<a hre
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2024 IETF Trust and the persons identified as the
+            Copyright (c) 2025 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1502,7 +1502,7 @@ The query may be derived from the context of the transfer protocol.<a href="#sec
 <p id="section-3.2.1-4">If the record type is elided, the record type from the question is assumed.
 If record class is elided, the record class from the question is assumed.
 When a record class is required to be expressed, the record type <span class="bcp14">MUST</span> also be provided.<a href="#section-3.2.1-4" class="pilcrow">¶</a></p>
-<p id="section-3.2.1-5">The byte string format of the record data as a byte string follows the classic DNS format as specified in Section 3.3 <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span> (or other specifications of the respective record type).
+<p id="section-3.2.1-5">The byte string format of the record data as a byte string follows the classic DNS format as specified in <span><a href="https://rfc-editor.org/rfc/rfc1035#section-3.3" class="relref">Section 3.3</a> of [<a href="#RFC1035" class="cite xref">RFC1035</a>]</span> (or other specifications of the respective record type).
 Note that the CBOR format does not include the RDLENGTH field from the classic format as this value is encoded in the length field of the CBOR header of the byte string.<a href="#section-3.2.1-5" class="pilcrow">¶</a></p>
 <p id="section-3.2.1-6">If the record data represents a domain name (e.g., for CNAME or PTR records), the record data <span class="bcp14">MAY</span> be represented as domain name as specified in <a href="#sec_domain-names" class="auto internal xref">Section 3.1</a>.
 This can save 1 byte of data, as the zero byte at the end of the name is not necessary with the CBOR format.
@@ -2091,7 +2091,7 @@ consist of one question most of the time, i.e., there is close to no redundancy.
 <a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-media-type-negotiation" class="section-name selfRef">Media Type Negotiation</a>
         </h3>
 <p id="section-4.3-1">A DNS client uses the media type "application/dns+cbor;packed=1" to negotiate (see, e.g.,
-<span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> or <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, Section 5.5.4) with the DNS server whether the server supports setup table tag TBD113.
+<span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> or <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>], <a href="https://rfc-editor.org/rfc/rfc7252#section-5.5.4" class="relref">Section 5.5.4</a></span>) with the DNS server whether the server supports setup table tag TBD113.
 If it does, it <span class="bcp14">MAY</span> request the response to be in level of packedness 1 (media type
 "application/dns+cbor;packed=1").
 The server then <span class="bcp14">SHOULD</span> reply with the response in CBOR-packed, which it also signals with media type
@@ -2346,7 +2346,7 @@ IANA is requested to allocate the tags defined in <a href="#tab-tag-values" clas
 <dl class="references">
 <dt id="I-D.ietf-cbor-edn-literals">[I-D.ietf-cbor-edn-literals]</dt>
         <dd>
-<span class="refAuthor">Bormann, C.</span>, <span class="refTitle">"CBOR Extended Diagnostic Notation (EDN)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cbor-edn-literals-14</span>, <time datetime="2024-12-09" class="refDate">9 December 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cbor-edn-literals-14">https://datatracker.ietf.org/doc/html/draft-ietf-cbor-edn-literals-14</a>&gt;</span>. </dd>
+<span class="refAuthor">Bormann, C.</span>, <span class="refTitle">"CBOR Extended Diagnostic Notation (EDN)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cbor-edn-literals-16</span>, <time datetime="2025-01-08" class="refDate">8 January 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cbor-edn-literals-16">https://datatracker.ietf.org/doc/html/draft-ietf-cbor-edn-literals-16</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-cbor-packed">[I-D.ietf-cbor-packed]</dt>
         <dd>
@@ -2415,7 +2415,7 @@ IANA is requested to allocate the tags defined in <a href="#tab-tag-values" clas
 <dl class="references">
 <dt id="I-D.ietf-core-dns-over-coap">[I-D.ietf-core-dns-over-coap]</dt>
         <dd>
-<span class="refAuthor">Lenders, M. S.</span>, <span class="refAuthor">Amsüss, C.</span>, <span class="refAuthor">Gündoğan, C.</span>, <span class="refAuthor">Schmidt, T. C.</span>, and <span class="refAuthor">M. Wählisch</span>, <span class="refTitle">"DNS over CoAP (DoC)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-dns-over-coap-09</span>, <time datetime="2024-10-21" class="refDate">21 October 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-dns-over-coap-09">https://datatracker.ietf.org/doc/html/draft-ietf-core-dns-over-coap-09</a>&gt;</span>. </dd>
+<span class="refAuthor">Lenders, M. S.</span>, <span class="refAuthor">Amsüss, C.</span>, <span class="refAuthor">Gündoğan, C.</span>, <span class="refAuthor">Schmidt, T. C.</span>, and <span class="refAuthor">M. Wählisch</span>, <span class="refTitle">"DNS over CoAP (DoC)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-dns-over-coap-12</span>, <time datetime="2025-02-14" class="refDate">14 February 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-dns-over-coap-12">https://datatracker.ietf.org/doc/html/draft-ietf-core-dns-over-coap-12</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC4944">[RFC4944]</dt>
         <dd>
@@ -2481,8 +2481,7 @@ IANA is requested to allocate the tags defined in <a href="#tab-tag-values" clas
 <a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-dns-queries-2" class="section-name selfRef">DNS Queries</a>
         </h3>
 <p id="appendix-A.1-1">A DNS query of the record <code>AAAA</code> in class <code>IN</code> for name "example.org" is
-represented in CBOR extended diagnostic notation (EDN) (see Section 8 in
-<span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> and Appendix G in <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>) as follows:<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
+represented in CBOR extended diagnostic notation (EDN) (see <span><a href="https://rfc-editor.org/rfc/rfc8949#section-8" class="relref">Section 8</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc8610#appendix-G" class="relref">Appendix G</a> of [<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>) as follows:<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
 <div class="lang-cbor-diag sourcecode" id="appendix-A.1-2">
 <pre>
 [["example", "org"]]
@@ -2508,7 +2507,7 @@ represented in CBOR extended diagnostic notation (EDN) (see Section 8 in
 <a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-dns-responses-2" class="section-name selfRef">DNS Responses</a>
         </h3>
 <p id="appendix-A.2-1">The responses to the examples provided in <a href="#sec_query-examples" class="auto internal xref">Appendix A.1</a> are shown
-below. We use the CBOR extended diagnostic notation (EDN) (see <span>[<a href="#I-D.ietf-cbor-edn-literals" class="cite xref">I-D.ietf-cbor-edn-literals</a>]</span> and Appendix G in <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>).<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
+below. We use the CBOR extended diagnostic notation (EDN) (see <span>[<a href="#I-D.ietf-cbor-edn-literals" class="cite xref">I-D.ietf-cbor-edn-literals</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc8610#appendix-G" class="relref">Appendix G</a> of [<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>).<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.2-2">To represent an <code>AAAA</code> record with TTL 300 seconds for the IPv6 address 2001:db8::1, a minimal
 response to <code>[["example", "org"]]</code> could be<a href="#appendix-A.2-2" class="pilcrow">¶</a></p>
 <div class="lang-cbor-diag sourcecode" id="appendix-A.2-3">
