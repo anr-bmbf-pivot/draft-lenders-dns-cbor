@@ -293,7 +293,7 @@ If the record type is elided, the record type from the question is assumed.
 If record class is elided, the record class from the question is assumed.
 When a record class is required to be expressed, the record type MUST also be provided.
 
-The byte string format of the record data as a byte string follows the classic DNS format as specified in Section 3.3 {{-dns}} (or other specifications of the respective record type).
+The byte string format of the record data as a byte string follows the classic DNS format as specified in {{Section 3.3 of -dns}} (or other specifications of the respective record type).
 Note that the CBOR format does not include the RDLENGTH field from the classic format as this value is encoded in the length field of the CBOR header of the byte string.
 
 If the record data represents a domain name (e.g., for CNAME or PTR records), the record data MAY be represented as domain name as specified in {{sec:domain-names}}.
@@ -863,8 +863,8 @@ IANA is requested to allocate the tags defined in {{tab-tag-values}}.
 ## DNS Queries {#sec:query-examples}
 
 A DNS query of the record `AAAA` in class `IN` for name "example.org" is
-represented in CBOR extended diagnostic notation (EDN) (see Section 8 in
-{{-cbor}} and Appendix G in {{-cddl}}) as follows:
+represented in CBOR extended diagnostic notation (EDN) (see {{Section 8 of
+-cbor}} and {{Appendix G of -cddl}}) as follows:
 
 ~~~ cbor-diag
 [["example", "org"]]
@@ -885,7 +885,7 @@ A query of `ANY` record for that name is represented as
 ## DNS Responses {#sec:response-examples}
 
 The responses to the examples provided in {{sec:query-examples}} are shown
-below. We use the CBOR extended diagnostic notation (EDN) (see {{-edn}} and Appendix G in {{-cddl}}).
+below. We use the CBOR extended diagnostic notation (EDN) (see {{-edn}} and {{Appendix G of -cddl}}).
 
 To represent an `AAAA` record with TTL 300 seconds for the IPv6 address 2001:db8::1, a minimal
 response to `[["example", "org"]]` could be
