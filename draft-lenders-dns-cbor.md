@@ -668,7 +668,7 @@ consist of one question most of the time, i.e., there is close to no redundancy.
 ## Media Type Negotiation
 
 A DNS client uses the media type "application/dns+cbor;packed=1" to negotiate (see, e.g.,
-{{-http-semantics}} or {{-coap}}, Section 5.5.4) with the DNS server whether the server supports setup table tag TBD113.
+{{-http-semantics}} or {{-coap, Section 5.5.4}}) with the DNS server whether the server supports setup table tag TBD113.
 If it does, it MAY request the response to be in level of packedness 1 (media type
 "application/dns+cbor;packed=1").
 The server then SHOULD reply with the response in CBOR-packed, which it also signals with media type
