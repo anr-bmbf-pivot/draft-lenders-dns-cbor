@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-02-20T00:13:38.036882+00:00",
+  "timestamp": "2025-02-23T00:14:52.919401+00:00",
   "repo": "anr-bmbf-pivot/draft-lenders-dns-cbor",
   "labels": [
     {
@@ -294,13 +294,13 @@
       "labels": [],
       "body": "During IETF 121 the idea came up to bring name compression to CBOR-packed after all by providing a special table setup tag. This is the work to that.",
       "createdAt": "2024-11-08T14:52:03Z",
-      "updatedAt": "2024-12-17T13:04:17Z",
+      "updatedAt": "2025-02-21T17:22:35Z",
       "baseRepository": "anr-bmbf-pivot/draft-lenders-dns-cbor",
       "baseRefName": "main",
-      "baseRefOid": "49e91f9204f5032b9590e9b523d5b8ed5fb2a799",
+      "baseRefOid": "0c8a8106c5a86d8cf11930b57b5866440f37fc5a",
       "headRepository": "anr-bmbf-pivot/draft-lenders-dns-cbor",
       "headRefName": "name-comp-packed",
-      "headRefOid": "034b61ae715a129965522a6a821a0f0cdb7b61e0",
+      "headRefOid": "609af1cbc7c13ef796e958930a2699e90ac77699",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
