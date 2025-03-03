@@ -155,7 +155,7 @@ If, for any reason, a DNS message cannot be represented in the CBOR format speci
 Domain names are represented by a sequence of one or more (unicode) text strings.
 For instance, "example.org" would be represented as `"example","org"` in CBOR diagnostic notation.
 The root domain "." is represented as an empty string `""`.
-The absence of any label or tag TBDt (see {{sec:name-compression}} below) means the name is elided.
+The absence of any label means the name is elided.
 For the purpose of this document, domain names remain case-insensitive as specified in {{-dns}}.
 
 The representation of a domain name is defined in {{fig:domain-name}}.
@@ -166,96 +166,27 @@ A decoder MAY identify the ACE encoding by identifying the label as a valid A-la
 This sequence of text strings is supposed to be embedded into a surrounding array, usually the query
 or resource record.
 
-### Name Compression {#sec:name-compression}
+Name compression is implemented using an extension to CBOR-packed, see {{sec:name-compression}}.
+For readers unfamiliar with CBOR-packed this name compression can be abstracted to a name
+compression similar to that described in {{Section 4.1.4 of -dns}}.
+However, instead of using the byte index as reference within the message, text strings are counted,
+starting at 0, depth-first within the message.
+That number is used as index for the reference.
+Since names are the only text strings, the end of a name can be identified when the decoder cursor
+does not point to a text string or reference to another text string anymore.
+For the reference itself, either simple values or tag 6 are used (see {{Section 2.2 of -cbor-packed}}).
 
 {:cddl: sourcecode-name="dns-cbor.cddl"}
 
 ~~~ cddl
-domain-name = (
-  * label,
-  ? ( #6.TBDt(uint) / label ),
-)
+domain-name = ( *label )
 label = tstr
 ~~~
 {:cddl #fig:domain-name title="Domain Name Definition"}
 
-Names are compressed by pointing to existing labels in the message.
-CBOR objects are typically decoded depth-first.
-Whenever we encounter a label we take the value of a counter _c_ as the position of that label.
-The counter _c_ is then increased.
-
-A tag TBDt may follow any sequence of labels, even an empty sequence.
-This tag TBDt encapsulates an unsigned integer _i_ which points to a label at position _i_.
-_i_ MUST be smaller than _c_.
-A name then is decoded as any label that then preceded tag TBDt(_i_) and all labels including and following at position _i_ are appended.
-This includes any further occurrence of tag TBDt after the referenced label sequence, though the decoding stops after this tag was recursively decoded.
-Note, that this also may include simple values or tags that reference the packing table with CBOR-packed (see {{sec:cbor-packed}}).
-
-For instance, the name "www.example.org" can be encountered twice in the example in
-{{fig:name-compression-example}} (notated in CBOR Extended Diagnostic Notation, see {{-edn}}).
-
-~~~ cbor-diag
-[
-  # AAAA (28, elided) question for "example.org"
-  [ "example" / c == 0 /, "org" / c == 1 / ],
-  # Answer section:
-  [
-    # "example.org" (elided) CNAME (5) is "www.example.org"
-    [ 5, "www" / c == 2 /, TBDt(0) / references c == 0 / ],
-    # "www.example.org" AAAA (28, elided) is 2001:db8::1
-    [
-      TBDt(2) / references c == 2 /,
-      h'20010db8000000000000000000000001'
-    ]
-  ]
-]
-~~~
-{: #fig:name-compression-example title="Example for name compression." }
-
-<!--
-For name compression, a tag TBDt encapsulating an unsigned integer _i_ can be appended to the sequence of text strings.
-To extend the name suffix, the unsigned integer _i_ points to the _i_-th text string (counted depth first) in the overall DNS message.
-That string and all text strings or another tag TBDt following the string at the _i_-th position are appended to the name sequence.
-If another tag TBDt is encountered, it is resolved in the same way.
-Strings following a tag TBDt MUST NOT be appended to the name sequence.
-To prevent circular references, this DNS name suffix extension algorithm should error whenever a string position is encountered more than once during the extension of a name.
-Likewise, the algorithm should error whenever the _i_ is greater than the position of the previous seen string from this occurrence of tag TBDt.
-Only backward referencing is allowed for tag TBDt.
-Decompression stops when any other type than a text string or any other tag than tag TBDt are
-encountered.
--->
-
-The pseudo-code for this DNS name suffix extension algorithm can be seen in {{fig:decode-name}}.
-
-~~~
-function decode_name(obj: cbor_obj, cbor_ptr: cbor_major_type): list
-{
-  name: list = []
-  visited: set = {}
-  while (typeof(cbor_ptr) in {tstr, tag}):
-    if typeof(cbor_ptr) == tag:
-      if cbor_ptr.tag != TBDt:
-        break
-      i: uint = cbor_ptr.value
-      if i-th text string after (depth first) cbor_ptr:
-        return ERROR("Forward reference not allowed")
-      cbor_ptr =
-        jump to i-th text string (depth first) in obj
-      if cbor_ptr in visited:
-        return ERROR("Circular reference")
-    # cbor_ptr should be of type tstr at this point
-    name.append(cbor_ptr)
-    visited.add(cbor_ptr)
-  return name
-}
-~~~
-{: #fig:decode-name title="Name Suffix Extension Algorithm"}
-
-The tag TBDt is included in the definition in {{fig:domain-name}}.
-
 ## DNS Resource Records {#sec:rr}
 
-{:mlenders: source="mlenders"}
+{:mlenders: source="—mlenders"}
 
 This document specifies the representation of both standard DNS resource records (RRs, see {{-dns}})
 and EDNS option pseudo-RRs (see {{-edns}}.[^1]{:mlenders}
@@ -434,9 +365,9 @@ If the SvcPriority is present can be determined by checking if the record data a
 If the array does not start with an unsigned integer, the SvcPriority is elided and defaults to 0, i.e., the record is in AliasMode (see {{Section 2.4.2 of -svcb}}).
 If the array starts with a unsigned integer, it is the SvcPriority.
 
-If the TargetName is present can be determined by checking if the record data array has a text string or tag TBDt after the SvcPriority, i.e., if the SvcPriority is elided the array would start with a text string or tag TBDt.
-If there is no text string or tag TBDt after the SvcPriority, the TargetName is elided and defaults to the sequence of text strings `""` (i.e. the root domain "." in the common name representation defined in {{Section 2.3.1 of -dns}}, see {{sec:domain-names}}) and {{Section 2.5 of -svcb}}.
-If there is a text string or tag TBDt after the SvcPriority, the TargetName is not elided and in the domain name form specified in {{sec:domain-names}}.
+If the TargetName is present can be determined by checking if the record data array has a domain name after the SvcPriority, i.e., if the SvcPriority is elided the array would start with a domain name.
+If there is no domain name after the SvcPriority, the TargetName is elided and defaults to the sequence of text strings `""` (i.e. the root domain "." in the common name representation defined in {{Section 2.3.1 of -dns}}, see {{sec:domain-names}}) and {{Section 2.5 of -svcb}}.
+If there is a domain name after the SvcPriority, the TargetName is not elided and in the domain name form specified in {{sec:domain-names}}.
 
 The definition for SVCB and HTTPS record data can be seen in {{fig:dns-rdata-svcb}}.
 
@@ -627,31 +558,122 @@ dns-response = [
 ~~~
 {:cddl #fig:dns-response title="DNS Response Definition"}
 
-# Further Compression with CBOR-packed {#sec:cbor-packed}
+# Compression with CBOR-packed {#sec:cbor-packed}
 
-If both DNS server and client support CBOR-packed {{-cbor-packed}}, it MAY be used for further
+CBOR-packed {{-cbor-packed}} is used for name compression in application/dns+cbor.
+
+If both DNS server and client support table setup tag 113 as described in {{Section 3.1 of -cbor-packed}}, it MAY be used for further
 compression in DNS responses.
 Especially IPv6 addresses, e.g., in AAAA resource records can benefit from straight referencing to
 compress common address prefixes.
 
-## Media Type Negotiation
+## Name Compression {#sec:name-compression}
 
-A DNS client uses the media type "application/dns+cbor;packed=1" to negotiate (see, e.g.,
-{{-http-semantics}} or {{-coap}}, Section 5.5.4) with the DNS server whether the server supports packed
-CBOR.
-If it does, it MAY request the response to be in CBOR-packed (media type
-"application/dns+cbor;packed=1").
-The server then SHOULD reply with the response in CBOR-packed, which it also signals with media type
-"application/dns+cbor;packed=1".
+~~~ cddl
+Text-String-Suffix-Sequence-Packed-CBOR = #6.28259(rump)
+~~~
 
-## DNS Representation in CBOR-packed
+For name compression, a new packing table setup tag TBD28259 ('n' and 'c' in ASCII) for CBOR-packed {{-cbor-packed}} is defined.
+It provides an implicit text string suffix sequence table for shared items _V_ which is appended to the existing table for shared items of any table setup tag within the content of tag TBD28259 (by default empty table).
+This implicit (i.e. not explicitly represented) table _V_ is constructed as follows:
+Any coherent sequence of text strings encountered within the rump of tag TBD28259, as well as any of its non-empty suffixes, are added to the table as arrays in depth-first order.
+Text string sequences within any tables for shared items or argument items within the rump MUST not be added to _V_.
+If a sequence for which an array is already in _V_ is encountered, a shared item reference _i_ to that array in V replaces this sequence.
+This shared item reference _i_ means: take the sequence from the array at _V_\[_i_\] and put it into the surrounding array in place of _i_.
+The resulting rump should look like referencing the _i_-th string (depth first) in the sequence.
 
-The representation of DNS responses in CBOR-packed has the same semantics as for tag TBD113
-({{-cbor-packed}}, Section 3.1) with the rump being the compressed response.
-The difference to {{-cbor-packed}} is that tag TBD113 is OPTIONAL.
+The "application/dns+cbor" media type comes with an optional parameter "packed".
+If it is not provided, the value of it, i.e. the level of packedness, is assumed to be 0.
+With packed=0, any CBOR object `obj` marked by the "application/dns+cbor" media type MUST explicitly be understood as `TBD28259(obj)`, unless it is already `obj` itself is already tagged explicitly with TBD28259 as a whole.
+This also means, that an "application/dns+cbor" encoder and decoder MUST support level of packedness 0.
+
+### Example
+
+Take the following CBOR object _o_ (note that this is intentionally not legal "application/dns+cbor" to illustrate generality).
+
+~~~ edn
+[
+  "www", "example", "org",
+  ["svc", "www", "example", "org"],
+  "org", "example", "org", 42,
+  "svc", "www", "example", "org", 42
+]
+~~~
+{: #fig:name-compression-example-unpacked title="Unpacked example for implicit text string suffix sequence compression."}
+
+This would generate the following virtual table _V_.
+
+~~~ edn
+[
+    ["www", "example", "org"],
+    ["example", "org"],
+    ["org"],
+    ["svc", simple(0)],
+    ["org", "example", "org"]
+]
+~~~
+{: #fig:name-compression-example-table title="Implicit table of shared items for the example."}
+
+Note that the sequence "org", "example", "org" is added at index 4 with leading "org", instead of referencing index 2 + index 1 (`simple(2), simple(1)`), as it is its own distinct suffix sequence.
+
+The packed representation of _o_ would thus be:
+
+~~~ edn
+TBD28259(
+  [
+    ["www", "example", "org"],
+    ["svc", simple(0)],
+    "org", simple(1), 42,
+    simple(3), 42
+  ]
+)
+~~~
+{: #fig:name-compression-example-packed title="The packed representation of the example."}
+
+Note, with "application/dns+cbor;packed=0" the surrounding TBD28259 can be elided (even though the content would not be parsable as application/dns+cbor).
+
+With, e.g., table setup tag 113, further packing can be achieved via nesting table packing.
+
+~~~ edn
+TBD113(
+  TBD28259(
+    [
+      ["org", 42],
+      [
+        ["www", "example", simple(5)],
+        ["svc", simple(0)],
+        simple(5), simple(1), simple(6),
+        simple(3), simple(6)
+      ]
+    ]
+  )
+)
+~~~
+{: #fig:name-compression-example-packed-113 title="The packed representation of the example with additional table setup."}
+
+Note, how the previous references in {{fig:name-compression-example-packed}} do not changed, as the table `["org", 42]` is appended.
+
+## Further DNS Representation with tag 113
+
+The representation of DNS responses with level of packedness 1, i.e. "application/dns+cbor;packed=1", has the same semantics as for tag TBD113
+(see {{Section 3.1 of -cbor-packed}}) with the rump being the compressed response.
+The difference to {{-cbor-packed}} is that tag TBD113 is OPTIONAL with parameter "packed=1".
+As such, any CBOR object `obj` marked by the "application/dns+cbor;packed=1" media type and parameter MUST explicitly be understood as `TBD113(TBD28259(obj))`, unless it is already `obj` itself is already tagged explicitly with TBD113 as a whole[^6]{: mlenders}.
 
 Packed compression of queries is not specified, as apart from EDNS(0) (see {{sec:edns}}), they only
 consist of one question most of the time, i.e., there is close to no redundancy.
+
+[^6]: Is it okay that TBD28259 might be omitted in that case?
+
+## Media Type Negotiation
+
+A DNS client uses the media type "application/dns+cbor;packed=1" to negotiate (see, e.g.,
+{{-http-semantics}} or {{-coap, Section 5.5.4}}) with the DNS server whether the server supports setup table tag TBD113.
+If it does, it MAY request the response to be in level of packedness 1 (media type
+"application/dns+cbor;packed=1").
+The server then SHOULD reply with the response in CBOR-packed, which it also signals with media type
+"application/dns+cbor;packed=1".
+Otherwise, both fall back to the implicit "packed=0".
 
 ## Compression {#sec:pack-compression}
 
@@ -851,9 +873,9 @@ Reference: \[TBD-this-spec\]
 In the registry "{{cbor-tags (CBOR Tags)<IANA.cbor-tags}}" {{IANA.cbor-tags}},
 IANA is requested to allocate the tags defined in {{tab-tag-values}}.
 
-|    Tag | Data Item        | Semantics                     | Reference              |
-|   TBDt | unsigned integer | DNS name suffix extension     | draft-lenders-dns-cbor |
-| TBD141 | array            | CBOR EDNS option record       | draft-lenders-dns-cbor |
+|    Tag   | Data Item | Semantics                                                            | Reference              |
+| TBD141   | array     | CBOR EDNS option record                                              | draft-lenders-dns-cbor |
+| TBD28259 | any       | Packed CBOR; implicit text string suffix sequence shared-item table  | draft-lenders-dns-cbor |
 {: #tab-tag-values cols='r l l' title="Values for Tag Numbers"}
 
 --- back
@@ -927,24 +949,24 @@ Lastly, a response to `[["example", "org", 255, 255]]` could be
   ["example", "org", 12, 1],
   [[3600, "_coap", "_udp", "local"]],
   [
-    [3600, 2, "ns1", TBDt(0)],
-    [3600, 2, "ns2", TBDt(0)]
+    [3600, 2, "ns1", simple(0)],
+    [3600, 2, "ns2", simple(0)]
   ],
   [
     [
-      TBDt(2), 3600, 28,
+      simple(2), 3600, 28,
       h'20010db8000000000000000000000001'
     ],
     [
-      TBDt(2), 3600, 28,
+      simple(2), 3600, 28,
       h'20010db8000000000000000000000002'
     ],
     [
-      TBDt(5), 3600, 28,
+      simple(5), 3600, 28,
       h'20010db8000000000000000000000035'
     ],
     [
-      TBDt(6), 3600, 28,
+      simple(6), 3600, 28,
       h'20010db8000000000000000000003535'
     ]
   ]
@@ -1013,7 +1035,7 @@ a name overhead of 1 byte to its CBOR type header.[^10]{: mlenders}
     <tr>
       <td align="left">Standard RR with name rdata</td>
       <td align="right">12 + name&nbsp;len. + rdata&nbsp;len.</td>
-      <td align="right">4 + TBDt&nbsp;len.</td>
+      <td align="right">4</td>
       <td align="right">14&nbsp;+&nbsp;name&nbsp;len. + rdata&nbsp;len. + name&nbsp;overheads</td>
       <td align="right">16&nbsp;+&nbsp;name&nbsp;len. + rdata&nbsp;len. + name&nbsp;overheads</td>
     </tr>
@@ -1074,7 +1096,7 @@ a name overhead of 1 byte to its CBOR type header.[^10]{: mlenders}
     </tr>
     <tr>
       <td align="left">Standard RR with name rdata</td>
-      <td align="right">Class, type, and name elided,<br/>TBDt(i) with i&nbsp;&lt; 24</td>
+      <td align="right">Class, type, and name elided,<br/>simple(i) with i&nbsp;&lt; 16</td>
       <td align="right">Type &gt; 255,<br/>label len. &gt; 23<br/>name uncompressed</td>
       <td align="right">Type &gt; 255,<br/>Class &gt; 255,<br/>label len. &gt; 23<br/>name uncompressed</td>
     </tr>
