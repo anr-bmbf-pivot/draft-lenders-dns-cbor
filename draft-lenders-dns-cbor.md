@@ -730,7 +730,7 @@ Level of maturity:
 : prototype
 
 Version compatibility:
-: draft-lenders-dns-cbor-08
+: draft-lenders-dns-cbor-10
 
 License:
 : MIT
@@ -751,7 +751,7 @@ Level of maturity:
 : prototype
 
 Version compatibility:
-: draft-lenders-dns-cbor-05
+: draft-lenders-dns-cbor-08
 
 License:
 : MIT
@@ -1099,6 +1099,7 @@ Since [draft-lenders-dns-cbor-10]
 ---------------------------------
 - Address IANA #1392416 early review
 - Fix external section references
+- Update implementation status
 
 Since [draft-lenders-dns-cbor-09]
 ---------------------------------
