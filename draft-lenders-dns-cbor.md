@@ -258,7 +258,7 @@ The tag TBDt is included in the definition in {{fig:domain-name}}.
 {:mlenders: source="mlenders"}
 
 This document specifies the representation of both standard DNS resource records (RRs, see {{-dns}})
-and EDNS option pseudo-RRs (see {{-edns}}.[^1]{:mlenders}
+and EDNS option pseudo-RRs (see {{-edns}}.
 If for any reason, a resource record cannot be represented in the given formats, they can be
 represented in their binary wire-format form as a byte string.
 
@@ -267,7 +267,6 @@ of this document.
 
 The representation of a DNS resource records is defined in {{fig:dns-rr}}.
 
-[^1]: Also add capability to summarize Resource Record Sets to one array, e.g. `["example","org",3600,1,[b'c0002563', h'c00021ab']]`?
 
 ~~~ cddl
 $$dns-rr = rr / #6.141(opt-rr) / bstr
@@ -282,7 +281,10 @@ Standard DNS resource records are encoded as CBOR arrays containing 2 or more en
 2. A TTL (as unsigned integer),
 3. An optional record type (as unsigned integer),
 4. An optional record class (as unsigned integer), and lastly
-5. A record data entry (as byte string, domain name, or array for dedicated record data representation).
+5. A record data entry (as byte string, domain name, or array for dedicated record data representation) or
+   a boolean (true) that indicates that the resource record is actually a resource record set with
+   an array of one or more record data entries following. In the latter case, individual domain
+   names need to be put into their own array.
 
 If the first item of the resource record is a text string, it is the first label of a domain name (see {{sec:domain-names}}).
 If the name is elided, the name is derived from the question section of the message.
@@ -308,6 +310,11 @@ These extensions mainly serve to expose names to name compression (see {{sec:nam
 There is an argument to be made for CBOR-structured formats of other record data representations (e.g. DNSKEY or RRSIG), but structuring such records as an array usually adds more overhead than just transferring the byte representation.
 As such, structured record data that do not contain names are always to be represented as a byte string.
 
+Multiple resource records of the same type, class, and TTL can be summarized to a resource record set.
+A decoder can be notified about this, by including the boolean true value before an array of multiple record data entries of the same type.
+Note, that this adds more overhead to the message and should only really be considered, when there are
+more than two resource records of the same type, class, and TTL in the message.
+
 ~~~ cddl
 max-uint8 = 0..255
 max-uint16 = 0..65535
@@ -320,7 +327,14 @@ rr = [
 ]
 type-spec-rdata = (
   ? type-spec,
-  rdata: bstr // ( domain-name ),
+  rdata: bstr // ( domain-name ) // ( rdata-set ),
+)
+rdata-set = (
+  is-rrset: true,
+  rdata-set: [ +bstr ]
+) / (
+  is-rrset: true,
+  rdata-set: [ +[ domain-name ] ],
 )
 type-spec-rdata //= ( $$structured-ts-rd )
 type-spec = (
@@ -350,7 +364,7 @@ The definition for MX record data can be seen in {{fig:dns-rdata-soa}}.
 $$structured-ts-rd //= (
   6,    ; record-type = SOA
   ? 1,  ; record-class = IN
-  soa,
+  ( soa // ( is-rrset: true, rdata-set: [ +soa ] ) ),
 )
 
 soa = [
@@ -378,7 +392,7 @@ The definition for MX record data can be seen in {{fig:dns-rdata-mx}}.
 $$structured-ts-rd //= (
   15,   ; record-type = MX
   ? 1,  ; record-class = IN
-  mx,
+  ( mx // ( is-rrset: true, rdata-set: [ +mx ] ) ),
 )
 
 mx = [
@@ -408,7 +422,7 @@ The definition for SRV record data can be seen in {{fig:dns-rdata-srv}}.
 $$structured-ts-rd //= (
   33,   ; record-type = SRV
   ? 1,  ; record-class = IN
-  srv,
+  ( srv // ( is-rrset: true, rdata-set: [ +srv ] ) ),
 )
 
 srv = [
@@ -419,6 +433,9 @@ srv = [
 ]
 ~~~
 {:cddl #fig:dns-rdata-srv title="SRV Resource Record Data Definition"}
+-The next element is an array of the options, which are represented two elements each, an unsigned
+-integer, the option code, followed by a byte string, the option data.
+-Multiple options alternate between unsigned integer and byte string within the array.
 
 #### SVCB and HTTPS Record Data
 
@@ -444,7 +461,7 @@ The definition for SVCB and HTTPS record data can be seen in {{fig:dns-rdata-svc
 $$structured-ts-rd //= (
   64 / 65,  ; record-type = SVCB or HTTPS
   ? 1,      ; record-class = IN
-  svcb,
+  ( svcb // ( is-rrset: true, rdata-set: [ +svcb ] ) ),
 )
 
 svcb = [
